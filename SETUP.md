@@ -69,12 +69,13 @@
 
 ## Step 8. GitHub Pages を有効化
 1. Settings → **Pages**
-2. Source: **Deploy from a branch** → Branch: `main` / folder: `/site` を選択 → Save
+2. Source: **Deploy from a branch** → Branch: `main` / folder: `/docs` を選択 → Save
+   （※GitHub Pagesはルートか`/docs`しか選べないため、本ツールの出力先は`docs/`）
 3. 数分後 `https://<ユーザー名>.github.io/japan-autopilot/` が公開される
 
 ## Step 9. テスト実行
 1. **Actions** タブ → `daily-post` → **Run workflow**（手動実行）
-2. ログが緑になればOK。Pinterest/Threadsに投稿され、`site/` に記事が増える
+2. ログが緑になればOK。Pinterest/Threadsに投稿され、`docs/` に記事が増える
 3. 失敗したらログを見る（Claude Codeに貼れば原因を特定してくれる）
 
 ## Step 10. 放置

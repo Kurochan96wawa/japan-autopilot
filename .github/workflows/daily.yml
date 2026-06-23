@@ -46,7 +46,7 @@ jobs:
         run: |
           git config user.name  "autopilot-bot"
           git config user.email "actions@github.com"
-          git add data/state.json site/ || true
+          git add data/state.json docs/ || true
           git commit -m "chore: daily run $(date -u +%F)" || echo "no changes"
           git push || echo "push skipped"
 

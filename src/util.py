@@ -10,7 +10,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_DIR = ROOT / "config"
 DATA_DIR = ROOT / "data"
-SITE_DIR = ROOT / "site"
+SITE_DIR = ROOT / "docs"
 TMP_DIR = ROOT / "tmp"
 
 logging.basicConfig(

@@ -58,7 +58,7 @@ GitHub Actions(無料枠)で**クラウド常駐**するので、**あなたのP
 1. このリポジトリを自分のGitHubに置く（private推奨）
 2. [SETUP.md](./SETUP.md) に沿って各APIキーを取得し、GitHub Secrets に登録
 3. `config/settings.yaml` と `config/affiliates.yaml` を自分用に編集
-4. GitHub Pages を有効化（Settings → Pages → `site/` を公開）
+4. GitHub Pages を有効化（Settings → Pages → ブランチ`main` / フォルダ`/docs` を公開）
 5. Actions タブで `daily-post` を **手動実行(workflow_dispatch)** してテスト
 6. 問題なければ放置。毎日自動で動く
 
