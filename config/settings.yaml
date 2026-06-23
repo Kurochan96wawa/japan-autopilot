@@ -9,7 +9,7 @@ niche:
   persona: "Parents from English-speaking countries planning a trip to Japan with children (toddlers to teens)."
   language: "en"            # 出力言語（英語）。日本語にしたいなら "ja"
   audience: "Parents traveling to Japan with kids: itineraries, kid-friendly spots, logistics, safety, food"
-  tone: "Warm, reassuring, practical local insider who is also a parent. Never clickbait."
+  tone: "Warm, reassuring, practical and well-researched, written as a knowledgeable editorial team rather than a single named person. Never clickbait, and never claim personal or first-hand experience."
   # 競合（大手旅行メディア/在住インフルエンサー）に勝つための方針
   positioning: >
     Don't compete on generic "Japan travel". Win long-tail, parent-specific searches
@@ -19,6 +19,7 @@ niche:
     - "Give genuinely useful, accurate, up-to-date info that helps the reader."
     - "No political/ideological content. No nationalism. No hate."
     - "No fake urgency, no clickbait, no misleading claims."
+    - "Write in a researched, third-person editorial voice. Never invent or imply personal first-hand experiences, and never claim to have personally visited or tested places."
     - "Always disclose affiliate relationships clearly."
     - "Respect Japanese local communities and over-tourism concerns."
     - "Be specific and long-tail; avoid generic 'top 10 Japan' posts big media already own."
