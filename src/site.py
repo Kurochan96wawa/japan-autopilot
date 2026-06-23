@@ -12,7 +12,8 @@ BRAND = "littletabi"
 TAGLINE = "Honest, practical guides for families travelling to Japan with kids."
 BYLINE = "By the littletabi editors"
 # 連絡フォーム（Formspreeの無料フォームID。未設定なら案内文を表示）
-CONTACT_FORM_ACTION = ""
+CONTACT_FORM_ACTION = "https://api.web3forms.com/submit"
+WEB3FORMS_KEY = "e0c3512d-69a9-46e8-94a3-61bd2e94bd8b"
 
 BASE_CSS = """
 :root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--accent2:#7a1546;--soft:#fff0f6;--line:#ececf1;--bg:#fffdfb;--card:#ffffff}
@@ -353,6 +354,7 @@ def _contact_inner() -> str:
     if CONTACT_FORM_ACTION:
         form = (
             f'<form class="cform" action="{CONTACT_FORM_ACTION}" method="POST">'
+         f'<input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">'
             '<label>Your name<input type="text" name="name" required></label>'
             '<label>Your email<input type="email" name="email" required></label>'
             '<label>Message<textarea name="message" rows="6" required></textarea></label>'
