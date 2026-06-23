@@ -57,7 +57,7 @@ instagram:
 
 # コンテンツ（記事）を置くGitHub Pagesサイト（=Hub。直リンクせずここを経由）
 site:
-  base_url: "https://YOUR_GITHUB_USERNAME.github.io/japan-autopilot"
+  base_url: "https://littletabi.com"
   site_name: "Japan With Kids — Honest Family Travel Guides"
 
 # 画像（無料運用：Pexelsの実写 + テキストオーバーレイ）
