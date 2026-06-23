@@ -190,6 +190,38 @@ def _write_cname(cfg: dict) -> None:
         (SITE_DIR / "CNAME").write_text(host + "\n", encoding="utf-8")
 
 
+def _migrate_legacy(cfg: dict) -> None:
+    """旧テンプレートで生成済みの記事HTMLを新テンプレートに包み直す。
+    canonical/og の旧プレースホルダURLも現行 base_url に修正する。自己修復。"""
+    base = cfg["site"]["base_url"].rstrip("/")
+    skip = {"index.html", "about.html", "disclosure.html"}
+    for path in SITE_DIR.glob("*.html"):
+        if path.name in skip:
+            continue
+        try:
+            txt = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if 'class="site"' in txt:
+            continue  # 既に新テンプレート
+        tm = re.search(r"<title>(.*?)</title>", txt, re.S)
+        title_tag = tm.group(1).strip() if tm else cfg["site"]["site_name"]
+        lm = re.search(r'<html lang="([^"]+)"', txt)
+        lang = lm.group(1) if lm else "en"
+        cm = re.search(r"</nav>(.*)</body>", txt, re.S)
+        inner = (cm.group(1).strip() if cm else "")
+        inner = inner.replace('class="hero"', 'class="hero-img"')
+        inner = inner.replace("https://YOUR_GITHUB_USERNAME.github.io/japan-autopilot", base)
+        head_tags = re.findall(r"<(?:meta|link)[^>]*>", txt)
+        keep = [h for h in head_tags if ("og:" in h or 'name="description"' in h or 'rel="canonical"' in h)]
+        head_extra = "".join(
+            h.replace("https://YOUR_GITHUB_USERNAME.github.io/japan-autopilot", base) + "\n" for h in keep
+        )
+        body_inner = '<main class="wrap"><article>\n' + inner + "\n</article></main>"
+        path.write_text(_document(lang, title_tag, head_extra, body_inner), encoding="utf-8")
+        log.info("legacy記事を新テンプレに移行: %s", path.name)
+
+
 def rebuild_index(state: dict) -> None:
     cfg = load_settings()
     site_name = cfg["site"]["site_name"]
@@ -221,5 +253,6 @@ def rebuild_index(state: dict) -> None:
     _write_page("about", lang, f"About | {site_name}", _about_inner())
     _write_page("disclosure", lang, f"Affiliate Disclosure & Privacy | {site_name}", _disclosure_inner())
     _write_cname(cfg)
+    _migrate_legacy(cfg)
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
     log.info("index/about/disclosure 再生成 (%d記事)", len(cards))
