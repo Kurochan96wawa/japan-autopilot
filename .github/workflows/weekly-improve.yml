@@ -1,0 +1,34 @@
+name: weekly-improve
+
+# 毎週月曜 21:00 UTC（火 6:00 JST）に成果分析→戦略更新
+on:
+  schedule:
+    - cron: "0 21 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Run improve
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+        run: python -m src.main improve
+      - name: Commit strategy update
+        run: |
+          git config user.name  "autopilot-bot"
+          git config user.email "actions@github.com"
+          git add data/state.json || true
+          git commit -m "chore: weekly strategy update $(date -u +%F)" || echo "no changes"
+          git push || echo "push skipped"

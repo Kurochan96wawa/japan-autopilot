@@ -1,0 +1,43 @@
+name: refresh-tokens
+
+# トークン失効対策：Meta(IG/Threads)は60日・Pinterestは約30日で失効する。
+# 失効前に必ず更新して新トークンをSecretsへ書き戻す（無人運用を継続）。
+# Pinterest基準で20日ごとに回す（早すぎて困ることはない）。
+on:
+  schedule:
+    - cron: "0 3 */20 * *"
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Refresh tokens
+        env:
+          # Secretsを書き戻すためのPAT（repo権限）。未設定ならログのみで安全に停止
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_REPO: ${{ github.repository }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          PINTEREST_REFRESH_TOKEN: ${{ secrets.PINTEREST_REFRESH_TOKEN }}
+          PINTEREST_APP_ID: ${{ secrets.PINTEREST_APP_ID }}
+          PINTEREST_APP_SECRET: ${{ secrets.PINTEREST_APP_SECRET }}
+        run: python -m src.tokens refresh
+
+  # 失敗したら通知（GitHub Issueを立てる＝サイレント故障を防ぐ）
+  notify-failure:
+    needs: refresh
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue create --title "⚠️ token refresh failed $(date -u +%F)" --body "refresh-tokens workflow failed. Tokens may expire soon — check logs and re-auth if needed."

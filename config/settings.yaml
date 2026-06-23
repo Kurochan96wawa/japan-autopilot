@@ -1,0 +1,94 @@
+# ============================================================
+# japan-autopilot 設定ファイル
+# ここを編集するだけで運用方針を変えられる（コードは触らなくてOK）
+# ============================================================
+
+niche:
+  # 発信テーマ。AIへの指示の核になる。【特化ニッチ：子連れ日本旅行】
+  name: "Family travel in Japan (visiting Japan with kids)"
+  persona: "Parents from English-speaking countries planning a trip to Japan with children (toddlers to teens)."
+  language: "en"            # 出力言語（英語）。日本語にしたいなら "ja"
+  audience: "Parents traveling to Japan with kids: itineraries, kid-friendly spots, logistics, safety, food"
+  tone: "Warm, reassuring, practical local insider who is also a parent. Never clickbait."
+  # 競合（大手旅行メディア/在住インフルエンサー）に勝つための方針
+  positioning: >
+    Don't compete on generic "Japan travel". Win long-tail, parent-specific searches
+    (e.g. "stroller friendly Tokyo", "Japan with a baby what to pack", "kid friendly Kyoto itinerary").
+  # AIが守るべき編集方針（倫理ガード）
+  editorial_rules:
+    - "Give genuinely useful, accurate, up-to-date info that helps the reader."
+    - "No political/ideological content. No nationalism. No hate."
+    - "No fake urgency, no clickbait, no misleading claims."
+    - "Always disclose affiliate relationships clearly."
+    - "Respect Japanese local communities and over-tourism concerns."
+    - "Be specific and long-tail; avoid generic 'top 10 Japan' posts big media already own."
+
+# 投稿スケジュール（GitHub Actions の cron と合わせる）
+schedule:
+  pins_per_day: 2          # 新規記事＋新規Pin（最初は少なく。慣らし運転）
+  repins_per_day: 2        # 既存記事を“別画像”で再Pin（Fresh Pins戦略。Pinterest成長の本命）
+  threads_per_day: 0       # Threadsは導線ミスマッチのため既定OFF（使うなら1に）
+  instagram_per_day: 0     # Instagram補助（設定済みなら1に。視覚再利用できる）
+  min_post_interval_min: 6 # 連投間隔（分）。Threads併用時は5分以上必須
+
+# Pinterest 設定（主軸）
+pinterest:
+  enabled: true
+  default_boards:          # 親向けに特化したボード
+    - "Japan with Kids"
+    - "Tokyo with Kids"
+    - "Kyoto & Osaka with Kids"
+    - "Japan Family Itineraries"
+    - "Japan Travel Packing for Families"
+    - "Kid-Friendly Food in Japan"
+  fresh_pins:
+    # 同一URLには必ず“別画像・別文面”でPinする（shadowban対策）
+    max_pins_per_article: 4   # 1記事につき作るPinの上限（期間を空けて）
+    variant_overlay: true     # 画像の帯デザインをバリアントごとに変える
+
+# Threads 設定（補助・既定OFF）
+threads:
+  enabled: false
+
+# Instagram 設定（補助・視覚再利用。Business連携が済んだらON）
+instagram:
+  enabled: false
+  # Pinに使った縦長画像をそのままフィード/カルーセルに流用
+
+# コンテンツ（記事）を置くGitHub Pagesサイト（=Hub。直リンクせずここを経由）
+site:
+  base_url: "https://YOUR_GITHUB_USERNAME.github.io/japan-autopilot"
+  site_name: "Japan With Kids — Honest Family Travel Guides"
+
+# 画像（無料運用：Pexelsの実写 + テキストオーバーレイ）
+# ※AI生成画像は使わない（旅行者は本物の写真を求めるため）
+images:
+  source: "pexels"        # pexels | none
+  pin_width: 1000
+  pin_height: 1500        # Pinterest推奨 2:3 縦長
+  overlay: true           # 写真にタイトル帯を載せる
+  pexels_pool: 15         # 取得候補数（多めに取り、Pinごとに別写真を使う＝Fresh Pins）
+
+# ============================================================
+# 安全装置（自動運用の落とし穴対策）。詳細は PITFALLS.md
+# 迷ったら数字はこのまま。控えめが正義。
+# ============================================================
+safety:
+  max_pins_per_day_hard: 12      # 1日の絶対上限(Pinterest安全圏5〜15)。これを超えると投稿停止
+  warmup_weeks: 3                # 新規アカは最初3週間、下のwarmup_pins_per_dayに制限
+  warmup_pins_per_day: 3         # ウォームアップ期間中の1日上限
+  account_started: null          # 初回運用日(YYYY-MM-DD)。空なら初回実行時に自動記録
+  min_days_between_repins: 7     # 同一URLの再Pin間隔(日)。連投spam判定回避
+  jitter_pct: 40                 # 投稿間隔のゆらぎ(%)。機械的な等間隔を避ける
+  min_article_words: 450         # これ未満の薄い記事は破棄(Google低品質/Pinterest不信回避)
+  block_risky_phrases: true      # 価格・営業時間・誇大表現を含む記事は再生成/破棄
+  check_affiliate_links: true    # 死んだ/未設定アフィリリンクは記事に入れない
+  monthly_llm_call_cap: 400      # 月間LLM呼び出し上限(コスト暴走防止)
+  pause_on_shadowban: true       # インプレ急落を検知したら自動で投稿を停止
+
+# 使うLLMプロバイダ（予算重視ならgemini無料枠を推奨）
+llm:
+  provider: "gemini"      # gemini | openai | anthropic
+  model: "gemini-2.0-flash"
+  max_topics_buffer: 30   # 先にネタを貯めておく数
+  quality_self_check: true  # 生成記事をAI自身に採点させ、薄ければ1回だけ作り直す

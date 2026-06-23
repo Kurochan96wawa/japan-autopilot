@@ -1,0 +1,58 @@
+name: daily-post
+
+# 毎日 自動実行（UTC基準。例: 22:00 UTC = 翌7:00 JST）
+# 注意: GitHubのcronは±1時間ずれる/混雑時はスキップされることがある（公式仕様）。
+#       時刻厳守の用途ではないので問題なし。毎日commitするので60日無効化も回避できる。
+on:
+  schedule:
+    - cron: "0 22 * * *"
+  workflow_dispatch: {}   # 手動実行ボタンも付く
+
+permissions:
+  contents: write          # state.json と site/ をリポジトリにcommitするため
+  issues: write            # 失敗時に通知Issueを立てる
+
+concurrency:
+  group: autopilot
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run daily
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+        run: python -m src.main daily
+
+      - name: Commit results (state + site)
+        run: |
+          git config user.name  "autopilot-bot"
+          git config user.email "actions@github.com"
+          git add data/state.json site/ || true
+          git commit -m "chore: daily run $(date -u +%F)" || echo "no changes"
+          git push || echo "push skipped"
+
+      # サイレント故障防止：失敗したら通知Issueを立てる
+      - name: Notify on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue create --title "⚠️ daily-post failed $(date -u +%F)" --body "The daily automation failed. Check the Actions log. Common causes: expired token, missing secret, API rate limit." || true

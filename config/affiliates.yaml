@@ -1,0 +1,66 @@
+# ============================================================
+# アフィリエイト・リンク登録簿（子連れ日本旅行ニッチ向け）
+# ここに自分のアフィリリンクを入れる。記事生成時に文脈に合うものが自動挿入される。
+# 最初は空でもOK（リンクなしの純粋な情報記事として動く）。
+# 各プログラムに登録・承認されたら、placeholder を自分のリンクに置き換える。
+#
+# ★方針アップデート（2023年のJRパス約50%値上げ→7割が「使わない」を受けて）:
+#   ・全国版JR Pass の単純訴求はやめる（今は「元が取れない」認識が定着）
+#   ・代わりに Klook / GetYourGuide の【地域パス】【体験ツアー】を主力に
+#   ・子連れ特有の需要（ベビーカー、家族向け宿、キッズ体験）を厚く
+# ============================================================
+
+programs:
+  - id: experiences
+    name: "Klook / GetYourGuide experiences (teamLab, kimono, Fuji day trip, theme parks)"
+    url: "https://example.com/REPLACE_WITH_YOUR_KLOOK_OR_GYG_AFFILIATE_LINK"
+    keywords: ["tour", "experience", "ticket", "things to do", "teamlab", "theme park",
+               "disney", "ghibli", "day trip", "activity", "aquarium", "zoo", "kids"]
+    cta: "Book skip-the-line family tickets & experiences"
+
+  - id: regional_pass
+    name: "Regional rail passes (Kansai/Hakone/Tokyo subway) via Klook"
+    # ※全国版JR Passではなく“地域パス”。子連れは移動を絞るので地域パスの方が合う
+    url: "https://example.com/REPLACE_WITH_YOUR_REGIONAL_PASS_AFFILIATE_LINK"
+    keywords: ["train", "transport", "subway", "pass", "kansai", "hakone", "getting around",
+               "itinerary", "between cities"]
+    cta: "Get the regional pass that fits your route (skip the pricey nationwide JR Pass)"
+
+  - id: hotels
+    name: "Family-friendly hotels (Booking.com / Agoda)"
+    url: "https://example.com/REPLACE_WITH_YOUR_HOTEL_AFFILIATE_LINK"
+    keywords: ["hotel", "stay", "accommodation", "ryokan", "where to stay",
+               "family room", "connecting rooms", "apartment"]
+    cta: "Find family rooms & kid-friendly stays in Japan"
+
+  - id: esim
+    name: "Airalo / Saily eSIM (Japan)"
+    url: "https://example.com/REPLACE_WITH_YOUR_ESIM_AFFILIATE_LINK"
+    keywords: ["sim", "internet", "data", "connectivity", "phone", "wifi", "maps", "navigation"]
+    cta: "Stay connected & navigate easily — get a Japan eSIM"
+
+  - id: gear
+    name: "Family travel gear (Amazon: travel stroller, carrier, adapters)"
+    url: "https://example.com/REPLACE_WITH_YOUR_AMAZON_AFFILIATE_TAG"
+    keywords: ["packing", "stroller", "carrier", "gear", "luggage", "adapter",
+               "what to bring", "essentials", "baby", "toddler"]
+    cta: "Family travel gear that makes Japan with kids easier"
+
+# アフィリ表記（各記事フッターに自動挿入される開示文）
+# ★Amazon を使う場合は "As an Amazon Associate I earn from qualifying purchases." を
+#   必ず含めること（Amazon規約上ほぼ必須）。下の文に含めてある。
+disclosure: >
+  This guide may contain affiliate links. If you book or buy through them,
+  we may earn a small commission at no extra cost to you. As an Amazon Associate
+  we earn from qualifying purchases. We only recommend things we believe genuinely
+  help your family's trip.
+
+# Pin説明文に自動付与する開示ハッシュタグ（アフィリ含む記事へ誘導するPinに付ける）
+# Pinterest 2026 のルール & FTC 開示要件への対応（未開示はFTC罰金リスク）
+affiliate_hashtags: "#ad #affiliate"
+
+# ★Amazonアソシエイトの落とし穴メモ（重要）:
+#   - 申請から180日以内に「3件の適格販売」が無いと自動的に垢閉鎖→再申請不可級。
+#   - だから流入がゼロの初月にAmazonへ申請しない。まずKlook/Booking等で回し、
+#     サイトに実流入が出てからAmazonに申請するのが安全（gear のURLは流入後に設定）。
+#   - 上記 disclosure と #ad は付与済み。
