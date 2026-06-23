@@ -55,4 +55,5 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue create --title "⚠️ daily-post failed $(date -u +%F)" --body "The daily automation failed. Check the Actions log. Common causes: expired token, missing secret, API rate limit." || true
+        run: |
+          gh issue create --title "daily-post failed $(date -u +%F)" --body "The daily automation failed. Check the Actions log (common causes are expired tokens, missing secrets, or API rate limits)." || true
