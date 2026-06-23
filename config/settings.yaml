@@ -89,6 +89,6 @@ safety:
 # 使うLLMプロバイダ（予算重視ならgemini無料枠を推奨）
 llm:
   provider: "gemini"      # gemini | openai | anthropic
-  model: "gemini-2.0-flash"
+  model: "gemini-2.5-flash"   # 2026年現行の無料枠モデル（2.0は2026/6/1終了）
   max_topics_buffer: 30   # 先にネタを貯めておく数
   quality_self_check: true  # 生成記事をAI自身に採点させ、薄ければ1回だけ作り直す
