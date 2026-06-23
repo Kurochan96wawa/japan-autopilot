@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+.DS_Store
+build/
+*.log
+# 生成された一時画像（サイトに必要な分だけ site/ にコミット）
+tmp/

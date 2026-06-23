@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "topics_queue": [],
+  "posted": [],
+  "performance": { "by_topic": {}, "by_keyword": {}, "notes": [] },
+  "strategy": { "boost_keywords": [], "avoid_keywords": [], "last_updated": null }
+}
