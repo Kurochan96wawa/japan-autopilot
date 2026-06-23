@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Essential Packing List for Japan with a Toddler (Seasonal Breakdown)",
-      "search_intent": "Parents need a detailed, seasonal packing guide specifically for traveling to Japan with a toddler, including clothes, gear, and essentials.",
-      "primary_keyword": "packing list Japan toddler",
-      "board_hint": "Planning & Packing"
-    },
-    {
-      "topic": "Navigating Food Allergies in Japan with Kids: A Parent's Practical Guide",
-      "search_intent": "Parents with allergic children need practical advice, useful Japanese phrases, and strategies for ensuring safe dining experiences in Japan.",
-      "primary_keyword": "food allergies Japan kids",
-      "board_hint": "Eating in Japan | Safety"
-    },
-    {
       "topic": "Best Family-Friendly Hotels in Tokyo with Connecting Rooms or Kitchenettes",
       "search_intent": "Parents are looking for specific accommodation types in Tokyo that cater to families, offering space, amenities, and comfort.",
       "primary_keyword": "family hotels Tokyo kitchenette",
@@ -168,6 +156,18 @@
       "search_intent": "Parents want to understand and manage their kids' interest in gacha machines, possibly finding specific locations or tips for responsible enjoyment.",
       "primary_keyword": "gacha gacha Japan kids",
       "board_hint": "Fun & Souvenirs | Cultural Quirks"
+    },
+    {
+      "topic": "Navigating Japanese Meals with Picky Eaters: Kid-Friendly Dishes & Where to Find Them",
+      "search_intent": "Parents are worried about their children not eating well in Japan or struggling to find appealing food options. They seek practical advice on specific kid-friendly Japanese dishes, common restaurant types suitable for families, and strategies for feeding kids with varying preferences.",
+      "primary_keyword": "kid friendly Japanese food",
+      "board_hint": "Japan Foodie Family Guide"
+    },
+    {
+      "topic": "Diapers, Formula & Baby Gear in Japan: What to Pack, What to Buy",
+      "search_intent": "Parents want to know if they should bring all their baby essentials (like diapers, wipes, specific formula brands) from home, if these items are easily available for purchase in Japan, what local brands are comparable, and if rental options exist for larger baby gear.",
+      "primary_keyword": "diapers Japan travel",
+      "board_hint": "Japan Family Travel Essentials"
     }
   ],
   "posted": [
@@ -212,6 +212,27 @@
       "last_pin_desc": "Deciding on the Japan Rail Pass for your family trip to Japan? Get a parent's honest take on whether it's worth it for kids, considering new prices, itinerary types, and practical tips for smooth train travel. Learn when to buy it, when to skip it, and smart alternatives to explore Japan with children. #JapanWithKids #FamilyTravelJapan #JRPass",
       "repin_times": [],
       "posted_at": "2026-06-23T08:41:36.315227+00:00"
+    },
+    {
+      "topic": "Navigating Food Allergies in Japan with Kids: A Parent's Practical Guide",
+      "slug": "navigating-food-allergies-in-japan-with-kids-a-guide",
+      "article_title": "Navigating Food Allergies in Japan with Kids: A Guide",
+      "primary_keyword": "food allergies Japan kids",
+      "image_query": "Family eating Japanese food",
+      "board_hint": "Eating in Japan | Safety",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/navigating-food-allergies-in-japan-with-kids-a-guide.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/navigating-food-allergies-in-japan-with-kids-a-guide.jpg"
+      ],
+      "img_hashes": [
+        "ffef4100130e10b8"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan but worried about food allergies? This guide provides essential tips for parents, covering everything from preparing allergy cards in Japanese to finding safe dining options with kids. Make your Japan family vacation enjoyable and stress-free, even with dietary restrictions. #JapanFamilyTravel #FoodAllergiesJapan #KidsTravelJapan",
+      "repin_times": [],
+      "posted_at": "2026-06-23T10:32:45.958519+00:00"
     }
   ],
   "performance": {
@@ -229,6 +250,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 7
+    "llm_calls": 9
   }
 }
