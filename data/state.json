@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Where to Buy Diapers and Baby Formula in Japan (Brands and Sizes Explained)",
-      "search_intent": "Parents need to know where to reliably purchase baby essentials like diapers and formula in Japan, understanding local brands and sizing.",
-      "primary_keyword": "buy diapers Japan",
-      "board_hint": "Baby Essentials Japan | Logistics"
-    },
-    {
-      "topic": "Kid-Friendly Onsens in Japan: Private Baths and Family Options",
-      "search_intent": "Families want to experience a traditional onsen but need guidance on finding options that are suitable, comfortable, and respectful for children.",
-      "primary_keyword": "onsen with kids Japan",
-      "board_hint": "Cultural Experiences | Relaxation"
-    },
-    {
       "topic": "Tokyo Disney vs. DisneySea with Young Kids: Which Park is Best for Your Family?",
       "search_intent": "Parents are deciding between the two Tokyo Disney parks and need advice tailored to the specific needs and preferences of young children.",
       "primary_keyword": "Tokyo Disney with young kids",
@@ -168,6 +156,18 @@
       "search_intent": "Parents planning a trip to Japan are looking for backup indoor activities to keep their children entertained during unexpected bad weather, or when they need a break from outdoor sightseeing, seeking specific, engaging options beyond common tourist attractions.",
       "primary_keyword": "Rainy day activities Japan kids",
       "board_hint": "Japan Family Fun | Kids Activities Japan | Japan Travel Planning"
+    },
+    {
+      "topic": "Navigating Shinkansen Oversized Baggage Rules: How to Reserve Bullet Train Seats for Families with Strollers",
+      "search_intent": "Understand how to book specific seats on Japanese bullet trains that accommodate both large luggage and strollers under the current reservation rules.",
+      "primary_keyword": "Shinkansen stroller reservation",
+      "board_hint": "Japan Travel Logistics & Transport"
+    },
+    {
+      "topic": "Buying Baby Diapers, Wipes, and Formula in Japan: A Practical Guide to Drugstores, Sizes, and Translations",
+      "search_intent": "Find out where to purchase baby essentials in Japan, decode local packaging sizes, and locate specialized baby retailers like Akachan Honpo.",
+      "primary_keyword": "buying diapers in Japan",
+      "board_hint": "Japan with Babies & Toddlers"
     }
   ],
   "posted": [
@@ -280,6 +280,48 @@
       "repin_times": [],
       "posted_at": "2026-06-23T10:56:17.261278+00:00",
       "meta_description": "Smoothly navigate Japan with kids by mastering jet lag. Discover proven strategies for pre-trip prep, arrival, and establishing sleep routines."
+    },
+    {
+      "topic": "Where to Buy Diapers and Baby Formula in Japan (Brands and Sizes Explained)",
+      "slug": "diapers-formula-in-japan-brands-sizes-where-to-buy",
+      "article_title": "Diapers & Formula in Japan: Brands, Sizes & Where to Buy",
+      "primary_keyword": "buy diapers Japan",
+      "image_query": "Japan baby essentials store",
+      "board_hint": "Baby Essentials Japan | Logistics",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/diapers-formula-in-japan-brands-sizes-where-to-buy.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/diapers-formula-in-japan-brands-sizes-where-to-buy-v1.jpg"
+      ],
+      "img_hashes": [
+        "021e0e1e00003fff"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan? Don't stress about essentials! This guide covers where to buy diapers and baby formula, popular Japanese brands like Merries, Moony, Meiji, and Glico, and how to navigate sizing. Get practical tips for parents visiting Japan with a baby or toddler. #JapanTravel #BabyTravel #FamilyJapan",
+      "repin_times": [],
+      "posted_at": "2026-06-23T12:30:44.612243+00:00"
+    },
+    {
+      "topic": "Kid-Friendly Onsens in Japan: Private Baths and Family Options",
+      "slug": "family-onsen-japan-private-baths-kid-friendly-guide",
+      "article_title": "Family Onsen Japan: Private Baths & Kid-Friendly Guide",
+      "primary_keyword": "onsen with kids Japan",
+      "image_query": "hakone ryokan onsen family",
+      "board_hint": "Cultural Experiences | Relaxation",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/family-onsen-japan-private-baths-kid-friendly-guide.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/family-onsen-japan-private-baths-kid-friendly-guide.jpg"
+      ],
+      "img_hashes": [
+        "97bffffc30010000"
+      ],
+      "last_pin_desc": "Dreaming of soaking in a Japanese hot spring but worried about taking the kids? Our guide covers kashikiri (private family baths), swimsuit-friendly onsen theme parks, and essential etiquette rules for parents traveling in Japan. #JapanWithKids #FamilyTravelJapan #JapanOnsen",
+      "repin_times": [],
+      "posted_at": "2026-06-23T12:43:11.380429+00:00"
     }
   ],
   "performance": {
@@ -297,6 +339,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 17
+    "llm_calls": 20
   }
 }
