@@ -6,7 +6,12 @@ name: daily-post
 on:
   schedule:
     - cron: "0 22 * * *"
-  workflow_dispatch: {}   # 手動実行ボタンも付く
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode (daily / dry / regen / improve)"
+        required: false
+        default: "daily"
 
 permissions:
   contents: write          # state.json と site/ をリポジトリにcommitするため
@@ -29,7 +34,7 @@ jobs:
       - name: Install deps
         run: pip install -r requirements.txt
 
-      - name: Run daily
+      - name: Run
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -40,14 +45,14 @@ jobs:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
-        run: python -m src.main daily
+        run: python -m src.main ${{ github.event.inputs.mode || 'daily' }}
 
       - name: Commit results (state + site)
         run: |
           git config user.name  "autopilot-bot"
           git config user.email "actions@github.com"
           git add data/state.json docs/ || true
-          git commit -m "chore: daily run $(date -u +%F)" || echo "no changes"
+          git commit -m "chore: ${{ github.event.inputs.mode || 'daily' }} run $(date -u +%F)" || echo "no changes"
           git push || echo "push skipped"
 
       # サイレント故障防止：失敗したら通知Issueを立てる
