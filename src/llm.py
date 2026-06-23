@@ -50,10 +50,13 @@ def _extract_json(text: str):
         raise
 
 
-def _gemini(prompt: str, model: str) -> str:
+def _gemini(prompt: str, model: str, json_mode: bool = True) -> str:
     key = os.environ["GEMINI_API_KEY"]
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
     body = {"contents": [{"parts": [{"text": prompt}]}]}
+    if json_mode:
+        # JSON強制モード。HTMLを含む応答でも正しいJSONで返させる（パース失敗を防ぐ）
+        body["generationConfig"] = {"responseMimeType": "application/json"}
     r = requests.post(url, json=body, timeout=120)
     r.raise_for_status()
     data = r.json()
@@ -99,7 +102,7 @@ def generate(prompt: str, as_json: bool = True):
         last = None
         for m in models:
             try:
-                out = _retry_429(lambda: _gemini(prompt, m))
+                out = _retry_429(lambda m=m: _gemini(prompt, m, as_json))
                 if m != model:
                     log.warning("geminiモデルを %s にフォールバックして成功", m)
                 return _extract_json(out) if as_json else out

@@ -29,14 +29,22 @@ def _recent_descriptions(state, limit=40):
 
 
 def _build_quality_content(topic, cfg, state):
-    """品質ゲート付きでコンテンツ生成。薄ければ1回だけ作り直す。"""
-    c = content_mod.build_content(topic)
+    """品質ゲート付きでコンテンツ生成。薄ければ1回だけ作り直す。
+    生成/解析エラーは握りつぶしてNone（1本の失敗で全体を落とさない）。"""
+    try:
+        c = content_mod.build_content(topic)
+    except Exception as e:
+        log.error("コンテンツ生成エラー(スキップ): %s / %s", topic.get("topic"), e)
+        return None
     guards.add_llm_calls(state, 1)
     ok, why = guards.quality_ok(c, cfg)
     risky = guards.risky_phrases(c.get("article_html", "")) if cfg["safety"]["block_risky_phrases"] else []
     if (not ok or risky) and cfg["llm"].get("quality_self_check", True):
         log.warning("品質NG(%s)/リスク%s → 1回だけ作り直し", why, risky)
-        c = content_mod.build_content(topic)
+        try:
+            c = content_mod.build_content(topic)
+        except Exception as e:
+            log.error("再生成エラー(初回採用): %s", e)
         guards.add_llm_calls(state, 1)
         ok, why = guards.quality_ok(c, cfg)
         risky = guards.risky_phrases(c.get("article_html", "")) if cfg["safety"]["block_risky_phrases"] else []
