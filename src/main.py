@@ -2,6 +2,7 @@
   python -m src.main daily    → 日次: 新規記事Pin + 既存記事の再Pin(Fresh Pins) + 任意でIG/Threads
   python -m src.main improve  → 週次: 成果集計→戦略更新→shadowban監視
   python -m src.main dry      → APIに投げず動作確認（生成とサイトのみ）
+  python -m src.main regen    → 既存記事を現行プロンプト/テンプレで再生成（URL維持・SNS投稿なし）
 
 全工程に guards.py の安全装置を通す（落とし穴対策。詳細 PITFALLS.md）。
 """
@@ -206,6 +207,42 @@ def run_daily(dry: bool = False) -> None:
              new_n, repin_n, guards.posts_today(state))
 
 
+def run_regen() -> None:
+    """既存の投稿記事を、現在の（正直な）プロンプト＆新テンプレートで再生成して上書きする。
+    slug(URL)は維持。Pinterest等へは一切投稿しない。嘘の一人称体験などを一掃する用途。"""
+    cfg = load_settings(); ensure_dirs(); state = load_state()
+    n = 0
+    for rec in state.get("posted", []):
+        slug = rec.get("slug")
+        if not slug:
+            continue
+        topic_item = {
+            "topic": rec.get("topic") or rec.get("article_title", ""),
+            "primary_keyword": rec.get("primary_keyword", ""),
+            "board_hint": rec.get("board_hint", ""),
+        }
+        try:
+            c = content_mod.build_content(topic_item)
+        except Exception as e:
+            log.error("regen失敗(スキップ) %s: %s", slug, e)
+            continue
+        guards.add_llm_calls(state, 1)
+        image_rel = (rec.get("image_variants") or [f"img/{slug}.jpg"])[0]
+        try:
+            site.render_article(c, image_rel, {}, slug)
+        except Exception as e:
+            log.error("再描画失敗(スキップ) %s: %s", slug, e)
+            continue
+        rec["article_title"] = c.get("article_title", rec.get("article_title"))
+        rec["primary_keyword"] = c.get("primary_keyword", rec.get("primary_keyword", ""))
+        rec["meta_description"] = c.get("meta_description", "")
+        rec["last_pin_desc"] = c.get("pin_description", rec.get("last_pin_desc", ""))
+        n += 1
+        log.info("regen: %s 再生成", slug)
+    site.rebuild_index(state); save_state(state)
+    log.info("regen完了: %d記事を正直な文体で再生成", n)
+
+
 def run_improve() -> None:
     cfg = load_settings(); ensure_dirs(); state = load_state()
     rows = analytics.collect_metrics(state)
@@ -224,8 +261,10 @@ if __name__ == "__main__":
         run_daily(dry=False)
     elif mode == "dry":
         run_daily(dry=True)
+    elif mode == "regen":
+        run_regen()
     elif mode == "improve":
         run_improve()
     else:
-        print("usage: python -m src.main [daily|dry|improve]")
+        print("usage: python -m src.main [daily|dry|regen|improve]")
         sys.exit(1)
