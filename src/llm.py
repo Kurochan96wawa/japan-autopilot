@@ -5,8 +5,31 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
+import random
 import requests
 from .util import load_settings, log
+
+# Geminiは429(レート/クォータ)が出やすいので、別の無料モデルへ順に切替える
+_GEMINI_FALLBACKS = ["gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-1.5-flash"]
+
+
+def _retry_429(fn, attempts: int = 4):
+    """429/503を指数バックオフ+ジッターでリトライ。日次バッチなので待ってOK。"""
+    last = None
+    for i in range(attempts):
+        try:
+            return fn()
+        except requests.HTTPError as e:
+            code = e.response.status_code if e.response is not None else 0
+            last = e
+            if code in (429, 503) and i < attempts - 1:
+                wait = min(60, 8 * (2 ** i)) + random.uniform(0, 4)
+                log.warning("LLM %s。%.0f秒待って再試行(%d/%d)", code, wait, i + 1, attempts)
+                time.sleep(wait)
+                continue
+            raise
+    raise last
 
 
 def _extract_json(text: str):
@@ -62,17 +85,33 @@ def _anthropic(prompt: str, model: str) -> str:
 
 
 def generate(prompt: str, as_json: bool = True):
-    """プロンプトを投げて文字列 or JSON(dict/list)を返す。"""
+    """プロンプトを投げて文字列 or JSON(dict/list)を返す。
+    429対策: 指数バックオフでリトライし、geminiは別の無料モデルへ順にフォールバック。"""
     cfg = load_settings()["llm"]
     provider = cfg["provider"]
     model = cfg["model"]
     log.info("LLM呼び出し: provider=%s model=%s", provider, model)
+
     if provider == "gemini":
-        out = _gemini(prompt, model)
+        # 設定モデルを先頭に、重複を除いたフォールバック順を作る
+        models = [model] + [m for m in _GEMINI_FALLBACKS if m != model]
+        last = None
+        for m in models:
+            try:
+                out = _retry_429(lambda: _gemini(prompt, m))
+                if m != model:
+                    log.warning("geminiモデルを %s にフォールバックして成功", m)
+                return _extract_json(out) if as_json else out
+            except requests.HTTPError as e:
+                last = e
+                log.warning("geminiモデル %s 失敗(%s)。次を試す",
+                            m, getattr(e.response, "status_code", "?"))
+                continue
+        raise last
     elif provider == "openai":
-        out = _openai(prompt, model)
+        out = _retry_429(lambda: _openai(prompt, model))
     elif provider == "anthropic":
-        out = _anthropic(prompt, model)
+        out = _retry_429(lambda: _anthropic(prompt, model))
     else:
         raise ValueError(f"不明なLLMプロバイダ: {provider}")
     return _extract_json(out) if as_json else out
