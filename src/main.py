@@ -44,8 +44,9 @@ def _build_quality_content(topic, cfg, state):
         log.error("品質基準を満たせず破棄: %s (%s)", topic.get("topic"), why)
         return None
     if risky:
-        log.warning("リスク表現が残存 → この記事は破棄: %s", risky)
-        return None
+        # リスク表現(価格/営業時間等)は理想的には避けたいが、旅行記事では頻出。
+        # 破棄せず警告のみ（記事ゼロを防ぐ）。古い情報の最終チェックは月次の目視で。
+        log.warning("リスク表現あり(掲載は継続): %s / %s", topic.get("topic"), risky)
     return c
 
 

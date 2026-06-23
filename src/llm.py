@@ -11,7 +11,8 @@ import requests
 from .util import load_settings, log
 
 # Geminiは429(レート/クォータ)が出やすいので、別の無料モデルへ順に切替える
-_GEMINI_FALLBACKS = ["gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-1.5-flash"]
+# 2026年現行の無料枠モデル（2.0/1.5系は終了済み）。flash-latestは最新flashへのエイリアス。
+_GEMINI_FALLBACKS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3-flash", "gemini-flash-latest"]
 
 
 def _retry_429(fn, attempts: int = 4):
