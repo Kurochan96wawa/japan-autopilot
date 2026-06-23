@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Best Family-Friendly Hotels in Tokyo with Connecting Rooms or Kitchenettes",
-      "search_intent": "Parents are looking for specific accommodation types in Tokyo that cater to families, offering space, amenities, and comfort.",
-      "primary_keyword": "family hotels Tokyo kitchenette",
-      "board_hint": "Accommodation Japan"
-    },
-    {
-      "topic": "Beating Jet Lag with Kids in Japan: Proven Strategies for Smoother Travel",
-      "search_intent": "Parents want effective, gentle tips and strategies to minimize the impact of jet lag on their children and themselves during a Japan trip.",
-      "primary_keyword": "jet lag Japan kids",
-      "board_hint": "Health & Comfort | Planning"
-    },
-    {
       "topic": "Where to Buy Diapers and Baby Formula in Japan (Brands and Sizes Explained)",
       "search_intent": "Parents need to know where to reliably purchase baby essentials like diapers and formula in Japan, understanding local brands and sizing.",
       "primary_keyword": "buy diapers Japan",
@@ -168,6 +156,18 @@
       "search_intent": "Parents want to know if they should bring all their baby essentials (like diapers, wipes, specific formula brands) from home, if these items are easily available for purchase in Japan, what local brands are comparable, and if rental options exist for larger baby gear.",
       "primary_keyword": "diapers Japan travel",
       "board_hint": "Japan Family Travel Essentials"
+    },
+    {
+      "topic": "Staying in a Ryokan with Kids in Japan: Family-Friendly Tips & Etiquette",
+      "search_intent": "Parents want to experience a traditional Japanese inn (ryokan) but are unsure if it's suitable or enjoyable with children. They seek practical advice on choosing a ryokan, understanding etiquette, and how to make the experience comfortable and memorable for the whole family.",
+      "primary_keyword": "Ryokan with kids Japan",
+      "board_hint": "Japan Family Stays | Japan Accommodation for Kids"
+    },
+    {
+      "topic": "Rainy Day Activities in Japan with Kids: Fun Indoor Spots & Ideas for Families",
+      "search_intent": "Parents planning a trip to Japan are looking for backup indoor activities to keep their children entertained during unexpected bad weather, or when they need a break from outdoor sightseeing, seeking specific, engaging options beyond common tourist attractions.",
+      "primary_keyword": "Rainy day activities Japan kids",
+      "board_hint": "Japan Family Fun | Kids Activities Japan | Japan Travel Planning"
     }
   ],
   "posted": [
@@ -233,6 +233,48 @@
       "last_pin_desc": "Planning a family trip to Japan but worried about food allergies? This guide provides essential tips for parents, covering everything from preparing allergy cards in Japanese to finding safe dining options with kids. Make your Japan family vacation enjoyable and stress-free, even with dietary restrictions. #JapanFamilyTravel #FoodAllergiesJapan #KidsTravelJapan",
       "repin_times": [],
       "posted_at": "2026-06-23T10:32:45.958519+00:00"
+    },
+    {
+      "topic": "Best Family-Friendly Hotels in Tokyo with Connecting Rooms or Kitchenettes",
+      "slug": "tokyo-family-hotels-connecting-rooms-kitchenettes",
+      "article_title": "Tokyo Family Hotels: Connecting Rooms & Kitchenettes",
+      "primary_keyword": "family hotels Tokyo kitchenette",
+      "image_query": "Tokyo family hotel room",
+      "board_hint": "Accommodation Japan",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/tokyo-family-hotels-connecting-rooms-kitchenettes.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg"
+      ],
+      "img_hashes": [
+        "00087f7f7f3c0000"
+      ],
+      "last_pin_desc": "Planning a family trip to Tokyo with children? Discover our top picks for family-friendly hotels offering spacious connecting rooms or convenient kitchenettes, making your stay comfortable and budget-friendly. Get insider tips on securing the best accommodation for your kids and enjoy your Japan adventure! #TokyoFamilyTravel #JapanWithKids #FamilyHotelsTokyo",
+      "repin_times": [],
+      "posted_at": "2026-06-23T10:48:20.630190+00:00"
+    },
+    {
+      "topic": "Beating Jet Lag with Kids in Japan: Proven Strategies for Smoother Travel",
+      "slug": "beat-jet-lag-with-kids-in-japan-proven-travel-strategies",
+      "article_title": "Beat Jet Lag with Kids in Japan: Proven Travel Strategies",
+      "primary_keyword": "jet lag Japan kids",
+      "image_query": "Japan family travel park",
+      "board_hint": "Health & Comfort | Planning",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/beat-jet-lag-with-kids-in-japan-proven-travel-strategies.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/beat-jet-lag-with-kids-in-japan-proven-travel-strategies.jpg"
+      ],
+      "img_hashes": [
+        "ffffffffbf000000"
+      ],
+      "last_pin_desc": "Conquer jet lag when traveling to Japan with kids! This guide offers proven strategies for parents, from pre-flight preparations and in-air tips to managing time changes on arrival. Learn how to adjust sleep schedules, use natural light, and maintain routines for toddlers to teens, ensuring your family enjoys a smooth, fun-filled trip to Japan. #JapanFamilyTravel #JetLagTips #TravelWithKids",
+      "repin_times": [],
+      "posted_at": "2026-06-23T10:56:17.261278+00:00"
     }
   ],
   "performance": {
@@ -250,6 +292,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 9
+    "llm_calls": 12
   }
 }
