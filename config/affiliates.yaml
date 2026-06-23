@@ -13,7 +13,7 @@
 programs:
   - id: experiences
     name: "Klook / GetYourGuide experiences (teamLab, kimono, Fuji day trip, theme parks)"
-    url: "https://example.com/REPLACE_WITH_YOUR_KLOOK_OR_GYG_AFFILIATE_LINK"
+    url: "https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fdestination%2Fco1012-japan%2F"
     keywords: ["tour", "experience", "ticket", "things to do", "teamlab", "theme park",
                "disney", "ghibli", "day trip", "activity", "aquarium", "zoo", "kids"]
     cta: "Book skip-the-line family tickets & experiences"
@@ -21,7 +21,7 @@ programs:
   - id: regional_pass
     name: "Regional rail passes (Kansai/Hakone/Tokyo subway) via Klook"
     # ※全国版JR Passではなく“地域パス”。子連れは移動を絞るので地域パスの方が合う
-    url: "https://example.com/REPLACE_WITH_YOUR_REGIONAL_PASS_AFFILIATE_LINK"
+    url: "https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314338&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fjapan-rail%2F"
     keywords: ["train", "transport", "subway", "pass", "kansai", "hakone", "getting around",
                "itinerary", "between cities"]
     cta: "Get the regional pass that fits your route (skip the pricey nationwide JR Pass)"
