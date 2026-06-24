@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Renting a Car in Japan with Car Seats: Is It Necessary for Your Family?",
-      "search_intent": "Parents are weighing the pros and cons of car rental for family travel in Japan, specifically concerning car seat logistics and regulations.",
-      "primary_keyword": "car rental Japan car seat",
-      "board_hint": "Transportation & Logistics"
-    },
-    {
-      "topic": "Exploring Kyoto with a Stroller: Accessible Routes & Kid-Friendly Spots",
-      "search_intent": "Parents want to know how to navigate Kyoto's historical sites and streets with a stroller, identifying accessible paths and attractions.",
-      "primary_keyword": "Kyoto with stroller",
-      "board_hint": "Kyoto with Kids | Logistics"
-    },
-    {
       "topic": "Budget-Friendly Family Meals in Japan: Where to Eat Without Breaking the Bank",
       "search_intent": "Parents are looking for affordable dining options in Japan that genuinely cater to families, offering variety and value.",
       "primary_keyword": "budget family meals Japan",
@@ -168,6 +156,18 @@
       "search_intent": "Parents are looking for cultural or educational activities in Japan that are specifically designed to keep children engaged and entertained, offering alternatives or complementary experiences to major theme parks or popular anime museums. They want practical recommendations for museums that cater to different age groups and interests.",
       "primary_keyword": "kid friendly museums Japan",
       "board_hint": "Japan Family Activities, Kid-Friendly Japan Itineraries"
+    },
+    {
+      "topic": "Navigating Japan's Public Transport with Kids: A Guide to IC Cards, Subways, and Buses",
+      "search_intent": "Parents need practical, clear guidance on using Japan's public transportation network with children, including how to purchase and use IC cards (like Suica or Pasmo), understand subway and bus systems, and manage fares for different age groups to ensure smooth and stress-free travel.",
+      "primary_keyword": "Japan public transport kids",
+      "board_hint": "Japan Travel Logistics for Families"
+    },
+    {
+      "topic": "Making Temples and Shrines Fun for Kids in Japan: Engaging Activities and Etiquette",
+      "search_intent": "Parents want to visit cultural sites like temples and shrines in Japan but are looking for ways to keep their children engaged, understand basic etiquette, and prevent boredom. They need practical tips on how to make these visits meaningful and enjoyable for the whole family.",
+      "primary_keyword": "temple etiquette kids Japan",
+      "board_hint": "Japan Cultural Experiences for Families"
     }
   ],
   "posted": [
@@ -343,6 +343,48 @@
       "last_pin_desc": "Confused about choosing between Tokyo Disneyland and DisneySea for your family trip to Japan? This guide breaks down which park is more suitable for toddlers, preschoolers, and young children, highlighting key attractions and experiences for each.",
       "repin_times": [],
       "posted_at": "2026-06-23T14:03:25.367280+00:00"
+    },
+    {
+      "topic": "Renting a Car in Japan with Car Seats: Is It Necessary for Your Family?",
+      "slug": "renting-a-car-in-japan-with-car-seats-family-travel-guide",
+      "article_title": "Renting a Car in Japan with Car Seats: Family Travel Guide",
+      "primary_keyword": "car rental Japan car seat",
+      "image_query": "Japan family road trip",
+      "board_hint": "Transportation & Logistics",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/renting-a-car-in-japan-with-car-seats-family-travel-guide.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/renting-a-car-in-japan-with-car-seats-family-travel-guide-v1.jpg"
+      ],
+      "img_hashes": [
+        "7f7e3f3f001ef8f0"
+      ],
+      "last_pin_desc": "Planning family travel in Japan? Understand Japanese car seat laws, availability, and costs for rental cars. Discover when a car with child seats is necessary and when public transport is better for your itinerary. Get practical tips for a safe journey with kids.",
+      "repin_times": [],
+      "posted_at": "2026-06-24T10:30:42.476194+00:00"
+    },
+    {
+      "topic": "Exploring Kyoto with a Stroller: Accessible Routes & Kid-Friendly Spots",
+      "slug": "kyoto-with-a-stroller-accessible-routes-kid-friendly-spots",
+      "article_title": "Kyoto with a Stroller: Accessible Routes & Kid-Friendly Spots",
+      "primary_keyword": "Kyoto with stroller",
+      "image_query": "Kyoto family stroller",
+      "board_hint": "Kyoto with Kids | Logistics",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/kyoto-with-a-stroller-accessible-routes-kid-friendly-spots.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/kyoto-with-a-stroller-accessible-routes-kid-friendly-spots.jpg"
+      ],
+      "img_hashes": [
+        "fcfcfc00387c2000"
+      ],
+      "last_pin_desc": "Explore Kyoto's most enchanting sites with ease using our guide to stroller-friendly routes and kid-approved locations. Learn practical tips for family travel, including accessible temples, parks, and public transport advice, ensuring a smooth adventure through Japan's cultural heart. #KyotoWithKids #StrollerFriendlyJapan #FamilyTravelJapan",
+      "repin_times": [],
+      "posted_at": "2026-06-24T10:35:00.683325+00:00"
     }
   ],
   "performance": {
@@ -360,6 +402,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 22
+    "llm_calls": 25
   }
 }
