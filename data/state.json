@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Budget-Friendly Family Meals in Japan: Where to Eat Without Breaking the Bank",
-      "search_intent": "Parents are looking for affordable dining options in Japan that genuinely cater to families, offering variety and value.",
-      "primary_keyword": "budget family meals Japan",
-      "board_hint": "Eating in Japan | Budget Travel"
-    },
-    {
-      "topic": "Day Trips from Tokyo with Kids: Easy Escapes for Young Explorers",
-      "search_intent": "Families staying in Tokyo want ideas for nearby excursions that are easy to access and suitable for children, offering diverse experiences.",
-      "primary_keyword": "day trips from Tokyo with kids",
-      "board_hint": "Tokyo with Kids | Itineraries"
-    },
-    {
       "topic": "The Best Convenience Store Snacks for Kids in Japan (Picky Eater Approved!)",
       "search_intent": "Parents need recommendations for easily accessible, appealing, and safe snacks for their children from Japanese convenience stores.",
       "primary_keyword": "convenience store snacks Japan kids",
@@ -168,6 +156,18 @@
       "search_intent": "Parents want to visit cultural sites like temples and shrines in Japan but are looking for ways to keep their children engaged, understand basic etiquette, and prevent boredom. They need practical tips on how to make these visits meaningful and enjoyable for the whole family.",
       "primary_keyword": "temple etiquette kids Japan",
       "board_hint": "Japan Cultural Experiences for Families"
+    },
+    {
+      "topic": "Staying Connected in Japan: SIM Cards, Pocket Wi-Fi, and Free Wi-Fi for Families",
+      "search_intent": "Parents traveling to Japan with kids need reliable internet access for navigation, communication, and entertainment. They are searching for the most practical, cost-effective, and family-friendly options for staying connected, including understanding the differences between SIM cards, pocket Wi-Fi devices, and available public Wi-Fi services.",
+      "primary_keyword": "Japan internet family travel",
+      "board_hint": "Japan Travel Planning; Family Travel Logistics"
+    },
+    {
+      "topic": "Beyond Theme Parks: Best Children's Museums and Interactive Learning Spots in Japan",
+      "search_intent": "Families are looking for engaging, educational, and fun activities in Japan for children that are not traditional theme parks. They want specific recommendations for children's museums, science centers, or other interactive exhibits that cater to various age groups, offering enriching cultural or scientific experiences.",
+      "primary_keyword": "Japan children's museums",
+      "board_hint": "Kid-Friendly Japan Activities; Japan Itineraries for Families"
     }
   ],
   "posted": [
@@ -385,6 +385,50 @@
       "last_pin_desc": "Explore Kyoto's most enchanting sites with ease using our guide to stroller-friendly routes and kid-approved locations. Learn practical tips for family travel, including accessible temples, parks, and public transport advice, ensuring a smooth adventure through Japan's cultural heart. #KyotoWithKids #StrollerFriendlyJapan #FamilyTravelJapan",
       "repin_times": [],
       "posted_at": "2026-06-24T10:35:00.683325+00:00"
+    },
+    {
+      "topic": "Budget-Friendly Family Meals in Japan: Where to Eat Without Breaking the Bank",
+      "slug": "budget-family-meals-in-japan-where-to-eat-with-kids",
+      "article_title": "Budget Family Meals in Japan: Where to Eat with Kids",
+      "primary_keyword": "budget family meals Japan",
+      "image_query": "Japanese family meal",
+      "board_hint": "Eating in Japan | Budget Travel",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/budget-family-meals-in-japan-where-to-eat-with-kids.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/budget-family-meals-in-japan-where-to-eat-with-kids.jpg"
+      ],
+      "img_hashes": [
+        "ffffef8b0f000000"
+      ],
+      "last_pin_desc": "Planning a trip to Japan with your family? Discover how to enjoy delicious and budget-friendly meals with kids, from exploring convenience stores and supermarket bentos to enjoying family restaurants and depachika discounts. This guide provides practical tips for saving money on food while traveling in Japan with children. #JapanFamilyTravel #BudgetJapan #KidsInJapan",
+      "repin_times": [],
+      "posted_at": "2026-06-25T10:21:30.811278+00:00"
+    },
+    {
+      "topic": "Day Trips from Tokyo with Kids: Easy Escapes for Young Explorers",
+      "slug": "family-day-trips-from-tokyo-kid-friendly-escapes",
+      "article_title": "Family Day Trips from Tokyo: Kid-Friendly Escapes",
+      "primary_keyword": "day trips from Tokyo with kids",
+      "image_query": "Japanese family park",
+      "board_hint": "Tokyo with Kids | Itineraries",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/family-day-trips-from-tokyo-kid-friendly-escapes.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/family-day-trips-from-tokyo-kid-friendly-escapes.jpg"
+      ],
+      "img_hashes": [
+        "3f1f0f3fbf000000"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan? Discover the best kid-friendly day trips from Tokyo, perfect for young explorers of all ages. From natural escapes in Hakone to vibrant city adventures in Yokohama and historical sites in Kamakura, we share practical tips on logistics, transport, and attractions to ensure a smooth and memorable experience for parents traveling with children. #JapanFamilyTravel #TokyoWithKids #KidFriendlyJapan",
+      "repin_times": [],
+      "posted_at": "2026-06-25T10:28:04.066651+00:00"
     }
   ],
   "performance": {
@@ -402,6 +446,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 25
+    "llm_calls": 29
   }
 }
