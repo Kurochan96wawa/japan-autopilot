@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Money in Japan for Families: Cash, Cards, and Budgeting Tips",
-      "search_intent": "Parents need clear advice on managing finances, understanding payment methods (cash vs. card), and budgeting for a family trip to Japan.",
-      "primary_keyword": "money in Japan family travel",
-      "board_hint": "Planning & Budgeting"
-    },
-    {
-      "topic": "Universal Studios Japan with Kids: Maximizing Your Family's Fun (Osaka)",
-      "search_intent": "Parents planning a trip to USJ need specific strategies and tips for visiting with children, including ride accessibility and crowd management.",
-      "primary_keyword": "Universal Studios Japan with kids",
-      "board_hint": "Osaka with Kids | Attractions"
-    },
-    {
       "topic": "Basic Japanese Phrases for Families: Essential Communication for Travelers",
       "search_intent": "Parents want a practical list of simple, polite Japanese phrases to use for common interactions and emergencies during their family trip.",
       "primary_keyword": "Japanese phrases for family travel",
@@ -168,6 +156,18 @@
       "search_intent": "Families preparing for a trip to Japan require a comprehensive guide on what to pack for children, covering clothing for various seasons, essential comfort items, entertainment for long journeys, and health/safety necessities, to ensure a smooth and enjoyable experience.",
       "primary_keyword": "packing list Japan kids",
       "board_hint": "Travel Planning & Packing"
+    },
+    {
+      "topic": "Japan Family Packing List: Essentials for Traveling with Kids (All Seasons)",
+      "search_intent": "Parents are looking for a comprehensive and practical packing list for a family trip to Japan, considering different seasons, specific items for children (medications, comfort items), and what can be bought locally versus what must be brought from home. They want to avoid overpacking while ensuring all necessities are covered.",
+      "primary_keyword": "Japan family packing list kids",
+      "board_hint": "Japan Travel Tips with Kids"
+    },
+    {
+      "topic": "Visiting Temples and Shrines in Japan with Kids: Engaging Young Travelers Respectfully",
+      "search_intent": "Parents want to experience Japan's rich cultural heritage by visiting temples and shrines but are unsure how to make these visits meaningful and engaging for their children while maintaining respect for the sites. They seek practical tips for etiquette, storytelling, and activities to keep kids interested.",
+      "primary_keyword": "Japan temples shrines kids etiquette",
+      "board_hint": "Kid-Friendly Cultural Experiences in Japan"
     }
   ],
   "posted": [
@@ -544,6 +544,50 @@
       "last_pin_desc": "Planning a Japan family trip with kids? Discover a practical 10-day itinerary for Tokyo, Kyoto, and Osaka. Get expert tips on child fares, stroller use, allergy information, and essential kid-friendly activities, ensuring a smooth family adventure in Japan. #JapanFamilyTrip #KidsInJapan #JapanItinerary",
       "repin_times": [],
       "posted_at": "2026-06-26T07:08:49.185543+00:00"
+    },
+    {
+      "topic": "Money in Japan for Families: Cash, Cards, and Budgeting Tips",
+      "slug": "japan-money-guide-for-families-cash-cards-budgeting",
+      "article_title": "Japan Money Guide for Families: Cash, Cards & Budgeting",
+      "primary_keyword": "money in Japan family travel",
+      "image_query": "Family using ATM Japan",
+      "board_hint": "Planning & Budgeting",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/japan-money-guide-for-families-cash-cards-budgeting.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/japan-money-guide-for-families-cash-cards-budgeting.jpg"
+      ],
+      "img_hashes": [
+        "0000001e1e063e1c"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan? Learn practical tips for cash, cards, child fares, and budgeting. This guide covers transportation costs, family facilities, and meal planning for a smooth journey with children. #JapanFamilyTravel #KidsInJapan #JapanBudgeting",
+      "repin_times": [],
+      "posted_at": "2026-06-26T07:45:47.108392+00:00"
+    },
+    {
+      "topic": "Universal Studios Japan with Kids: Maximizing Your Family's Fun (Osaka)",
+      "slug": "universal-studios-japan-with-kids-maximizing-family-fun",
+      "article_title": "Universal Studios Japan with Kids: Maximizing Family Fun",
+      "primary_keyword": "Universal Studios Japan with kids",
+      "image_query": "Universal Studios Japan family",
+      "board_hint": "Osaka with Kids | Attractions",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/universal-studios-japan-with-kids-maximizing-family-fun.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/universal-studios-japan-with-kids-maximizing-family-fun.jpg"
+      ],
+      "img_hashes": [
+        "1effff7f7efc0000"
+      ],
+      "last_pin_desc": "Planning a family trip to Universal Studios Japan? This guide provides essential tips for parents, covering everything from stroller rentals and baby facilities to timed entry and allergy information. Make your USJ visit with kids smooth and memorable! #USJFamily #JapanTravelWithKids #OsakaWithKids",
+      "repin_times": [],
+      "posted_at": "2026-06-26T07:46:37.667067+00:00"
     }
   ],
   "performance": {
@@ -561,6 +605,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 38
+    "llm_calls": 41
   }
 }
