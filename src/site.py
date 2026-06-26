@@ -7,6 +7,7 @@ import re
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 from .util import load_settings, SITE_DIR, log
+from . import images
 
 BRAND = "littletabi"
 TAGLINE = "Honest, practical guides for families travelling to Japan with kids."
@@ -71,6 +72,13 @@ article.post .byline{font-size:.86rem;color:var(--muted);margin:0 0 14px}
 article.post img.hero-img{width:100%;border-radius:14px;margin:.3em 0 .4em;aspect-ratio:16/9;object-fit:cover}
 article.post h2{margin-top:1.7em}
 article.post ul{padding-left:1.2em}
+article.post table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+article.post th,article.post td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+article.post thead th{background:var(--soft);color:var(--ink)}
+article.post tbody tr:nth-child(even){background:#fbfafc}
+article.post figure.bodyimg{margin:1.7em 0}
+article.post figure.bodyimg img{width:100%;border-radius:14px;aspect-ratio:16/9;object-fit:cover}
+article.post figure.bodyimg figcaption{font-size:.74rem;color:#9aa0aa;margin-top:.35em}
 .disc{font-size:.86rem;color:var(--muted);background:var(--soft);border:1px solid #ffe0ee;border-radius:12px;padding:13px 16px}
 .disc.top{margin:0 0 18px}
 .disc.bottom{margin:2.2em 0 0}
@@ -167,6 +175,32 @@ def slugify(text: str) -> str:
     return s[:60] or "post"
 
 
+def _inject_body_images(body_html: str, imgs: list) -> str:
+    """本文の段落区切りに、横長の実写をfigureで分散挿入（中盤に均等配置）。"""
+    if not imgs or not body_html:
+        return body_html
+    positions = [m.end() for m in re.finditer(r"</p>", body_html)]
+    if len(positions) < 2:
+        return body_html  # 段落が少なすぎると不自然なので挿入しない
+    slots = []
+    for k in range(1, len(imgs) + 1):
+        idx = len(positions) * k // (len(imgs) + 1)
+        idx = max(1, min(idx, len(positions) - 1))
+        slots.append(positions[idx])
+    result = body_html
+    for pos, im in sorted(zip(slots, imgs), key=lambda x: x[0], reverse=True):
+        cap = ""
+        if im.get("photographer"):
+            cap = (
+                '<figcaption>Photo by '
+                f'<a href="{im.get("url", "#")}" rel="nofollow noopener">{im["photographer"]}</a> on Pexels</figcaption>'
+            )
+        alt = (im.get("alt") or "").replace('"', "")
+        fig = f'<figure class="bodyimg"><img src="/{im["rel"]}" alt="{alt}" loading="lazy">{cap}</figure>'
+        result = result[:pos] + fig + result[pos:]
+    return result
+
+
 def _excerpt(p: dict) -> str:
     raw = p.get("meta_description") or p.get("last_pin_desc") or ""
     desc = re.sub(r"#\w+", "", raw).strip()
@@ -259,10 +293,19 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
     )
     hero_html = f'<img class="hero-img" src="/{image_rel}" alt="{title}">'
     category = content.get("board_hint") or "Japan with kids"
+
+    # 本文に横長の実写を2枚差し込む（ヒーローと被らないよう skip=1）。失敗時は無画像で続行。
+    body_html = content.get("article_html", "")
+    try:
+        body_imgs = images.fetch_body_images(content.get("image_query", "Japan"), slug, n=2, skip=1)
+        body_html = _inject_body_images(body_html, body_imgs)
+    except Exception as e:
+        log.error("本文画像の挿入に失敗(無画像で続行): %s", e)
+
     html = _article_page(
         lang=lang, title_tag=f"{title} | {site_name}", head_extra=head_extra,
         title=title, category=category, date_str=date_str, hero_html=hero_html,
-        credit_html=credit_html, body_html=content["article_html"],
+        credit_html=credit_html, body_html=body_html,
         disclosure_html=content.get("disclosure", ""), popular=[],
     )
     out = SITE_DIR / f"{slug}.html"
