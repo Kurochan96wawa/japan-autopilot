@@ -2,6 +2,7 @@
 from __future__ import annotations
 from .util import load_settings, load_affiliates, log
 from .llm import generate
+from .jp_research import gather_japanese_context
 
 
 def _match_affiliates(topic: str, keyword: str) -> list[dict]:
@@ -28,6 +29,15 @@ def build_content(topic_item: dict) -> dict:
     topic = topic_item["topic"]
     keyword = topic_item.get("primary_keyword", topic)
     matched = _match_affiliates(topic, keyword)
+    jp = gather_japanese_context(topic, keyword)
+    jp_block = ""
+    if jp.get("facts"):
+        jp_block = (
+            "\n\nJAPANESE-SOURCE FACTS (rarely available in English - translate & synthesise "
+            "ACCURATELY in your own words; DO NOT copy verbatim; weave these concrete specifics in; "
+            "if you give a price or opening hours, add: as of 2026, confirm on the official site):\n"
+            + jp["facts"]
+        )
 
     aff_block = "\n".join(
         f'- {m["name"]}: CTA "{m["cta"]}" (url placeholder: {{aff_{m["id"]}}})'
@@ -38,7 +48,7 @@ def build_content(topic_item: dict) -> dict:
 Niche: {niche['name']}. Audience: {niche['audience']}. Tone: {niche['tone']}.
 Persona of reader: {niche.get('persona', '')}
 Positioning (how we beat big media): {niche.get('positioning', '')}
-Language: {niche['language']}.
+Language: {niche['language']}.{jp_block}
 
 Editorial rules (MUST follow):
 {chr(10).join("- " + r for r in niche['editorial_rules'])}
@@ -50,7 +60,7 @@ You may naturally reference these affiliate offers where genuinely helpful
 Produce a JSON object with EXACTLY these fields:
 {{
   "article_title": "<SEO title, <=60 chars>",
-  "article_html": "<clean HTML body: <h2>/<p>/<ul>. 500-900 words, accurate, useful. Insert affiliate CTAs as <a href='{{aff_ID}}'>anchor</a> only where natural, max 3.>",
+  "article_html": "<clean HTML body: <h2>/<p>/<ul>. 900-1500 words, accurate, useful. Insert affiliate CTAs as <a href='{{aff_ID}}'>anchor</a> only where natural, max 3.>",
   "meta_description": "<=155 chars",
   "pin_title": "<catchy but honest, <=100 chars>",
   "pin_description": "<keyword-rich, 2-3 sentences, <=480 chars, no hashtag spam, max 3 relevant hashtags>",
@@ -79,6 +89,7 @@ Return ONLY the JSON."""
             data[k] = replace_links(data[k])
 
     data["disclosure"] = aff.get("disclosure", "")
+    data["jp_sources"] = jp.get("sources", [])
     data["topic"] = topic
     data["primary_keyword"] = keyword
     data["board_hint"] = topic_item.get("board_hint", "")
