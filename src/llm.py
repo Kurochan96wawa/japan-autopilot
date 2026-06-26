@@ -58,7 +58,8 @@ def _gemini(prompt: str, model: str, json_mode: bool = True, schema: dict | None
     body = {"contents": [{"parts": [{"text": prompt}]}]}
     if json_mode:
         # JSON強制モード。HTMLを含む長い応答でもAPI側でエスケープを保証させ、パース失敗を防ぐ。
-        gc = {"responseMimeType": "application/json", "maxOutputTokens": 8192}
+        # maxOutputTokensは思考トークン＋本文(1100-1800語)＋FAQで枯渇しない余裕値に（8192では本文が途中切断していた）。
+        gc = {"responseMimeType": "application/json", "maxOutputTokens": 24576}
         if schema:
             # 構造化出力（controlled generation）。スキーマに沿った“必ず妥当なJSON”が返る。
             gc["responseSchema"] = schema
