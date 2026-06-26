@@ -57,10 +57,17 @@ You may naturally reference these affiliate offers where genuinely helpful
 (use the exact placeholder tokens for URLs):
 {aff_block}
 
+WRITING RULES (critical for quality):
+- Open with a 2-3 sentence HOOK naming the reader's specific worry, then promise the answer. NO generic openers (never start with phrases like "Planning a trip to Japan involves...") and NO fluffy conclusions (never end with "With a little preparation...").
+- Every section must contain at least one concrete specific (a name, number, price in yen, minutes, kg, station, or rule). Delete any sentence with no specific.
+- Near the top include a short TL;DR <ul> (3-5 bullets). Include at least one HTML <table> for comparison or quick-reference. Include an <h2>FAQ</h2> with 5-8 real questions parents search, each with a concise answer.
+- Use <h2>/<h3>/<table>/<ul>; keep paragraphs short and scannable.
+- If you give a price or opening hours, append "(as of 2026, confirm on the official site)".
+
 Produce a JSON object with EXACTLY these fields:
 {{
   "article_title": "<SEO title, <=60 chars>",
-  "article_html": "<clean HTML body: <h2>/<p>/<ul>. 900-1500 words, accurate, useful. Insert affiliate CTAs as <a href='{{aff_ID}}'>anchor</a> only where natural, max 3.>",
+  "article_html": "<clean HTML body: <h2>/<p>/<ul>. 1100-1800 words. Open with a hook (no generic opener), then a TL;DR <ul>, then sections each with at least one concrete specific, at least one HTML <table>, and an <h2>FAQ</h2> with 5-8 <h3> questions. End with one practical takeaway, not a fluffy conclusion. Insert affiliate CTAs as <a href='{{aff_ID}}'>anchor</a> only where natural, max 3.>",
   "meta_description": "<=155 chars",
   "pin_title": "<catchy but honest, <=100 chars>",
   "pin_description": "<keyword-rich, 2-3 sentences, <=480 chars, no hashtag spam, max 3 relevant hashtags>",
