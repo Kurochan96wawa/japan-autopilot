@@ -119,3 +119,37 @@ def generate(prompt: str, as_json: bool = True):
     else:
         raise ValueError(f"不明なLLMプロバイダ: {provider}")
     return _extract_json(out) if as_json else out
+
+
+def _gemini_grounded(prompt: str, model: str) -> dict:
+    key = os.environ["GEMINI_API_KEY"]
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+    body = {"contents": [{"parts": [{"text": prompt}]}], "tools": [{"google_search": {}}]}
+    r = requests.post(url, json=body, timeout=120)
+    r.raise_for_status()
+    data = r.json()
+    cand = data["candidates"][0]
+    parts = cand.get("content", {}).get("parts", [])
+    text = "".join(p.get("text", "") for p in parts)
+    sources = []
+    for ch in cand.get("groundingMetadata", {}).get("groundingChunks", []):
+        web = ch.get("web", {})
+        if web.get("uri"):
+            sources.append({"name": web.get("title", ""), "url": web["uri"]})
+    return {"text": text, "sources": sources}
+
+
+def generate_grounded(prompt: str) -> dict:
+    """Google search grounding for Japanese sources. Returns {text, sources}; raises on failure."""
+    cfg = load_settings()["llm"]
+    model = cfg.get("grounding_model", cfg.get("model", "gemini-2.5-flash"))
+    models = [model] + [m for m in _GEMINI_FALLBACKS if m != model]
+    last = None
+    for m in models:
+        try:
+            return _retry_429(lambda m=m: _gemini_grounded(prompt, m))
+        except requests.HTTPError as e:
+            last = e
+            log.warning("grounded %s failed (%s)", m, getattr(e.response, "status_code", "?"))
+            continue
+    raise last if last else RuntimeError("grounding failed")
