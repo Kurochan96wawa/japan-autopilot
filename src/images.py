@@ -5,6 +5,10 @@ Pinterest推奨の縦長(2:3)に仕上げる。Pexelsキーが無ければ単色
   同一記事(URL)に何度もPinするとき、毎回「別の写真・別の帯デザイン」で画像を作る。
   variant 番号でPexels候補プールから違う写真を選び、帯の位置/色も変える。
   → Pinterestの重複コンテンツ判定(shadowban)を回避し、露出を最大化する。
+
+★本文画像:
+  記事本文に差し込む横長(16:9)の実写も Pexels から取得（帯なし・自然な写真）。
+  ヒーロー画像と被らないよう skip 枚目以降から選ぶ。
 """
 from __future__ import annotations
 import os
@@ -23,7 +27,7 @@ _OVERLAY_STYLES = [
 ]
 
 
-def _pexels_photos(query: str, pool: int) -> list[dict]:
+def _pexels_photos(query: str, pool: int, orientation: str = "portrait") -> list[dict]:
     key = os.environ.get("PEXELS_API_KEY")
     if not key:
         return []
@@ -31,7 +35,7 @@ def _pexels_photos(query: str, pool: int) -> list[dict]:
         r = requests.get(
             "https://api.pexels.com/v1/search",
             headers={"Authorization": key},
-            params={"query": query, "orientation": "portrait", "per_page": pool},
+            params={"query": query, "orientation": orientation, "per_page": pool},
             timeout=60,
         )
         r.raise_for_status()
@@ -116,3 +120,35 @@ def make_pin_image(slug: str, overlay_text: str, image_query: str, variant: int 
     base.save(out_path, "JPEG", quality=88)
     log.info("Pin画像生成: %s (variant=%d)", fname, variant)
     return {"path": str(out_path), "rel": f"img/{fname}", "credit": credit}
+
+
+def fetch_body_images(query: str, slug: str, n: int = 2, skip: int = 1) -> list[dict]:
+    """記事本文に差し込む横長(16:9)の実写を n 枚取得して保存（帯なし・自然な写真）。
+    skip 枚目以降から選び、冒頭ヒーロー画像と被らないようにする。
+    返り値: [{rel, photographer, url, alt}]。Pexels無効/失敗時は空リスト。"""
+    cfg = load_settings()["images"]
+    if cfg.get("source") != "pexels" or n <= 0:
+        return []
+    photos = _pexels_photos(query, n + skip + 4, orientation="landscape")
+    if not photos:
+        return []
+    img_dir = SITE_DIR / "img"
+    img_dir.mkdir(parents=True, exist_ok=True)
+    out: list[dict] = []
+    for idx, p in enumerate(photos[skip:skip + n]):
+        try:
+            src = p.get("src", {})
+            url = src.get("large") or src.get("large2x") or src.get("original")
+            base = _download(url, 1200, 675)  # 16:9
+            fname = f"{slug}-body{idx + 1}.jpg"
+            base.save(img_dir / fname, "JPEG", quality=86)
+            out.append({
+                "rel": f"img/{fname}",
+                "photographer": p.get("photographer", ""),
+                "url": p.get("url", ""),
+                "alt": p.get("alt") or query,
+            })
+        except Exception as e:
+            log.error("本文画像DL失敗: %s", e)
+    log.info("本文画像 %d枚生成: %s", len(out), slug)
+    return out
