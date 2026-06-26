@@ -4,6 +4,19 @@ from .util import load_settings, load_affiliates, log
 from .llm import generate
 from .jp_research import gather_japanese_context
 
+# 記事生成の構造化出力スキーマ（geminiのcontrolled generation用）。
+# これを使うと長いHTMLを含んでもAPI側で必ず妥当なJSONにエスケープされ、パース失敗が消える。
+_CONTENT_FIELDS = [
+    "article_title", "article_html", "meta_description", "pin_title",
+    "pin_description", "threads_text", "image_query", "overlay_text",
+]
+_CONTENT_SCHEMA = {
+    "type": "object",
+    "properties": {f: {"type": "string"} for f in _CONTENT_FIELDS},
+    "required": _CONTENT_FIELDS,
+    "propertyOrdering": _CONTENT_FIELDS,
+}
+
 
 def _match_affiliates(topic: str, keyword: str) -> list[dict]:
     aff = load_affiliates()
@@ -63,6 +76,8 @@ WRITING RULES (critical for quality):
 - Near the top include a short TL;DR <ul> (3-5 bullets). Include at least one HTML <table> for comparison or quick-reference. Include an <h2>FAQ</h2> with 5-8 real questions parents search, each with a concise answer.
 - Use <h2>/<h3>/<table>/<ul>; keep paragraphs short and scannable.
 - If you give a price or opening hours, append "(as of 2026, confirm on the official site)".
+- NEVER write internal notes, TODOs, editorial scaffolding, or placeholder text inside the article. Specifically, never output phrases like "(placeholder for ...)", "(potential future affiliate)", "TODO", "insert link here", or anything addressed to the author rather than the reader. The article must read as clean finished prose.
+- Only reference the affiliate offers explicitly listed above (using their exact tokens). Do NOT invent, allude to, or hint at any other product, link, card, or affiliate that is not in that list.
 
 Produce a JSON object with EXACTLY these fields:
 {{
@@ -77,7 +92,7 @@ Produce a JSON object with EXACTLY these fields:
 }}
 Return ONLY the JSON."""
 
-    data = generate(prompt, as_json=True)
+    data = generate(prompt, as_json=True, schema=_CONTENT_SCHEMA)
 
     # プレースホルダを実リンクに置換（未設定ならリンクを除去）
     def replace_links(s: str) -> str:
