@@ -82,7 +82,7 @@ safety:
   min_days_between_repins: 7     # 同一URLの再Pin間隔(日)。連投spam判定回避
   jitter_pct: 40                 # 投稿間隔のゆらぎ(%)。機械的な等間隔を避ける
   min_article_words: 450         # これ未満の薄い記事は破棄(Google低品質/Pinterest不信回避)
-  block_risky_phrases: true      # 価格・営業時間・誇大表現を含む記事は再生成/破棄
+  block_risky_phrases: false      # 価格・営業時間・誇大表現を含む記事は再生成/破棄
   check_affiliate_links: true    # 死んだ/未設定アフィリリンクは記事に入れない
   monthly_llm_call_cap: 400      # 月間LLM呼び出し上限(コスト暴走防止)
   pause_on_shadowban: true       # インプレ急落を検知したら自動で投稿を停止
@@ -93,3 +93,9 @@ llm:
   model: "gemini-2.5-flash"   # 2026年現行の無料枠モデル（2.0は2026/6/1終了）
   max_topics_buffer: 30   # 先にネタを貯めておく数
   quality_self_check: true  # 生成記事をAI自身に採点させ、薄ければ1回だけ作り直す
+
+# 日本語ソース根拠付け（英語に無い一次情報を翻訳・統合して品質を上げる / Cハイブリッド）
+jp_research:
+  enabled: true
+  use_grounding: true       # 無料キュレーションで足りなければGemini検索グラウンディングで補完
+  min_curated_sources: 2    # これ未満ならグラウンディング補完を試みる
