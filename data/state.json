@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Staying Cool in Japan Summer with Kids: Beat the Heat Safely",
-      "search_intent": "Parents traveling during summer need practical tips, product recommendations, and strategies to keep their children comfortable and safe from the heat.",
-      "primary_keyword": "Japan summer with kids",
-      "board_hint": "Seasonal Travel | Health & Safety"
-    },
-    {
-      "topic": "Japan Family Itinerary: 10 Days in Tokyo, Kyoto, and Osaka with Young Children",
-      "search_intent": "Parents are looking for a detailed, well-paced itinerary for a multi-city trip with young children, balancing activities and rest.",
-      "primary_keyword": "Japan family itinerary 10 days young kids",
-      "board_hint": "Itineraries Japan"
-    },
-    {
       "topic": "Money in Japan for Families: Cash, Cards, and Budgeting Tips",
       "search_intent": "Parents need clear advice on managing finances, understanding payment methods (cash vs. card), and budgeting for a family trip to Japan.",
       "primary_keyword": "money in Japan family travel",
@@ -168,6 +156,18 @@
       "search_intent": "Parents are looking for hands-on, engaging, and culturally immersive activities in Japan for their children that go beyond common tourist attractions like temples and theme parks. They want ideas for workshops, specific museums, or unique local interactions that are educational and fun.",
       "primary_keyword": "Japanese cultural activities kids",
       "board_hint": "Japan Cultural Immersion, Kid-Friendly Japan Activities"
+    },
+    {
+      "topic": "Staying Connected in Japan with Kids: Best eSIMs, Pocket WiFi & SIM Cards for Families",
+      "search_intent": "Parents need reliable internet access in Japan for navigation, emergencies, entertainment for kids, and communication. They want to understand the most suitable options (eSIM, pocket WiFi, local SIM) for family travel, comparing cost, ease of use, and multi-device connectivity.",
+      "primary_keyword": "Japan internet family travel",
+      "board_hint": "Japan Travel Logistics"
+    },
+    {
+      "topic": "Japan Packing List for Families: Essentials for Traveling with Kids",
+      "search_intent": "Families preparing for a trip to Japan require a comprehensive guide on what to pack for children, covering clothing for various seasons, essential comfort items, entertainment for long journeys, and health/safety necessities, to ensure a smooth and enjoyable experience.",
+      "primary_keyword": "packing list Japan kids",
+      "board_hint": "Travel Planning & Packing"
     }
   ],
   "posted": [
@@ -497,6 +497,53 @@
       "last_pin_desc": "Traveling to Japan with kids? Don't skip sushi! This guide unveils delicious non-raw options, tips for conveyor belt sushi (kaiten-zushi), and how to navigate menus for young palates. Make dining stress-free and fun for your family. #JapanTravelKids #KidFriendlyJapan #SushiForKids",
       "repin_times": [],
       "posted_at": "2026-06-26T06:45:21.963873+00:00"
+    },
+    {
+      "topic": "Staying Cool in Japan Summer with Kids: Beat the Heat Safely",
+      "slug": "beat-the-heat-japan-summer-with-kids-safety-guide",
+      "article_title": "Beat the Heat: Japan Summer with Kids Safety Guide",
+      "primary_keyword": "Japan summer with kids",
+      "image_query": "family with child happy summer japan",
+      "board_hint": "Seasonal Travel | Health & Safety",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/beat-the-heat-japan-summer-with-kids-safety-guide.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/beat-the-heat-japan-summer-with-kids-safety-guide.jpg"
+      ],
+      "img_hashes": [
+        "fffffcfcf0000000"
+      ],
+      "last_pin_desc": "Planning a summer trip to Japan with kids? Discover essential tips for staying cool and safe. Learn about child-friendly facilities in department stores, decipher train fares for little ones, and understand Japan's food allergy labels for a worry-free family adventure. #JapanTravel #FamilyTravelJapan #KidFriendlyJapan",
+      "repin_times": [],
+      "posted_at": "2026-06-26T07:08:03.906153+00:00"
+    },
+    {
+      "topic": "Japan Family Itinerary: 10 Days in Tokyo, Kyoto, and Osaka with Young Children",
+      "slug": "japan-family-itinerary-tokyo-kyoto-osaka-with-young-children",
+      "article_title": "Japan Family Itinerary: Tokyo, Kyoto, Osaka with Young Children",
+      "primary_keyword": "Japan family itinerary 10 days young kids",
+      "image_query": "Japan family travel",
+      "board_hint": "Itineraries Japan",
+      "affiliates_used": [
+        "experiences",
+        "regional_pass"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/japan-family-itinerary-tokyo-kyoto-osaka-with-young-children.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/japan-family-itinerary-tokyo-kyoto-osaka-with-young-children-v1.jpg"
+      ],
+      "img_hashes": [
+        "fc7c3cf83808183e"
+      ],
+      "last_pin_desc": "Planning a Japan family trip with kids? Discover a practical 10-day itinerary for Tokyo, Kyoto, and Osaka. Get expert tips on child fares, stroller use, allergy information, and essential kid-friendly activities, ensuring a smooth family adventure in Japan. #JapanFamilyTrip #KidsInJapan #JapanItinerary",
+      "repin_times": [],
+      "posted_at": "2026-06-26T07:08:49.185543+00:00"
     }
   ],
   "performance": {
@@ -514,6 +561,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 35
+    "llm_calls": 38
   }
 }
