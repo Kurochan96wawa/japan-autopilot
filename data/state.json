@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "The Best Convenience Store Snacks for Kids in Japan (Picky Eater Approved!)",
-      "search_intent": "Parents need recommendations for easily accessible, appealing, and safe snacks for their children from Japanese convenience stores.",
-      "primary_keyword": "convenience store snacks Japan kids",
-      "board_hint": "Eating in Japan | Snacks"
-    },
-    {
-      "topic": "Navigating Japan's Public Transport with Kids: Tickets, Etiquette, and Tips",
-      "search_intent": "Parents need practical advice for using trains and buses safely and smoothly with children, including ticket types and local customs.",
-      "primary_keyword": "Japan public transport kids",
-      "board_hint": "Transportation & Logistics"
-    },
-    {
       "topic": "What to Do When Your Child Gets Sick in Japan: A Parent's Guide",
       "search_intent": "Parents want clear, reassuring information on how to handle medical emergencies or common illnesses while traveling in Japan.",
       "primary_keyword": "child sick in Japan",
@@ -168,6 +156,18 @@
       "search_intent": "Families are looking for engaging, educational, and fun activities in Japan for children that are not traditional theme parks. They want specific recommendations for children's museums, science centers, or other interactive exhibits that cater to various age groups, offering enriching cultural or scientific experiences.",
       "primary_keyword": "Japan children's museums",
       "board_hint": "Kid-Friendly Japan Activities; Japan Itineraries for Families"
+    },
+    {
+      "topic": "Essential Packing List for Family Travel to Japan with Kids: Seasonal Considerations and Practical Tips",
+      "search_intent": "Parents are looking for a comprehensive and practical guide on what to pack for their children and themselves for a trip to Japan, considering the country's unique climate variations and cultural practices (e.g., shoe removal), as well as specific items helpful for traveling with kids.",
+      "primary_keyword": "Japan packing list kids",
+      "board_hint": "Japan Travel Essentials"
+    },
+    {
+      "topic": "Healthcare for Kids in Japan: What Parents Need to Know for Illnesses and Emergencies",
+      "search_intent": "Parents need to understand the Japanese healthcare system, how to access medical services for their children if they fall ill or have an emergency, where to find pharmacies, and what to expect regarding medical care for foreign travelers.",
+      "primary_keyword": "Kids healthcare Japan travel",
+      "board_hint": "Japan Travel Safety"
     }
   ],
   "posted": [
@@ -429,6 +429,53 @@
       "last_pin_desc": "Planning a family trip to Japan? Discover the best kid-friendly day trips from Tokyo, perfect for young explorers of all ages. From natural escapes in Hakone to vibrant city adventures in Yokohama and historical sites in Kamakura, we share practical tips on logistics, transport, and attractions to ensure a smooth and memorable experience for parents traveling with children. #JapanFamilyTravel #TokyoWithKids #KidFriendlyJapan",
       "repin_times": [],
       "posted_at": "2026-06-25T10:28:04.066651+00:00"
+    },
+    {
+      "topic": "The Best Convenience Store Snacks for Kids in Japan (Picky Eater Approved!)",
+      "slug": "japan-konbini-snacks-for-picky-eaters-kid-approved",
+      "article_title": "Japan Konbini Snacks for Picky Eaters (Kid-Approved!)",
+      "primary_keyword": "convenience store snacks Japan kids",
+      "image_query": "Japanese convenience store snacks kids",
+      "board_hint": "Eating in Japan | Snacks",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/japan-konbini-snacks-for-picky-eaters-kid-approved.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/japan-konbini-snacks-for-picky-eaters-kid-approved.jpg"
+      ],
+      "img_hashes": [
+        "4000ff7e60203800"
+      ],
+      "last_pin_desc": "Navigating snacks for picky eaters in Japan? Our guide to konbini favorites includes practical tips on allergy labeling, stroller access, and specific kid-approved items from 7-Eleven, FamilyMart, & Lawson. Keep your family happy and fueled on your Japan adventure! #JapanTravelWithKids #PickyEaterApproved #KonbiniSnacks",
+      "repin_times": [],
+      "posted_at": "2026-06-26T06:14:49.978504+00:00"
+    },
+    {
+      "topic": "Navigating Japan's Public Transport with Kids: Tickets, Etiquette, and Tips",
+      "slug": "japan-public-transport-with-kids-fares-strollers-facilities",
+      "article_title": "Japan Public Transport with Kids: Fares, Strollers & Facilities",
+      "primary_keyword": "Japan public transport kids",
+      "image_query": "Japan family train station",
+      "board_hint": "Transportation & Logistics",
+      "affiliates_used": [
+        "experiences",
+        "regional_pass"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/japan-public-transport-with-kids-fares-strollers-facilities.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/japan-public-transport-with-kids-fares-strollers-facilities.jpg"
+      ],
+      "img_hashes": [
+        "ffff870300000000"
+      ],
+      "last_pin_desc": "Planning to explore Japan with your children? This detailed guide covers everything parents need to know about public transport, including child fares, essential stroller etiquette, and where to find nursing rooms and diaper-changing facilities at major stations. Make your family's journey through Japan smooth and stress-free! #JapanTravelWithKids #FamilyTravelJapan #JapanPublicTransport",
+      "repin_times": [],
+      "posted_at": "2026-06-26T06:16:05.530324+00:00"
     }
   ],
   "performance": {
@@ -446,6 +493,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 29
+    "llm_calls": 32
   }
 }
