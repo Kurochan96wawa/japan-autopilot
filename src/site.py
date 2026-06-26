@@ -175,6 +175,19 @@ def slugify(text: str) -> str:
     return s[:60] or "post"
 
 
+# 本文画像は「ブランド名」で誤ヒット（例: "Universal Studios Japan"→北京の写真）しないよう、
+# 記事固有の image_query は使わず、必ず日本の汎用シーンに限定する。slugで分散して記事ごとに変える。
+_SAFE_BODY_QUERIES = [
+    "Japan family travel", "Tokyo street scene", "Japan with children",
+    "Japanese train station", "Japan city park", "Osaka street Japan",
+    "Kyoto street", "Japanese family walking", "Japan neighborhood", "Japanese street food",
+]
+
+
+def _safe_body_query(slug: str) -> str:
+    return _SAFE_BODY_QUERIES[sum(ord(c) for c in (slug or "x")) % len(_SAFE_BODY_QUERIES)]
+
+
 def _inject_body_images(body_html: str, imgs: list) -> str:
     """本文の段落区切りに、横長の実写をfigureで分散挿入（中盤に均等配置）。"""
     if not imgs or not body_html:
@@ -294,10 +307,11 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
     hero_html = f'<img class="hero-img" src="/{image_rel}" alt="{title}">'
     category = content.get("board_hint") or "Japan with kids"
 
-    # 本文に横長の実写を2枚差し込む（ヒーローと被らないよう skip=1）。失敗時は無画像で続行。
+    # 本文に横長の実写を2枚差し込む。記事固有のimage_query(ブランド名で誤ヒットしうる)ではなく、
+    # 必ず日本の汎用シーンクエリを使う。失敗時は無画像で続行。
     body_html = content.get("article_html", "")
     try:
-        body_imgs = images.fetch_body_images(content.get("image_query", "Japan"), slug, n=2, skip=1)
+        body_imgs = images.fetch_body_images(_safe_body_query(slug), slug, n=2, skip=0)
         body_html = _inject_body_images(body_html, body_imgs)
     except Exception as e:
         log.error("本文画像の挿入に失敗(無画像で続行): %s", e)
