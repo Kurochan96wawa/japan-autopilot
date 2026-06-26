@@ -15,6 +15,8 @@ BYLINE = "By the littletabi editors"
 # 連絡フォーム（Formspreeの無料フォームID。未設定なら案内文を表示）
 CONTACT_FORM_ACTION = "https://api.web3forms.com/submit"
 WEB3FORMS_KEY = "e0c3512d-69a9-46e8-94a3-61bd2e94bd8b"
+# GA4 計測タグ（非秘密。空文字なら埋め込まない）。全ページの<head>に出力される。
+GA4_MEASUREMENT_ID = "G-GD1XLKR8S3"
 
 BASE_CSS = """
 :root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--accent2:#7a1546;--soft:#fff0f6;--line:#ececf1;--bg:#fffdfb;--card:#ffffff}
@@ -152,12 +154,23 @@ def _footer() -> str:
     )
 
 
+def _ga_snippet() -> str:
+    if not GA4_MEASUREMENT_ID:
+        return ""
+    return (
+        f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA4_MEASUREMENT_ID}"></script>\n'
+        "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+        f"gtag('js',new Date());gtag('config','{GA4_MEASUREMENT_ID}');</script>\n"
+    )
+
+
 def _document(lang: str, title_tag: str, head_extra: str, body_inner: str) -> str:
     return (
         "<!doctype html>\n"
         f'<html lang="{lang}">\n<head>\n'
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+        f"{_ga_snippet()}"
         f"<title>{title_tag}</title>\n"
         f"{head_extra}"
         f"<style>{BASE_CSS}</style>\n"
@@ -383,8 +396,10 @@ def _privacy_inner() -> str:
         "<p>This Privacy Policy explains how littletabi (we, us) handles "
         "information when you visit our website.</p>"
         "<h2>Information we collect</h2>"
-        "<p>littletabi is a static website. We do not ask for, collect or store personal information, "
-        "and we do not require you to create an account. We do not set advertising or tracking cookies. "
+        "<p>littletabi is a static website. We use Google Analytics (GA4) to understand aggregate, "
+        "anonymised traffic such as page views and referral sources. We do not ask for, collect or "
+        "store personal information through the site, and we do not require you to create an account. "
+        "Google Analytics may set cookies and process usage data as described in Google's policies. "
         "Our hosting and content-delivery providers may automatically log standard technical data (such "
         "as IP address and browser type) for security and operations, as is typical for any website.</p>"
         "<h2>Contact form</h2>"
