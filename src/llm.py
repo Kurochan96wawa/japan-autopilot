@@ -12,11 +12,13 @@ from .util import load_settings, log
 
 # Geminiは429(レート/クォータ)が出やすいので、別の無料モデルへ順に切替える
 # 2026年現行の無料枠モデル（2.0/1.5系は終了済み）。flash-latestは最新flashへのエイリアス。
-_GEMINI_FALLBACKS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-3-flash", "gemini-flash-latest"]
+# ※ gemini-3-flash は存在せず404を返すためフォールバックから除外（枠の浪費＆遅延の原因だった）。
+_GEMINI_FALLBACKS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-flash-latest"]
 
 
-def _retry_429(fn, attempts: int = 4):
-    """429/503を指数バックオフ+ジッターでリトライ。日次バッチなので待ってOK。"""
+def _retry_429(fn, attempts: int = 6):
+    """429/503を指数バックオフ+ジッターでリトライ。日次バッチなので待ってOK。
+    無料枠はRPM上限に当たりやすいので、試行回数・待ち時間を長めに取って取りこぼしを減らす。"""
     last = None
     for i in range(attempts):
         try:
@@ -25,7 +27,7 @@ def _retry_429(fn, attempts: int = 4):
             code = e.response.status_code if e.response is not None else 0
             last = e
             if code in (429, 503) and i < attempts - 1:
-                wait = min(60, 8 * (2 ** i)) + random.uniform(0, 4)
+                wait = min(90, 8 * (2 ** i)) + random.uniform(0, 4)
                 log.warning("LLM %s。%.0f秒待って再試行(%d/%d)", code, wait, i + 1, attempts)
                 time.sleep(wait)
                 continue
@@ -50,13 +52,17 @@ def _extract_json(text: str):
         raise
 
 
-def _gemini(prompt: str, model: str, json_mode: bool = True) -> str:
+def _gemini(prompt: str, model: str, json_mode: bool = True, schema: dict | None = None) -> str:
     key = os.environ["GEMINI_API_KEY"]
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
     body = {"contents": [{"parts": [{"text": prompt}]}]}
     if json_mode:
-        # JSON強制モード。HTMLを含む応答でも正しいJSONで返させる（パース失敗を防ぐ）
-        body["generationConfig"] = {"responseMimeType": "application/json"}
+        # JSON強制モード。HTMLを含む長い応答でもAPI側でエスケープを保証させ、パース失敗を防ぐ。
+        gc = {"responseMimeType": "application/json", "maxOutputTokens": 8192}
+        if schema:
+            # 構造化出力（controlled generation）。スキーマに沿った“必ず妥当なJSON”が返る。
+            gc["responseSchema"] = schema
+        body["generationConfig"] = gc
     r = requests.post(url, json=body, timeout=120)
     r.raise_for_status()
     data = r.json()
@@ -88,9 +94,10 @@ def _anthropic(prompt: str, model: str) -> str:
     return r.json()["content"][0]["text"]
 
 
-def generate(prompt: str, as_json: bool = True):
+def generate(prompt: str, as_json: bool = True, schema: dict | None = None):
     """プロンプトを投げて文字列 or JSON(dict/list)を返す。
-    429対策: 指数バックオフでリトライし、geminiは別の無料モデルへ順にフォールバック。"""
+    429対策: 指数バックオフでリトライし、geminiは別の無料モデルへ順にフォールバック。
+    schema を渡すと（geminiのみ）構造化出力で“必ず妥当なJSON”を返させる。"""
     cfg = load_settings()["llm"]
     provider = cfg["provider"]
     model = cfg["model"]
@@ -102,7 +109,7 @@ def generate(prompt: str, as_json: bool = True):
         last = None
         for m in models:
             try:
-                out = _retry_429(lambda m=m: _gemini(prompt, m, as_json))
+                out = _retry_429(lambda m=m: _gemini(prompt, m, as_json, schema))
                 if m != model:
                     log.warning("geminiモデルを %s にフォールバックして成功", m)
                 return _extract_json(out) if as_json else out
