@@ -34,8 +34,9 @@ programs:
     cta: "Find family rooms & kid-friendly stays in Japan"
 
   - id: esim
-    name: "Airalo / Saily eSIM (Japan)"
-    url: "https://example.com/REPLACE_WITH_YOUR_ESIM_AFFILIATE_LINK"
+    # ※Airalo(Impact)が却下→ eSIM枠は Klook eSIM(20%) に振替（2026-06-26）。Klook aid=125283。
+    name: "Klook eSIM (Japan) — Softbank 5G / DOCOMO 4G LTE"
+    url: "https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Factivity%2F109393-japan-esim-high-speed-internet-qr-code-voucher%2F"
     keywords: ["sim", "internet", "data", "connectivity", "phone", "wifi", "maps", "navigation"]
     cta: "Stay connected & navigate easily — get a Japan eSIM"
 
