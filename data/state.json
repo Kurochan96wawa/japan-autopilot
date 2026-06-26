@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "What to Do When Your Child Gets Sick in Japan: A Parent's Guide",
-      "search_intent": "Parents want clear, reassuring information on how to handle medical emergencies or common illnesses while traveling in Japan.",
-      "primary_keyword": "child sick in Japan",
-      "board_hint": "Health & Safety | Emergency Preparedness"
-    },
-    {
-      "topic": "Tokyo's Best Playgrounds & Parks for Kids: Burn Off Energy!",
-      "search_intent": "Parents are looking for outdoor spaces in Tokyo where their children can play, explore, and get active, beyond typical tourist attractions.",
-      "primary_keyword": "Tokyo playgrounds kids",
-      "board_hint": "Tokyo with Kids | Outdoor Activities"
-    },
-    {
       "topic": "Experience a Ryokan with Kids: Tips for a Memorable Family Stay",
       "search_intent": "Families want to experience a traditional Japanese ryokan but need guidance on finding kid-friendly options and understanding etiquette.",
       "primary_keyword": "ryokan with kids Japan",
@@ -168,6 +156,18 @@
       "search_intent": "Parents need to understand the Japanese healthcare system, how to access medical services for their children if they fall ill or have an emergency, where to find pharmacies, and what to expect regarding medical care for foreign travelers.",
       "primary_keyword": "Kids healthcare Japan travel",
       "board_hint": "Japan Travel Safety"
+    },
+    {
+      "topic": "The Ultimate Packing List for Japan with Kids: Seasonal Essentials & Smart Space-Saving Tips",
+      "search_intent": "Parents are looking for a comprehensive, practical checklist detailing essential items to pack for their children when traveling to Japan, considering seasonal weather variations, specific child-related needs, and advice on efficient packing strategies.",
+      "primary_keyword": "packing list Japan kids",
+      "board_hint": "Japan Trip Planning with Kids"
+    },
+    {
+      "topic": "Osaka with Young Kids: Top Interactive Museums and Free Playgrounds for Family Fun",
+      "search_intent": "Parents traveling to Osaka with young children (toddlers to elementary age) are seeking specific, engaging activities beyond theme parks, including educational and interactive museums, as well as accessible and free playgrounds for active play.",
+      "primary_keyword": "Osaka kids activities",
+      "board_hint": "Osaka Family Fun"
     }
   ],
   "posted": [
@@ -493,6 +493,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 32
+    "llm_calls": 33
   }
 }
