@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Experience a Ryokan with Kids: Tips for a Memorable Family Stay",
-      "search_intent": "Families want to experience a traditional Japanese ryokan but need guidance on finding kid-friendly options and understanding etiquette.",
-      "primary_keyword": "ryokan with kids Japan",
-      "board_hint": "Accommodation Japan | Cultural Experiences"
-    },
-    {
-      "topic": "Kid-Friendly Sushi in Japan: A Guide for Young Palates (Beyond Tuna Rolls!)",
-      "search_intent": "Parents want to introduce their kids to sushi in Japan in an appealing way, exploring diverse options and ordering tips.",
-      "primary_keyword": "kid friendly sushi Japan",
-      "board_hint": "Eating in Japan | Food Exploration"
-    },
-    {
       "topic": "Staying Cool in Japan Summer with Kids: Beat the Heat Safely",
       "search_intent": "Parents traveling during summer need practical tips, product recommendations, and strategies to keep their children comfortable and safe from the heat.",
       "primary_keyword": "Japan summer with kids",
@@ -168,6 +156,18 @@
       "search_intent": "Parents traveling to Osaka with young children (toddlers to elementary age) are seeking specific, engaging activities beyond theme parks, including educational and interactive museums, as well as accessible and free playgrounds for active play.",
       "primary_keyword": "Osaka kids activities",
       "board_hint": "Osaka Family Fun"
+    },
+    {
+      "topic": "What to Do if Your Child Gets Sick in Japan: A Practical Guide for Traveling Parents",
+      "search_intent": "Parents want to understand how to access medical care or over-the-counter remedies for common childhood illnesses or minor injuries while traveling in Japan. They seek information on pharmacies, doctor visits, and essential vocabulary, aiming for preparedness and peace of mind.",
+      "primary_keyword": "child sick Japan travel",
+      "board_hint": "Japan with Kids Safety, Family Travel Logistics"
+    },
+    {
+      "topic": "Beyond Theme Parks: Authentic Japanese Cultural Experiences for Kids",
+      "search_intent": "Parents are looking for hands-on, engaging, and culturally immersive activities in Japan for their children that go beyond common tourist attractions like temples and theme parks. They want ideas for workshops, specific museums, or unique local interactions that are educational and fun.",
+      "primary_keyword": "Japanese cultural activities kids",
+      "board_hint": "Japan Cultural Immersion, Kid-Friendly Japan Activities"
     }
   ],
   "posted": [
@@ -476,6 +476,27 @@
       "last_pin_desc": "Planning to explore Japan with your children? This detailed guide covers everything parents need to know about public transport, including child fares, essential stroller etiquette, and where to find nursing rooms and diaper-changing facilities at major stations. Make your family's journey through Japan smooth and stress-free! #JapanTravelWithKids #FamilyTravelJapan #JapanPublicTransport",
       "repin_times": [],
       "posted_at": "2026-06-26T06:16:05.530324+00:00"
+    },
+    {
+      "topic": "Kid-Friendly Sushi in Japan: A Guide for Young Palates (Beyond Tuna Rolls!)",
+      "slug": "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
+      "article_title": "Kid-Friendly Sushi in Japan: A Guide for Young Palates",
+      "primary_keyword": "kid friendly sushi Japan",
+      "image_query": "kid eating sushi Japan",
+      "board_hint": "Eating in Japan | Food Exploration",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/kid-friendly-sushi-in-japan-a-guide-for-young-palates.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/kid-friendly-sushi-in-japan-a-guide-for-young-palates.jpg"
+      ],
+      "img_hashes": [
+        "3232fbfbffc30000"
+      ],
+      "last_pin_desc": "Traveling to Japan with kids? Don't skip sushi! This guide unveils delicious non-raw options, tips for conveyor belt sushi (kaiten-zushi), and how to navigate menus for young palates. Make dining stress-free and fun for your family. #JapanTravelKids #KidFriendlyJapan #SushiForKids",
+      "repin_times": [],
+      "posted_at": "2026-06-26T06:45:21.963873+00:00"
     }
   ],
   "performance": {
@@ -493,6 +514,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 33
+    "llm_calls": 35
   }
 }
