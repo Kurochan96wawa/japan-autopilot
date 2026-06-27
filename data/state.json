@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Getting Around Japan with a Baby Carrier: Pros, Cons, and Best Practices",
-      "search_intent": "Parents with infants are considering using a baby carrier for travel in Japan and need specific advice on its practicality and benefits.",
-      "primary_keyword": "baby carrier Japan travel",
-      "board_hint": "Baby Essentials Japan | Logistics"
-    },
-    {
-      "topic": "Visiting Nara Deer Park with Kids: Tips for a Safe and Enjoyable Experience",
-      "search_intent": "Families planning to visit Nara want practical advice for managing interactions with the deer, ensuring safety, and making the most of the experience with children.",
-      "primary_keyword": "Nara Deer Park with kids",
-      "board_hint": "Day Trips Japan | Animal Encounters"
-    },
-    {
       "topic": "Best Themed Cafes in Tokyo for Families: Beyond the Typical Maid Cafe",
       "search_intent": "Parents are looking for unique, fun, and genuinely child-appropriate themed dining experiences in Tokyo that are not overly niche or adult-oriented.",
       "primary_keyword": "themed cafes Tokyo family friendly",
@@ -168,6 +156,18 @@
       "search_intent": "Parents want to understand and teach their children basic Japanese social customs to ensure respectful interactions, avoid misunderstandings, and enhance their family's cultural experience in Japan.",
       "primary_keyword": "Japanese etiquette kids",
       "board_hint": "Japan Cultural Immersion for Families"
+    },
+    {
+      "topic": "Navigating Medical Care in Japan for Traveling Families: What to Do If Your Child Gets Sick",
+      "search_intent": "Parents need clear, practical steps and information on how to access medical services, understand the healthcare system, and prepare for potential childhood illnesses or minor injuries while on a family trip to Japan.",
+      "primary_keyword": "child medical emergency Japan travel",
+      "board_hint": "Japan Family Safety, Travel Health & Logistics"
+    },
+    {
+      "topic": "Keeping Kids Happy on Long Japan Journeys: Engaging Activities for Flights & Train Rides",
+      "search_intent": "Parents are looking for a variety of engaging, often screen-free, ideas and strategies to keep their children entertained and content during extended travel periods, such as international flights, Shinkansen trips, and waiting times in Japan.",
+      "primary_keyword": "kids travel activities Japan",
+      "board_hint": "Family Travel Tips Japan, Kid-Friendly Japan Activities"
     }
   ],
   "posted": [
@@ -630,6 +630,52 @@
       "last_pin_desc": "Planning a family trip to Japan? Don't skip the ramen! Discover the best child-friendly ramen chains, how to navigate allergens with Japan's strict labeling rules, and quick ordering tips for toddlers. #japanwithkids #japantravel #familytraveljapan",
       "repin_times": [],
       "posted_at": "2026-06-26T12:00:32.331736+00:00"
+    },
+    {
+      "topic": "Getting Around Japan with a Baby Carrier: Pros, Cons, and Best Practices",
+      "slug": "baby-carriers-in-japan-your-essential-guide-for-family-trave",
+      "article_title": "Baby Carriers in Japan: Your Essential Guide for Family Travel",
+      "primary_keyword": "baby carrier Japan travel",
+      "image_query": "parent baby carrier Japan",
+      "board_hint": "Baby Essentials Japan | Logistics",
+      "affiliates_used": [
+        "regional_pass"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/baby-carriers-in-japan-your-essential-guide-for-family-trave.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/baby-carriers-in-japan-your-essential-guide-for-family-trave.jpg"
+      ],
+      "img_hashes": [
+        "efe7763ecf000000"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan? Learn why a baby carrier is often more practical than a stroller for navigating crowded stations, stairs, and cultural sites. Get expert tips on choosing the right carrier, dealing with Japan's climate, and where to find baby supplies like those at Akachan Honpo and Nishimatsuya. Make your Japan adventure with kids unforgettable.",
+      "repin_times": [],
+      "posted_at": "2026-06-27T08:13:01.234078+00:00"
+    },
+    {
+      "topic": "Visiting Nara Deer Park with Kids: Tips for a Safe and Enjoyable Experience",
+      "slug": "nara-deer-park-with-kids-safety-fun-tips-for-families",
+      "article_title": "Nara Deer Park with Kids: Safety & Fun Tips for Families",
+      "primary_keyword": "Nara Deer Park with kids",
+      "image_query": "Nara deer family",
+      "board_hint": "Day Trips Japan | Animal Encounters",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/nara-deer-park-with-kids-safety-fun-tips-for-families.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/nara-deer-park-with-kids-safety-fun-tips-for-families.jpg"
+      ],
+      "img_hashes": [
+        "093d7d7fe76f0000"
+      ],
+      "last_pin_desc": "Visiting Nara Deer Park with kids? Learn crucial safety tips for interacting with the deer, practical advice on stroller use, and details on family-friendly amenities. Discover admission prices and opening hours for top attractions like Todai-ji Temple and Nara National Museum. Make your Japan family vacation memorable and stress-free. #JapanTravelKids #NaraDeerPark #FamilyTravelJapan",
+      "repin_times": [],
+      "posted_at": "2026-06-27T08:20:41.957342+00:00"
     }
   ],
   "performance": {
@@ -647,6 +693,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 44
+    "llm_calls": 47
   }
 }
