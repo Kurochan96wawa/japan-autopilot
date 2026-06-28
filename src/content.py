@@ -74,7 +74,10 @@ def _default_program(aff: dict) -> list[dict]:
     return []
 
 
-def build_content(topic_item: dict) -> dict:
+def build_content(topic_item: dict, research: bool = True) -> dict:
+    """research=False のとき日本語ソースのグラウンディング検索を省く。
+    一括再生成(regen)などで free-tier の 429 連発を避け、API呼び出しを約半減する。
+    グラウンディングは“あれば嬉しい”補助情報なので、無くても記事は成立する。"""
     cfg = load_settings()
     niche = cfg["niche"]
     aff = load_affiliates()
@@ -84,7 +87,7 @@ def build_content(topic_item: dict) -> dict:
     # どの記事も最低1つは自然なCTAが入るように（モネタイズの取りこぼし防止）
     if not matched:
         matched = _default_program(aff)
-    jp = gather_japanese_context(topic, keyword)
+    jp = gather_japanese_context(topic, keyword) if research else {"facts": "", "sources": []}
     jp_block = ""
     if jp.get("facts"):
         jp_block = (
