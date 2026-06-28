@@ -20,6 +20,9 @@ CONTACT_FORM_ACTION = "https://api.web3forms.com/submit"
 WEB3FORMS_KEY = "e0c3512d-69a9-46e8-94a3-61bd2e94bd8b"
 # GA4 計測タグ（非秘密。空文字なら埋め込まない）。全ページの<head>に出力される。
 GA4_MEASUREMENT_ID = "G-GD1XLKR8S3"
+# Travelpayouts Drive（アウトバウンド旅行リンクを自動でアフィリ化する公開埋め込み。秘密値ではない）。
+# 空文字なら埋め込まない。全ページの<head>に出力される。
+TPDRIVE_SRC = "https://tpembars.com/NTQ0MTkx.js?t=544191"
 
 BASE_CSS = """
 :root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--accent2:#7a1546;--soft:#fff0f6;--line:#ececf1;--bg:#fffdfb;--card:#ffffff}
@@ -321,6 +324,16 @@ def _ga_snippet() -> str:
     )
 
 
+def _tpdrive_snippet() -> str:
+    """Travelpayouts Drive の埋め込み（非同期で外部スクリプトを読み込む）。空なら出力しない。"""
+    if not TPDRIVE_SRC:
+        return ""
+    return (
+        '<script>(function(){var s=document.createElement("script");s.async=1;'
+        f's.src="{TPDRIVE_SRC}";document.head.appendChild(s);}})();</script>\n'
+    )
+
+
 def _document(lang: str, title_tag: str, head_extra: str, body_inner: str) -> str:
     return (
         "<!doctype html>\n"
@@ -328,6 +341,7 @@ def _document(lang: str, title_tag: str, head_extra: str, body_inner: str) -> st
         '<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"{_ga_snippet()}"
+        f"{_tpdrive_snippet()}"
         f"<title>{title_tag}</title>\n"
         f"{head_extra}"
         f"<style>{BASE_CSS}</style>\n"
