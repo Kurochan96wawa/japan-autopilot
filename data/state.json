@@ -752,11 +752,23 @@
           "total": 25
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-06-28T10:10:55.864857+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 25,
+          "total": 25
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-06-28T09:13:28.674401+00:00",
-      "ga4": false,
+      "at": "2026-06-28T10:10:55.864857+00:00",
+      "ga4": true,
       "counts": {
         "winner": 0,
         "fixable": 0,
@@ -770,13 +782,13 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-06-28T09:13:28.674146+00:00"
+    "last_updated": "2026-06-28T10:10:55.864432+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 52
+    "llm_calls": 54
   }
 }
