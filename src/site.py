@@ -1,9 +1,12 @@
 """GitHub Pages 用サイト生成。Pinが指す先のランディング兼ブログ。
 業界標準の構造（ヒーロー＋サムネイル付きカード＋サイドバー＋筆者欄＋フッター法務）で、
 初見でも自然に見え、PC/スマホ両対応。記事はリサーチ型・編集部名義（AI生成を偽らない）。
+SEO: 全ページにOG/Twitterカード、記事にJSON-LD(Article/FAQPage/BreadcrumbList)、
+     ビルド毎に sitemap.xml と robots.txt を自動生成。既存記事には _upgrade_seo で後付け。
 """
 from __future__ import annotations
 import re
+import json
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 from .util import load_settings, SITE_DIR, log
@@ -102,22 +105,176 @@ footer.site a{color:var(--muted)}
 footer.site a:hover{color:var(--accent)}
 footer.site .legal{border-top:1px solid var(--line);padding:14px 0 26px;font-size:.8rem;color:#9aa0aa}
 @media(max-width:880px){
- .layout{grid-template-columns:1fr;gap:30px}
- .hero-feat{grid-template-columns:1fr}
- .hero-feat .tx{padding:0 20px 22px}
- .hero-feat .ph{aspect-ratio:16/9}
- .grid{grid-template-columns:1fr}
- footer.site .cols{grid-template-columns:1fr;gap:18px}
- nav.main{display:none;width:100%;flex-direction:column;gap:0}
- nav.main.open{display:flex}
- nav.main a{padding:11px 2px;border-bottom:1px solid var(--line)}
- header.site .bar{flex-wrap:wrap}
- .navtoggle{display:inline-block}
+.layout{grid-template-columns:1fr;gap:30px}
+.hero-feat{grid-template-columns:1fr}
+.hero-feat .tx{padding:0 20px 22px}
+.hero-feat .ph{aspect-ratio:16/9}
+.grid{grid-template-columns:1fr}
+footer.site .cols{grid-template-columns:1fr;gap:18px}
+nav.main{display:none;width:100%;flex-direction:column;gap:0}
+nav.main.open{display:flex}
+nav.main a{padding:11px 2px;border-bottom:1px solid var(--line)}
+header.site .bar{flex-wrap:wrap}
+.navtoggle{display:inline-block}
 }
 """
 
 NAV_LINKS = [("/index.html", "Home"), ("/about.html", "About"), ("/contact.html", "Contact")]
 NAV_JS = "<script>function tmenu(){var n=document.getElementById('nav');n.classList.toggle('open');}</script>"
+
+
+# ============================================================
+# SEO ヘルパー（OG/Twitter, JSON-LD, sitemap/robots, 既存ページ後付け）
+# ============================================================
+def _esc_attr(s: str) -> str:
+    return (s or "").replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _social_tags(title: str, desc: str, url: str, image: str = "",
+                 type_: str = "website", published: str | None = None) -> str:
+    """Open Graph + Twitter Card メタ群を返す（PinterestのRich Pin/SNS共有の見栄えにも効く）。"""
+    t, d = _esc_attr(title), _esc_attr(desc)
+    tags = [
+        f'<meta property="og:type" content="{type_}">',
+        f'<meta property="og:site_name" content="{BRAND}">',
+        f'<meta property="og:title" content="{t}">',
+        f'<meta property="og:description" content="{d}">',
+        f'<meta property="og:url" content="{_esc_attr(url)}">',
+    ]
+    if image:
+        tags.append(f'<meta property="og:image" content="{_esc_attr(image)}">')
+    tags.append('<meta name="twitter:card" content="summary_large_image">')
+    tags.append(f'<meta name="twitter:title" content="{t}">')
+    tags.append(f'<meta name="twitter:description" content="{d}">')
+    if image:
+        tags.append(f'<meta name="twitter:image" content="{_esc_attr(image)}">')
+    if published:
+        tags.append(f'<meta property="article:published_time" content="{published}">')
+    return "\n".join(tags) + "\n"
+
+
+def _strip_tags(html: str) -> str:
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html or "")).strip()
+
+
+def _faq_jsonld(body_html: str):
+    """記事本文の <h2>FAQ</h2> セクションから Q&A を抽出し schema.org FAQPage を組む。"""
+    if not body_html:
+        return None
+    m = re.search(r"<h2[^>]*>\s*FAQ.*?</h2>(.*)$", body_html, re.S | re.I)
+    if not m:
+        return None
+    section = m.group(1)
+    nx = re.search(r"<h2", section)
+    if nx:
+        section = section[:nx.start()]
+    pairs = re.findall(r"<h3[^>]*>(.*?)</h3>(.*?)(?=<h3|$)", section, re.S | re.I)
+    items = []
+    for q, a in pairs:
+        qt, at = _strip_tags(q), _strip_tags(a)
+        if qt and at:
+            items.append({"@type": "Question", "name": qt,
+                          "acceptedAnswer": {"@type": "Answer", "text": at}})
+    if len(items) < 2:
+        return None
+    return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": items}
+
+
+def _jsonld_block(*objs) -> str:
+    out = []
+    for o in objs:
+        if not o:
+            continue
+        s = json.dumps(o, ensure_ascii=False).replace("<", "\\u003c")
+        out.append(f'<script type="application/ld+json">{s}</script>')
+    return ("\n".join(out) + "\n") if out else ""
+
+
+def _article_jsonld(title, desc, url, image, date_iso, category, body_html, base) -> str:
+    article = {
+        "@context": "https://schema.org", "@type": "Article",
+        "headline": (title or "")[:110], "description": desc or "",
+        "image": [image] if image else [],
+        "datePublished": date_iso, "dateModified": date_iso,
+        "author": {"@type": "Organization", "name": "littletabi editors"},
+        "publisher": {"@type": "Organization", "name": "littletabi"},
+        "mainEntityOfPage": {"@type": "WebPage", "@id": url},
+        "inLanguage": "en",
+    }
+    breadcrumb = {
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": base + "/"},
+            {"@type": "ListItem", "position": 2, "name": category or "Japan with kids", "item": base + "/"},
+            {"@type": "ListItem", "position": 3, "name": title, "item": url},
+        ],
+    }
+    return _jsonld_block(article, breadcrumb, _faq_jsonld(body_html))
+
+
+def _write_seo_files(cfg) -> None:
+    """docs/ 配下の全 *.html を走査して sitemap.xml と robots.txt を生成する。"""
+    base = cfg["site"]["base_url"].rstrip("/")
+    today = datetime.now(timezone.utc).date().isoformat()
+    rows = []
+    for path in sorted(SITE_DIR.glob("*.html")):
+        name = path.name
+        loc = base + "/" if name == "index.html" else f"{base}/{name}"
+        if name == "index.html":
+            pr = "1.0"
+        elif name in ("about.html", "disclosure.html", "privacy.html", "contact.html"):
+            pr = "0.4"
+        else:
+            pr = "0.8"
+        rows.append(
+            f"  <url><loc>{loc}</loc><lastmod>{today}</lastmod>"
+            f"<changefreq>weekly</changefreq><priority>{pr}</priority></url>"
+        )
+    sitemap = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(rows) + "\n</urlset>\n"
+    )
+    (SITE_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+    robots = f"User-agent: *\nAllow: /\n\nSitemap: {base}/sitemap.xml\n"
+    (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
+    log.info("sitemap.xml/robots.txt 生成 (%d URL)", len(rows))
+
+
+def _upgrade_seo(cfg) -> None:
+    """既存の記事HTMLに、本文を作り直さずに Twitter Card と JSON-LD(Article/FAQ/Breadcrumb)を
+    後付けする（<head>へ注入）。JSON-LDが既にあるページはスキップ＝冪等。"""
+    base = cfg["site"]["base_url"].rstrip("/")
+    skip = {"index.html", "about.html", "disclosure.html", "privacy.html", "contact.html"}
+    for path in SITE_DIR.glob("*.html"):
+        if path.name in skip:
+            continue
+        try:
+            txt = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if "application/ld+json" in txt:
+            continue
+        tm = re.search(r"<title>(.*?)</title>", txt, re.S)
+        title = (tm.group(1).split("|")[0].strip() if tm else path.stem)
+        dm = re.search(r'<meta name="description" content="([^"]*)"', txt)
+        desc = dm.group(1) if dm else TAGLINE
+        cm = re.search(r'<link rel="canonical" href="([^"]*)"', txt)
+        url = cm.group(1) if cm else f"{base}/{path.name}"
+        im = re.search(r'<meta property="og:image" content="([^"]*)"', txt)
+        image = im.group(1) if im else ""
+        am = re.search(r'<article class="post">(.*?)</article>', txt, re.S)
+        body_html = am.group(1) if am else txt
+        add = ""
+        if "twitter:card" not in txt:
+            add += _social_tags(title, desc, url, image, "article")
+        add += _article_jsonld(title, desc, url, image,
+                               datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                               "Japan with kids", body_html, base)
+        if add and "</head>" in txt:
+            txt = txt.replace("</head>", add + "</head>", 1)
+            path.write_text(txt, encoding="utf-8")
+            log.info("SEO後付け: %s", path.name)
 
 
 def _header() -> str:
@@ -301,7 +458,10 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
     title = content["article_title"]
     meta = content.get("meta_description", "")
     canonical = f"{base}/{slug}.html"
+    og_img = f"{base}/{image_rel}"
     date_str = datetime.now(timezone.utc).strftime("%B %-d, %Y")
+    date_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    category = content.get("board_hint") or "Japan with kids"
     credit_html = ""
     if credit.get("photographer"):
         credit_html = (
@@ -309,16 +469,12 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
             f'<a href="{credit.get("url", "#")}" rel="nofollow noopener">{credit["photographer"]}</a> on Pexels</p>'
         )
     head_extra = (
-        f'<meta name="description" content="{meta}">\n'
+        f'<meta name="description" content="{_esc_attr(meta)}">\n'
         f'<link rel="canonical" href="{canonical}">\n'
-        '<meta property="og:type" content="article">\n'
-        f'<meta property="og:title" content="{title}">\n'
-        f'<meta property="og:description" content="{meta}">\n'
-        f'<meta property="og:image" content="{base}/{image_rel}">\n'
         '<meta name="author" content="littletabi editors">\n'
+        + _social_tags(title, meta, canonical, og_img, "article", published=date_iso)
     )
-    hero_html = f'<img class="hero-img" src="/{image_rel}" alt="{title}">'
-    category = content.get("board_hint") or "Japan with kids"
+    hero_html = f'<img class="hero-img" src="/{image_rel}" alt="{_esc_attr(title)}">'
 
     # 本文に横長の実写を2枚差し込む。記事固有のimage_query(ブランド名で誤ヒットしうる)ではなく、
     # 必ず日本の汎用シーンクエリを使う。失敗時は無画像で続行。
@@ -328,6 +484,10 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
         body_html = _inject_body_images(body_html, body_imgs)
     except Exception as e:
         log.error("本文画像の挿入に失敗(無画像で続行): %s", e)
+
+    # JSON-LD（Article + FAQPage + BreadcrumbList）は本文確定後に組む
+    head_extra += _article_jsonld(title, meta, canonical, og_img, date_iso,
+                                  category, content.get("article_html", ""), base)
 
     html = _article_page(
         lang=lang, title_tag=f"{title} | {site_name}", head_extra=head_extra,
@@ -343,8 +503,18 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
 
 
 def _static_page(slug: str, lang: str, title_tag: str, inner: str) -> None:
+    cfg = load_settings()
+    base = cfg["site"]["base_url"].rstrip("/")
+    url = f"{base}/{slug}.html"
+    title = title_tag.split("|")[0].strip()
+    desc = TAGLINE
+    head_extra = (
+        f'<meta name="description" content="{_esc_attr(desc)}">\n'
+        f'<link rel="canonical" href="{url}">\n'
+        + _social_tags(title, desc, url, "", "website")
+    )
     body_inner = f'<div class="wrap single narrow"><article class="post">{inner}</article></div>'
-    (SITE_DIR / f"{slug}.html").write_text(_document(lang, title_tag, "", body_inner), encoding="utf-8")
+    (SITE_DIR / f"{slug}.html").write_text(_document(lang, title_tag, head_extra, body_inner), encoding="utf-8")
 
 
 def _about_inner() -> str:
@@ -427,7 +597,7 @@ def _contact_inner() -> str:
     if CONTACT_FORM_ACTION:
         form = (
             f'<form class="cform" action="{CONTACT_FORM_ACTION}" method="POST">'
-         f'<input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">'
+            f'<input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">'
             '<label>Your name<input type="text" name="name" required></label>'
             '<label>Your email<input type="email" name="email" required></label>'
             '<label>Message<textarea name="message" rows="6" required></textarea></label>'
@@ -514,6 +684,7 @@ def _migrate_legacy(cfg: dict, popular: list) -> None:
 
 def rebuild_index(state: dict) -> None:
     cfg = load_settings()
+    base = cfg["site"]["base_url"].rstrip("/")
     site_name = cfg["site"]["site_name"]
     lang = cfg["niche"].get("language", "en")
     posts = [p for p in reversed(state.get("posted", [])[-200:])
@@ -545,9 +716,11 @@ def rebuild_index(state: dict) -> None:
             )
         grid = (f'<h2 class="sec-title">Latest guides</h2><div class="grid">{"".join(cards)}</div>'
                 if cards else "")
+        og_img = f"{base}{_thumb(f)}"
     else:
         feat = ""
         grid = '<p class="empty">New guides are published regularly &mdash; check back soon.</p>'
+        og_img = ""
 
     body_inner = (
         f'<div class="wrap">{feat}</div>'
@@ -556,8 +729,11 @@ def rebuild_index(state: dict) -> None:
         f'{_sidebar(popular)}'
         '</div>'
     )
-    head_extra = (f'<meta name="description" content="{TAGLINE}">\n'
-                  f'<link rel="canonical" href="{cfg["site"]["base_url"].rstrip("/")}/">\n')
+    head_extra = (
+        f'<meta name="description" content="{_esc_attr(TAGLINE)}">\n'
+        f'<link rel="canonical" href="{base}/">\n'
+        + _social_tags(site_name, TAGLINE, base + "/", og_img, "website")
+    )
     html = _document(lang, f"{site_name}", head_extra, body_inner)
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     (SITE_DIR / "index.html").write_text(html, encoding="utf-8")
@@ -567,5 +743,7 @@ def rebuild_index(state: dict) -> None:
     _static_page("contact", lang, f"Contact | {site_name}", _contact_inner())
     _write_cname(cfg)
     _migrate_legacy(cfg, popular)
+    _upgrade_seo(cfg)          # 既存記事にOG/Twitter/JSON-LDを後付け（冪等）
+    _write_seo_files(cfg)      # sitemap.xml + robots.txt を生成
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
-    log.info("サイト再生成 (記事%d / featured+grid+sidebar)", len(posts))
+    log.info("サイト再生成 (記事%d / featured+grid+sidebar+SEO)", len(posts))
