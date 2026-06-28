@@ -125,7 +125,7 @@ robot reciting a brochure; yours must NOT):
 WRITING RULES (critical for quality):
 - Output PURE HTML only. NEVER use Markdown: no **bold**, no ## headings, no "- " bullets, no backticks. Use <strong>, <em>, <h2>/<h3>, <ul><li>, <table> instead. Any asterisks or hashes are a defect.
 - Do NOT repeat the article title as a heading at the start. The page template already shows the title as <h1>. Begin directly with the hook paragraph.
-- Open with a 2-3 sentence HOOK that drops the reader into a vivid, specific, slightly funny parent scenario, then promise the answer. NO generic openers (never start with "Planning a trip to Japan involves..." or "When planning a family trip..."), NO definitions, and NO fluffy conclusions.
+- ANSWER-FIRST opening (critical for AI search / AI Overviews): the first 1-2 sentences must directly and completely answer the main question in the title, in plain terms a busy parent (or an AI assistant quoting you) can lift verbatim. You may add ONE short, warm, slightly funny touch right after — but the direct answer comes first, not after a scene-setting hook. NO generic openers (never start with "Planning a trip to Japan involves..." or "When planning a family trip..."), NO definitions, NO fluffy conclusions.
 - Every section must contain at least one concrete specific (a name, number, price in yen, minutes, kg, station, or rule). Delete any sentence with no specific.
 - Near the top include a short TL;DR <ul> (3-5 bullets). Include at least one HTML <table> for comparison or quick-reference, but keep tables compact (3-5 rows, 2-4 columns) and genuinely scannable — never a giant data dump. Put nuance in prose, not the table.
 - Include an <h2>FAQ</h2> with 5-8 real questions parents search, each with a concise answer. The FAQ and a final one-sentence practical takeaway MUST be present and complete.
@@ -135,8 +135,8 @@ WRITING RULES (critical for quality):
 
 Produce a JSON object with EXACTLY these fields:
 {{
-  "article_title": "<SEO title, <=60 chars>",
-  "article_html": "<clean HTML body (NO markdown), in a warm/witty/human voice (NOT robotic). 1100-1800 words. Start with a vivid funny hook (do NOT repeat the title). Then a TL;DR <ul>, then sections each with at least one concrete specific, at least one compact HTML <table>, one natural affiliate CTA where relevant, and an <h2>FAQ</h2> with 5-8 <h3> questions. End with one practical takeaway sentence. Use <a href='{{aff_ID}}'>anchor</a> for affiliate links, max 3.>",
+  "article_title": "<SEO title, <=60 chars. Include the year 2026 where it fits naturally (e.g. '...in 2026' or '(2026)'), since current-year signals lift AI-search citations. Don't force it if it makes the title clunky.>",
+  "article_html": "<clean HTML body (NO markdown), in a warm/witty/human voice (NOT robotic). 1100-1800 words. Start with an answer-first opening: directly answer the title question in the first 1-2 sentences, then one quick warm/funny touch (do NOT repeat the title). Then a TL;DR <ul>, then sections each with at least one concrete specific, at least one compact HTML <table>, one natural affiliate CTA where relevant, and an <h2>FAQ</h2> with 5-8 <h3> questions. End with one practical takeaway sentence. Use <a href='{{aff_ID}}'>anchor</a> for affiliate links, max 3.>",
   "meta_description": "<=155 chars",
   "pin_title": "<catchy but honest, <=100 chars>",
   "pin_description": "<keyword-rich, 2-3 sentences, <=480 chars, no hashtag spam, max 3 relevant hashtags>",
