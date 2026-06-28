@@ -168,6 +168,18 @@
       "search_intent": "Parents are looking for actionable advice on how to introduce their children to authentic Japanese cultural experiences (such as visiting temples, engaging in craft workshops, or participating in local customs) respectfully and enjoyably. They seek guidance on cultural etiquette relevant to families.",
       "primary_keyword": "Japanese culture kids Japan",
       "board_hint": "Japan Cultural Experiences, Kid-Friendly Japan Activities"
+    },
+    {
+      "topic": "Accessing Medical Care in Japan for Families: What Parents Need to Know",
+      "search_intent": "Parents are seeking practical information on how to handle health concerns, find doctors, and locate pharmacies for their children while traveling in Japan. This includes understanding the healthcare system, what to do in emergencies, and common over-the-counter options.",
+      "primary_keyword": "Japan medical care with kids",
+      "board_hint": "Safety & Logistics"
+    },
+    {
+      "topic": "Engaging Kids with Japanese Culture: Hands-On Workshops & Activities for Families",
+      "search_intent": "Parents want to find interactive and educational cultural experiences that their children can actively participate in during their trip to Japan, beyond just observation. This includes workshops for crafts, food, or traditional arts.",
+      "primary_keyword": "Japan cultural activities for kids",
+      "board_hint": "Activities & Learning"
     }
   ],
   "posted": [
@@ -820,17 +832,29 @@
           "total": 25
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-06-28T12:04:29.556388+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 28,
+          "total": 28
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-06-28T10:10:55.864857+00:00",
+      "at": "2026-06-28T12:04:29.556388+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
         "fixable": 0,
         "loser": 0,
-        "insufficient": 25,
-        "total": 25
+        "insufficient": 28,
+        "total": 28
       },
       "flagged_fixable": []
     }
@@ -838,13 +862,13 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-06-28T10:10:55.864432+00:00"
+    "last_updated": "2026-06-28T12:04:29.555825+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 66
+    "llm_calls": 68
   }
 }
