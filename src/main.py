@@ -12,6 +12,7 @@ import time
 from .util import load_settings, load_affiliates, ensure_dirs, log
 from .state import load_state, save_state, record_post, now_iso
 from . import ideas, content as content_mod, images, site, guards, rubric
+from . import indexnow
 from . import publish_pinterest as pin
 from . import publish_threads as threads
 from . import publish_instagram as insta
@@ -220,6 +221,18 @@ def _repin_existing(state, cfg, aff, board_cache, base_url, dry, cap):
     return made
 
 
+def _ping_indexnow(state, cfg, all_urls: bool = False) -> None:
+    """Bing等へ新規/更新URLを即時通知（Googleは非対応のためsitemapに任せる）。失敗は無視。"""
+    try:
+        base = cfg["site"]["base_url"].rstrip("/")
+        posts = [p for p in state.get("posted", []) if p.get("slug")]
+        sel = posts if all_urls else posts[-3:]
+        urls = [f"{base}/{p['slug']}.html" for p in sel] + [base + "/"]
+        indexnow.ping(urls)
+    except Exception as e:
+        log.error("IndexNow通知に失敗(続行): %s", e)
+
+
 def run_daily(dry: bool = False) -> None:
     cfg = load_settings(); aff = load_affiliates()
     ensure_dirs(); state = load_state()
@@ -241,6 +254,8 @@ def run_daily(dry: bool = False) -> None:
     repin_n = _repin_existing(state, cfg, aff, board_cache, base_url, dry, repin_cap)
 
     site.rebuild_index(state); save_state(state)
+    if not dry:
+        _ping_indexnow(state, cfg)   # 新規記事をBing等へ即時通知
     log.info("日次完了: 新規%d / 再Pin%d (今日の累計=%d)",
              new_n, repin_n, guards.posts_today(state))
 
@@ -281,6 +296,7 @@ def run_regen() -> None:
         # RPM平準化のため記事間に小休止（free-tierの瞬間的な429連発を緩和）
         time.sleep(4)
     site.rebuild_index(state); save_state(state)
+    _ping_indexnow(state, cfg, all_urls=True)   # 全URLをBing等へ通知
     log.info("regen完了: %d記事を正直な文体で再生成", n)
 
 
@@ -337,6 +353,15 @@ def run_improve() -> None:
             _rewrite_fixable(state, cfg, summary["rewrite_slugs"])
     except Exception as e:
         log.error("週次PDCA失敗(他工程は継続): %s", e)
+
+    # 守りの自動レポート（重複検知・GSC表示の前週比）を週次レポートに追記
+    try:
+        from . import dedupe, seo_health
+        rep = "\n" + dedupe.report() + "\n" + seo_health.report()
+        with open("data/weekly_report.md", "a", encoding="utf-8") as f:
+            f.write(rep)
+    except Exception as e:
+        log.error("守りレポート生成に失敗(続行): %s", e)
 
     ideas.refill_topics(state); guards.add_llm_calls(state, 1)
     save_state(state); log.info("週次改善完了")
