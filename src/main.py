@@ -1,6 +1,6 @@
 """オーケストレーター。GitHub Actionsから呼ばれる入口。
   python -m src.main daily    → 日次: 新規記事Pin + 既存記事の再Pin(Fresh Pins) + 任意でIG/Threads
-  python -m src.main improve  → 週次: 成果集計→戦略更新→shadowban監視
+  python -m src.main improve  → 週次: 成果集計→戦略更新→週次PDCA(GA4×Pinterest)→shadowban監視
   python -m src.main dry      → APIに投げず動作確認（生成とサイトのみ）
   python -m src.main regen    → 既存記事を現行プロンプト/テンプレで再生成（URL維持・SNS投稿なし）
 
@@ -10,7 +10,7 @@ from __future__ import annotations
 import sys
 from .util import load_settings, load_affiliates, ensure_dirs, log
 from .state import load_state, save_state, record_post, now_iso
-from . import ideas, content as content_mod, images, site, guards
+from . import ideas, content as content_mod, images, site, guards, rubric
 from . import publish_pinterest as pin
 from . import publish_threads as threads
 from . import publish_instagram as insta
@@ -29,33 +29,66 @@ def _recent_descriptions(state, limit=40):
     return [p.get("last_pin_desc", "") for p in state.get("posted", [])[-limit:] if p.get("last_pin_desc")]
 
 
-def _build_quality_content(topic, cfg, state):
-    """品質ゲート付きでコンテンツ生成。薄ければ1回だけ作り直す。
-    生成/解析エラーは握りつぶしてNone（1本の失敗で全体を落とさない）。"""
-    try:
-        c = content_mod.build_content(topic)
-    except Exception as e:
-        log.error("コンテンツ生成エラー(スキップ): %s / %s", topic.get("topic"), e)
-        return None
+def _grade_content(topic, cfg, state):
+    """1回の生成＋全ゲート評価をまとめて行う。
+    返り値: (content, ok, why, risky, score_ok, report)
+      ok       … guards.quality_ok（語数/h2など機械チェック）
+      risky    … 価格/営業時間/誇大表現の検出（block_risky_phrases時のみ）
+      score_ok … AI自己採点ルーブリックが基準点以上か（②）
+    生成自体が失敗したら例外を投げる（呼び出し側でNone化）。"""
+    rub = cfg.get("quality_rubric", {})
+    use_rubric = rub.get("enabled", True)
+    min_score = int(rub.get("min_score", 70))
+
+    c = content_mod.build_content(topic)
     guards.add_llm_calls(state, 1)
     ok, why = guards.quality_ok(c, cfg)
     risky = guards.risky_phrases(c.get("article_html", "")) if cfg["safety"]["block_risky_phrases"] else []
-    if (not ok or risky) and cfg["llm"].get("quality_self_check", True):
-        log.warning("品質NG(%s)/リスク%s → 1回だけ作り直し", why, risky)
+
+    score_ok, rep = True, {}
+    if use_rubric and ok:
+        # 機械チェックを通った時だけ採点（採点LLM呼び出しの無駄打ちを避ける）
+        score_ok, rep = rubric.passes(c, min_score)
+        guards.add_llm_calls(state, 1)
+    return c, ok, why, risky, score_ok, rep
+
+
+def _build_quality_content(topic, cfg, state):
+    """品質ゲート付きでコンテンツ生成。機械チェック＋AI自己採点(②)で基準未満なら
+    1回だけ作り直し、それでも未満なら公開保留(=None)で破棄する。
+    生成/解析エラーは握りつぶしてNone（1本の失敗で全体を落とさない）。"""
+    rub = cfg.get("quality_rubric", {})
+    use_rubric = rub.get("enabled", True)
+    min_score = int(rub.get("min_score", 70))
+
+    try:
+        c, ok, why, risky, score_ok, rep = _grade_content(topic, cfg, state)
+    except Exception as e:
+        log.error("コンテンツ生成エラー(スキップ): %s / %s", topic.get("topic"), e)
+        return None
+
+    if (not ok or risky or not score_ok) and cfg["llm"].get("quality_self_check", True):
+        log.warning("品質NG(ok=%s why=%s risky=%s rubric=%s/%d) → 1回だけ作り直し",
+                    ok, why, risky, rep.get("total"), min_score)
         try:
-            c = content_mod.build_content(topic)
+            c, ok, why, risky, score_ok, rep = _grade_content(topic, cfg, state)
         except Exception as e:
             log.error("再生成エラー(初回採用): %s", e)
-        guards.add_llm_calls(state, 1)
-        ok, why = guards.quality_ok(c, cfg)
-        risky = guards.risky_phrases(c.get("article_html", "")) if cfg["safety"]["block_risky_phrases"] else []
+
     if not ok:
         log.error("品質基準を満たせず破棄: %s (%s)", topic.get("topic"), why)
+        return None
+    if use_rubric and not score_ok:
+        # ②ルーブリック2回連続で基準未満 → 公開保留（薄い/AI丸出し記事の流出を止める）
+        log.error("ルーブリック%d点未満で公開保留(破棄): %s (total=%s, issues=%s)",
+                  min_score, topic.get("topic"), rep.get("total"), rep.get("issues"))
         return None
     if risky:
         # リスク表現(価格/営業時間等)は理想的には避けたいが、旅行記事では頻出。
         # 破棄せず警告のみ（記事ゼロを防ぐ）。古い情報の最終チェックは月次の目視で。
         log.warning("リスク表現あり(掲載は継続): %s / %s", topic.get("topic"), risky)
+    if rep:
+        c["quality_score"] = rep.get("total")
     return c
 
 
@@ -95,6 +128,7 @@ def _new_articles(state, cfg, aff, board_cache, base_url, dry, cap):
             "has_affiliate": c.get("has_affiliate", False), "url": canonical,
             "pins_count": 0, "image_variants": [img["rel"]], "img_hashes": [ih],
             "last_pin_desc": c["pin_description"], "repin_times": [],
+            "quality_score": c.get("quality_score"),
         }
 
         if dry:
@@ -139,7 +173,8 @@ def _repin_existing(state, cfg, aff, board_cache, base_url, dry, cap):
     candidates = [p for p in state.get("posted", [])
                   if p.get("pins_count", 1) < max_pins and p.get("slug")
                   and guards.can_repin(p, cfg)]   # 同一URLの間隔ガード
-    candidates.sort(key=lambda p: p.get("pins_count", 1))
+    # ④週次PDCAで needs_refresh が付いたFixableを優先、次にpins_countの少ない順
+    candidates.sort(key=lambda p: (not p.get("needs_refresh", False), p.get("pins_count", 1)))
     made = 0
     picked = candidates[:cap]
     for i, rec in enumerate(picked):
@@ -166,6 +201,7 @@ def _repin_existing(state, cfg, aff, board_cache, base_url, dry, cap):
             log.info("[dry] 再Pinスキップ: %s (v%d)", rec["article_title"], variant)
             rec["pins_count"] = rec.get("pins_count", 1) + 1
             rec.setdefault("repin_times", []).append(now_iso()); made += 1
+            rec["needs_refresh"] = False
             continue
         try:
             content_like = {"pin_title": fresh["pin_title"], "pin_description": fresh["pin_description"]}
@@ -175,6 +211,7 @@ def _repin_existing(state, cfg, aff, board_cache, base_url, dry, cap):
             rec["pins_count"] = rec.get("pins_count", 1) + 1
             rec.setdefault("repin_times", []).append(now_iso())
             rec["last_pin_desc"] = fresh.get("pin_description", ""); made += 1
+            rec["needs_refresh"] = False   # テコ入れ済みなのでフラグを下ろす
         except Exception as e:
             log.error("再Pinエラー: %s", e)
         if i < len(picked) - 1:
@@ -243,6 +280,43 @@ def run_regen() -> None:
     log.info("regen完了: %d記事を正直な文体で再生成", n)
 
 
+def _rewrite_fixable(state, cfg, slugs) -> int:
+    """④週次PDCAでFixable判定かつ rewrite_article=true の記事だけ本文を作り直す。
+    slug(URL)は維持。投稿はしない。ルーブリック基準を満たした時だけ差し替える。"""
+    if not slugs:
+        return 0
+    target = set(slugs)
+    n = 0
+    for rec in state.get("posted", []):
+        slug = rec.get("slug")
+        if slug not in target:
+            continue
+        topic_item = {
+            "topic": rec.get("topic") or rec.get("article_title", ""),
+            "primary_keyword": rec.get("primary_keyword", ""),
+            "board_hint": rec.get("board_hint", ""),
+        }
+        c = _build_quality_content(topic_item, cfg, state)  # ルーブリック込み
+        if not c:
+            log.warning("Fixable再生成が品質基準未達 → 既存を維持: %s", slug)
+            continue
+        image_rel = (rec.get("image_variants") or [f"img/{slug}.jpg"])[0]
+        try:
+            site.render_article(c, image_rel, {}, slug)
+        except Exception as e:
+            log.error("Fixable再描画失敗(スキップ) %s: %s", slug, e)
+            continue
+        rec["article_title"] = c.get("article_title", rec.get("article_title"))
+        rec["meta_description"] = c.get("meta_description", "")
+        rec["quality_score"] = c.get("quality_score")
+        rec["needs_refresh"] = True   # 本文を刷新したので再Pinも当てたい
+        n += 1
+        log.info("Fixable本文を再生成: %s", slug)
+    if n:
+        site.rebuild_index(state)
+    return n
+
+
 def run_improve() -> None:
     cfg = load_settings(); ensure_dirs(); state = load_state()
     rows = analytics.collect_metrics(state)
@@ -251,6 +325,15 @@ def run_improve() -> None:
     else:
         state.setdefault("performance", {})["shadowban_paused"] = False
     analytics.update_strategy(state); guards.add_llm_calls(state, 1)
+
+    # ④週次PDCA: GA4×Pinterestで記事をWinner/Fixable/Loserに分類→戦略反映→レポート
+    try:
+        summary = analytics.weekly_pdca(state, cfg)
+        if summary.get("rewrite_slugs"):
+            _rewrite_fixable(state, cfg, summary["rewrite_slugs"])
+    except Exception as e:
+        log.error("週次PDCA失敗(他工程は継続): %s", e)
+
     ideas.refill_topics(state); guards.add_llm_calls(state, 1)
     save_state(state); log.info("週次改善完了")
 
