@@ -32,7 +32,6 @@ def _strip_markdown(html: str) -> str:
     html = re.sub(r"(?m)^\s{0,3}#{1,6}\s+", "", html)
     # 残った孤立アスタリスク/見出し記号を掃除
     html = html.replace("**", "")
-    # タイトル見出しがページ<h1>と重複する事故をならす（先頭の<h2>/<h3>が記事タイトルそのものなら落とす）
     return html.strip()
 
 
@@ -64,6 +63,17 @@ def _match_affiliates(topic: str, keyword: str) -> list[dict]:
     return matched[:3]
 
 
+def _default_program(aff: dict) -> list[dict]:
+    """文脈一致が無くても収益機会を取りこぼさないためのデフォルトCTA。
+    experiences（Klookの体験・実在リンク）を1つだけ使う。無効なら空。"""
+    for p in aff.get("programs", []):
+        if p.get("id") == "experiences":
+            url = p.get("url", "")
+            if url and "REPLACE_WITH" not in url and "example.com" not in url:
+                return [p]
+    return []
+
+
 def build_content(topic_item: dict) -> dict:
     cfg = load_settings()
     niche = cfg["niche"]
@@ -71,6 +81,9 @@ def build_content(topic_item: dict) -> dict:
     topic = topic_item["topic"]
     keyword = topic_item.get("primary_keyword", topic)
     matched = _match_affiliates(topic, keyword)
+    # どの記事も最低1つは自然なCTAが入るように（モネタイズの取りこぼし防止）
+    if not matched:
+        matched = _default_program(aff)
     jp = gather_japanese_context(topic, keyword)
     jp_block = ""
     if jp.get("facts"):
@@ -99,21 +112,28 @@ You may naturally reference these affiliate offers where genuinely helpful
 (use the exact placeholder tokens for URLs):
 {aff_block}
 
+VOICE & PERSONALITY (this is the most important rule — most AI travel articles read like a
+robot reciting a brochure; yours must NOT):
+- Write like a warm, funny friend who happens to be a parent and knows Japan. Natural second-person "you" voice. Vary sentence length — some short. Punchy.
+- Land the occasional light, knowing joke about real family-travel moments: the 4am jet-lagged toddler, snacks as a bargaining currency, the stroller-vs-carrier debate, a meltdown in front of a vending machine, "are we there yet" on the Shinkansen. Humour should be gentle, relatable and quick — never snarky, never mean, never forced, and never more than a sentence.
+- Stay honest: do NOT fabricate first-person experiences or claim "we visited/tested". Keep the warmth in second person ("Picture your 3-year-old...") and wry observation, not invented anecdotes.
+- KILL corporate filler. Banned phrases: "the logistics of managing", "can feel daunting", "Understanding ... can significantly ease", "navigating the nuances", "a key consideration", "with careful planning", "ease your travel preparations". If a sentence could appear in any generic brochure, rewrite it with a concrete detail or delete it.
+
 WRITING RULES (critical for quality):
 - Output PURE HTML only. NEVER use Markdown: no **bold**, no ## headings, no "- " bullets, no backticks. Use <strong>, <em>, <h2>/<h3>, <ul><li>, <table> instead. Any asterisks or hashes are a defect.
 - Do NOT repeat the article title as a heading at the start. The page template already shows the title as <h1>. Begin directly with the hook paragraph.
-- Open with a 2-3 sentence HOOK naming the reader's specific worry, then promise the answer. NO generic openers (never start with "Planning a trip to Japan involves...") and NO fluffy conclusions (never end with "With a little preparation...").
+- Open with a 2-3 sentence HOOK that drops the reader into a vivid, specific, slightly funny parent scenario, then promise the answer. NO generic openers (never start with "Planning a trip to Japan involves..." or "When planning a family trip..."), NO definitions, and NO fluffy conclusions.
 - Every section must contain at least one concrete specific (a name, number, price in yen, minutes, kg, station, or rule). Delete any sentence with no specific.
 - Near the top include a short TL;DR <ul> (3-5 bullets). Include at least one HTML <table> for comparison or quick-reference, but keep tables compact (3-5 rows, 2-4 columns) and genuinely scannable — never a giant data dump. Put nuance in prose, not the table.
 - Include an <h2>FAQ</h2> with 5-8 real questions parents search, each with a concise answer. The FAQ and a final one-sentence practical takeaway MUST be present and complete.
-- Where an affiliate offer above is genuinely relevant, insert ONE natural CTA link using its exact token, e.g. <a href='{{aff_ID}}'>book family-friendly experiences</a>. Max 3 links total. Do not invent links that aren't listed.
+- Where an affiliate offer above is genuinely relevant, insert ONE natural CTA link using its exact token, e.g. <a href='{{aff_ID}}'>rent a stroller in Japan</a>. Max 3 links total. Make the anchor text genuinely helpful, not "click here". Do not invent links that aren't listed.
 - If you give a price or opening hours, append "(as of 2026, confirm on the official site)".
 - NEVER write internal notes, TODOs, editorial scaffolding, or placeholder text (e.g. "(placeholder for ...)", "TODO", "insert link here"). The article must read as clean finished prose for parents.
 
 Produce a JSON object with EXACTLY these fields:
 {{
   "article_title": "<SEO title, <=60 chars>",
-  "article_html": "<clean HTML body (NO markdown). 1100-1800 words. Start with the hook (do NOT repeat the title). Then a TL;DR <ul>, then sections each with at least one concrete specific, at least one compact HTML <table>, one natural affiliate CTA where relevant, and an <h2>FAQ</h2> with 5-8 <h3> questions. End with one practical takeaway sentence. Use <a href='{{aff_ID}}'>anchor</a> for affiliate links, max 3.>",
+  "article_html": "<clean HTML body (NO markdown), in a warm/witty/human voice (NOT robotic). 1100-1800 words. Start with a vivid funny hook (do NOT repeat the title). Then a TL;DR <ul>, then sections each with at least one concrete specific, at least one compact HTML <table>, one natural affiliate CTA where relevant, and an <h2>FAQ</h2> with 5-8 <h3> questions. End with one practical takeaway sentence. Use <a href='{{aff_ID}}'>anchor</a> for affiliate links, max 3.>",
   "meta_description": "<=155 chars",
   "pin_title": "<catchy but honest, <=100 chars>",
   "pin_description": "<keyword-rich, 2-3 sentences, <=480 chars, no hashtag spam, max 3 relevant hashtags>",
@@ -183,6 +203,7 @@ def fresh_pin_copy(topic: str, primary_keyword: str, variant: int) -> dict:
     prompt = f"""For an existing article about "{topic}" (keyword: {primary_keyword}),
 write a FRESH Pinterest pin (angle #{variant + 1}, different hook from previous pins).
 Niche: {niche['name']}. Audience: {niche['audience']}. Tone: {niche['tone']}.
+Warm, witty, human voice — a quick relatable parent moment is welcome (never robotic).
 Return ONLY JSON:
 {{"pin_title": "<=100 chars, new angle>",
   "pin_description": "<keyword-rich, 2-3 sentences, <=480 chars, max 3 hashtags>",
