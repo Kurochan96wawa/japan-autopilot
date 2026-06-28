@@ -99,3 +99,8 @@ jp_research:
   enabled: true
   use_grounding: true       # 無料キュレーションで足りなければGemini検索グラウンディングで補完
   min_curated_sources: 2    # これ未満ならグラウンディング補完を試みる
+
+# ③品質ルーブリック（AI自己採点）。基準未満は1回作り直し、再度未満なら公開保留(破棄)。
+quality_rubric:
+  enabled: true
+  min_score: 70        # 100点満点。これ未満は不合格
