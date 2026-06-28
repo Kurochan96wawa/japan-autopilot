@@ -8,6 +8,7 @@
 """
 from __future__ import annotations
 import sys
+import time
 from .util import load_settings, load_affiliates, ensure_dirs, log
 from .state import load_state, save_state, record_post, now_iso
 from . import ideas, content as content_mod, images, site, guards, rubric
@@ -259,7 +260,8 @@ def run_regen() -> None:
             "board_hint": rec.get("board_hint", ""),
         }
         try:
-            c = content_mod.build_content(topic_item)
+            # 一括再生成では日本語グラウンディングを省く（free-tier 429連発回避・呼び出し半減）
+            c = content_mod.build_content(topic_item, research=False)
         except Exception as e:
             log.error("regen失敗(スキップ) %s: %s", slug, e)
             continue
@@ -276,6 +278,8 @@ def run_regen() -> None:
         rec["last_pin_desc"] = c.get("pin_description", rec.get("last_pin_desc", ""))
         n += 1
         log.info("regen: %s 再生成", slug)
+        # RPM平準化のため記事間に小休止（free-tierの瞬間的な429連発を緩和）
+        time.sleep(4)
     site.rebuild_index(state); save_state(state)
     log.info("regen完了: %d記事を正直な文体で再生成", n)
 
