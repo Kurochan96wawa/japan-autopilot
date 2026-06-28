@@ -131,6 +131,7 @@ WRITING RULES (critical for quality):
 - Include an <h2>FAQ</h2> with 5-8 real questions parents search, each with a concise answer. The FAQ and a final one-sentence practical takeaway MUST be present and complete.
 - Where an affiliate offer above is genuinely relevant, insert ONE natural CTA link using its exact token, e.g. <a href='{{aff_ID}}'>rent a stroller in Japan</a>. Max 3 links total. Make the anchor text genuinely helpful, not "click here". Do not invent links that aren't listed.
 - If you give a price or opening hours, append "(as of 2026, confirm on the official site)".
+- YMYL safety: for any health, safety, medical or allergy guidance (allergies, illness, heat/water safety, medication), be careful and non-alarming, avoid definitive medical claims, and tell readers to consult a doctor or official guidance for their child's specific situation.
 - NEVER write internal notes, TODOs, editorial scaffolding, or placeholder text (e.g. "(placeholder for ...)", "TODO", "insert link here"). The article must read as clean finished prose for parents.
 
 Produce a JSON object with EXACTLY these fields:
