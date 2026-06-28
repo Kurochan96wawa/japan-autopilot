@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from urllib.parse import urlparse
 from .util import load_settings, SITE_DIR, log
 from . import images
+from . import linker, eeat, indexnow
 
 BRAND = "littletabi"
 TAGLINE = "Honest, practical guides for families travelling to Japan with kids."
@@ -241,7 +242,27 @@ def _write_seo_files(cfg) -> None:
     (SITE_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
     robots = f"User-agent: *\nAllow: /\n\nSitemap: {base}/sitemap.xml\n"
     (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
-    log.info("sitemap.xml/robots.txt 生成 (%d URL)", len(rows))
+    # AIクローラ向けのサイト要約（AEO: 何を・どんな品質で出しているかを機械可読で提示）
+    llms_txt = (
+        "# littletabi — AI-assisted, regularly updated family-travel guides for Japan\n\n"
+        "> Honest, practical guides for families visiting Japan with kids.\n"
+        "> Written with AI and edited for clarity. Each guide shows a last-updated date.\n"
+        "> Prices and opening hours change — we ask readers to confirm on official sites.\n\n"
+        "## Principles\n"
+        "- We do not fake first-hand experience. We are upfront that guides are AI-assisted.\n"
+        "- Topics: transport, food & allergies, baby gear, itineraries, hotels, eSIM.\n\n"
+        "## Key resources\n"
+        f"- Guides index: {base}/sitemap.xml\n"
+        f"- How we make guides: {base}/how-we-make-guides.html\n"
+        f"- Affiliate disclosure: {base}/disclosure.html\n"
+    )
+    (SITE_DIR / "llms.txt").write_text(llms_txt, encoding="utf-8")
+    # IndexNow 所有確認キーを毎回出力（Bing等への即時通知に使用）
+    try:
+        indexnow.write_key_file(str(SITE_DIR))
+    except Exception as e:
+        log.error("IndexNowキー出力に失敗(続行): %s", e)
+    log.info("sitemap.xml/robots.txt/llms.txt 生成 (%d URL)", len(rows))
 
 
 def _upgrade_seo(cfg) -> None:
@@ -278,6 +299,65 @@ def _upgrade_seo(cfg) -> None:
             txt = txt.replace("</head>", add + "</head>", 1)
             path.write_text(txt, encoding="utf-8")
             log.info("SEO後付け: %s", path.name)
+
+
+def _upgrade_eeat_links(cfg) -> None:
+    """既存記事HTMLに“本文を作り直さずに”次を冪等で後付けする（LLM不要・レート制限回避）:
+    ①関連ガイドの内部リンク ②rel=sponsored ③正直な透明性ノート ④Organization JSON-LD。
+    これで過去記事もコンテンツ再生成なしに改善が反映される。"""
+    base = cfg["site"]["base_url"].rstrip("/")
+    skip = {"index.html", "about.html", "disclosure.html", "privacy.html",
+            "contact.html", "how-we-make-guides.html"}
+    clusters = linker.load_clusters()
+    titles = linker.load_titles()
+    note = eeat.trust_note()
+    for path in SITE_DIR.glob("*.html"):
+        if path.name in skip:
+            continue
+        try:
+            txt = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        slug = path.stem
+        changed = False
+
+        # ① 内部リンク（関連ガイド）を bottom 開示の直前に挿入
+        if 'class="related"' not in txt:
+            links = linker.related(slug, clusters)
+            if links:
+                items = "".join(
+                    f"<li><a href=\"/{s}.html\">{titles.get(s, s.replace('-', ' '))}</a></li>"
+                    for s in links)
+                block = ("<section class=\"related\"><h2>Related guides</h2>"
+                         f"<ul>{items}</ul></section>")
+                if '<div class="disc bottom"' in txt:
+                    txt = txt.replace('<div class="disc bottom"', block + '<div class="disc bottom"', 1)
+                else:
+                    txt = txt.replace("</article>", block + "</article>", 1)
+                changed = True
+
+        # ② 透明性ノートの正直化（旧 <p class="transparency"> を置換 / 無ければ追加）
+        if 'class="verify"' not in txt:
+            if 'class="transparency"' in txt:
+                txt = re.sub(r'<p class="transparency">.*?</p>', note, txt, count=1, flags=re.S)
+            else:
+                txt = txt.replace("</article>", note + "</article>", 1)
+            changed = True
+
+        # ③ Organization JSON-LD（未挿入時のみ）
+        if '"Organization"' not in txt and "</head>" in txt:
+            txt = txt.replace("</head>", eeat.org_jsonld(base) + "</head>", 1)
+            changed = True
+
+        # ④ アフィリリンクに rel=sponsored（冪等）
+        new_txt = eeat.add_rel_to_affiliates(txt)
+        if new_txt != txt:
+            txt = new_txt
+            changed = True
+
+        if changed:
+            path.write_text(txt, encoding="utf-8")
+            log.info("E-E-A-T/内部リンク後付け: %s", path.name)
 
 
 def _header() -> str:
@@ -344,7 +424,7 @@ def _document(lang: str, title_tag: str, head_extra: str, body_inner: str) -> st
         f"{_tpdrive_snippet()}"
         f"<title>{title_tag}</title>\n"
         f"{head_extra}"
-        f"<style>{BASE_CSS}</style>\n"
+        f"<style>{BASE_CSS}{eeat.EEAT_CSS}</style>\n"
         "</head>\n<body>\n"
         f"{_header()}\n"
         f"{body_inner}\n"
@@ -441,10 +521,8 @@ def _article_page(*, lang, title_tag, head_extra, title, category, date_str,
     cat_html = f'<span class="eyebrow">{category}</span>' if category else ""
     top_disc = ('<div class="disc top">This guide may contain affiliate links. If you book or buy '
                 'through them, we may earn a small commission at no extra cost to you.</div>')
-    transparency = ('<p class="transparency">How we create our guides: littletabi guides are '
-                    'researched from public sources and written with AI assistance, then reviewed by '
-                    'our editors in Japan for usefulness and accuracy. Prices, hours and rules change — '
-                    'please confirm details on official sites before you travel.</p>')
+    # 透明性ノートは実態どおり“AI生成・最終更新日・公式で要確認”に正直化（架空の人間レビューは謳わない）
+    transparency = eeat.trust_note()
     body_inner = (
         '<div class="wrap layout">'
         '<main><article class="post">'
@@ -499,9 +577,16 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
     except Exception as e:
         log.error("本文画像の挿入に失敗(無画像で続行): %s", e)
 
+    # 内部リンク（トピッククラスタ）を本文末に付与＝孤立ページ解消・回遊/権威分配
+    try:
+        body_html = linker.inject_links(body_html, slug, linker.load_clusters(), linker.load_titles())
+    except Exception as e:
+        log.error("内部リンク挿入に失敗(続行): %s", e)
+
     # JSON-LD（Article + FAQPage + BreadcrumbList）は本文確定後に組む
     head_extra += _article_jsonld(title, meta, canonical, og_img, date_iso,
                                   category, content.get("article_html", ""), base)
+    head_extra += eeat.org_jsonld(base)   # Organization(任意でPublisher) を全記事に
 
     html = _article_page(
         lang=lang, title_tag=f"{title} | {site_name}", head_extra=head_extra,
@@ -509,6 +594,7 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
         credit_html=credit_html, body_html=body_html,
         disclosure_html=content.get("disclosure", ""), popular=[],
     )
+    html = eeat.add_rel_to_affiliates(html)   # 収益リンクに rel="sponsored" を自動付与
     out = SITE_DIR / f"{slug}.html"
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     out.write_text(html, encoding="utf-8")
@@ -755,9 +841,12 @@ def rebuild_index(state: dict) -> None:
     _static_page("disclosure", lang, f"Affiliate Disclosure | {site_name}", _disclosure_inner())
     _static_page("privacy", lang, f"Privacy Policy | {site_name}", _privacy_inner())
     _static_page("contact", lang, f"Contact | {site_name}", _contact_inner())
+    # 透明性ページ（AI生成であることを正面から説明＝E-E-A-Tと安心を両立）
+    _static_page("how-we-make-guides", lang, f"How We Make These Guides | {site_name}", eeat.HOW_WE_MAKE)
     _write_cname(cfg)
     _migrate_legacy(cfg, popular)
     _upgrade_seo(cfg)          # 既存記事にOG/Twitter/JSON-LDを後付け（冪等）
-    _write_seo_files(cfg)      # sitemap.xml + robots.txt を生成
+    _upgrade_eeat_links(cfg)   # 既存記事に内部リンク/rel=sponsored/透明性/Org schemaを後付け（LLM不要・冪等）
+    _write_seo_files(cfg)      # sitemap.xml + robots.txt + llms.txt を生成
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
     log.info("サイト再生成 (記事%d / featured+grid+sidebar+SEO)", len(posts))
