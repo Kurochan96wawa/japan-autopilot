@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Navigating Japanese Meals with Picky Eaters: Kid-Friendly Dishes & Where to Find Them",
-      "search_intent": "Parents are worried about their children not eating well in Japan or struggling to find appealing food options. They seek practical advice on specific kid-friendly Japanese dishes, common restaurant types suitable for families, and strategies for feeding kids with varying preferences.",
-      "primary_keyword": "kid friendly Japanese food",
-      "board_hint": "Japan Foodie Family Guide"
-    },
-    {
-      "topic": "Diapers, Formula & Baby Gear in Japan: What to Pack, What to Buy",
-      "search_intent": "Parents want to know if they should bring all their baby essentials (like diapers, wipes, specific formula brands) from home, if these items are easily available for purchase in Japan, what local brands are comparable, and if rental options exist for larger baby gear.",
-      "primary_keyword": "diapers Japan travel",
-      "board_hint": "Japan Family Travel Essentials"
-    },
-    {
       "topic": "Staying in a Ryokan with Kids in Japan: Family-Friendly Tips & Etiquette",
       "search_intent": "Parents want to experience a traditional Japanese inn (ryokan) but are unsure if it's suitable or enjoyable with children. They seek practical advice on choosing a ryokan, understanding etiquette, and how to make the experience comfortable and memorable for the whole family.",
       "primary_keyword": "Ryokan with kids Japan",
@@ -732,6 +720,50 @@
       "last_pin_desc": "Navigating gacha gacha machines in Japan with kids? Discover typical prices (300-700 yen), find family-friendly locations like Tokyo Solamachi with nursing rooms, and understand stroller access. A practical guide for parents planning Japan travel. #JapanTravel #FamilyJapan #GachaGacha",
       "repin_times": [],
       "posted_at": "2026-06-28T08:43:50.354298+00:00"
+    },
+    {
+      "topic": "Navigating Japanese Meals with Picky Eaters: Kid-Friendly Dishes & Where to Find Them",
+      "slug": "kid-friendly-japanese-meals-navigating-picky-eaters",
+      "article_title": "Kid-Friendly Japanese Meals: Navigating Picky Eaters",
+      "primary_keyword": "kid friendly Japanese food",
+      "image_query": "Japanese family eating restaurant",
+      "board_hint": "Japan Foodie Family Guide",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/kid-friendly-japanese-meals-navigating-picky-eaters.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/kid-friendly-japanese-meals-navigating-picky-eaters.jpg"
+      ],
+      "img_hashes": [
+        "00fffffff3000000"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan and worried about mealtime? Our guide highlights kid-friendly Japanese dishes, popular family restaurants like Sushiro and Gusto, and crucial information on food allergy labeling. Ensure happy mealtimes for your little ones on your Japanese adventure. #JapanFamilyTravel #PickyEatersJapan #KidFriendlyJapanFood",
+      "repin_times": [],
+      "quality_score": 75,
+      "posted_at": "2026-06-28T10:53:21.718041+00:00"
+    },
+    {
+      "topic": "Diapers, Formula & Baby Gear in Japan: What to Pack, What to Buy",
+      "slug": "diapers-formula-baby-gear-in-japan-what-to-pack-buy",
+      "article_title": "Diapers, Formula & Baby Gear in Japan: What to Pack & Buy",
+      "primary_keyword": "diapers Japan travel",
+      "image_query": "Japanese baby shopping",
+      "board_hint": "Japan Family Travel Essentials",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/diapers-formula-baby-gear-in-japan-what-to-pack-buy.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/diapers-formula-baby-gear-in-japan-what-to-pack-buy.jpg"
+      ],
+      "img_hashes": [
+        "df1fff2f3f3f0000"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan with a baby or toddler can bring questions about essentials. This guide covers everything from finding Japanese diapers and formula to renting or buying strollers and other gear. Discover top stores like Akachan Honpo and Nishimatsuya for all your baby needs. #JapanFamilyTravel #BabyTravelJapan #JapanWithKids",
+      "repin_times": [],
+      "quality_score": 82,
+      "posted_at": "2026-06-28T10:54:02.906214+00:00"
     }
   ],
   "performance": {
@@ -789,6 +821,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 54
+    "llm_calls": 60
   }
 }
