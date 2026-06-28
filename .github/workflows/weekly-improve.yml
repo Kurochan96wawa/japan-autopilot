@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - name: Run improve
+      - name: Run improve + SEO
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -27,11 +27,15 @@ jobs:
           # ④週次PDCA: GA4 Data API のサービスアカウント鍵とプロパティID
           GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-        run: python -m src.main improve
-      - name: Commit strategy update & weekly report
+          # ⑤SEO改善: GSC(Search Console) のサイトURL（ドメインプロパティ）
+          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'sc-domain:littletabi.com' }}
+        run: |
+          python -m src.main improve
+          python -m src.seo
+      - name: Commit strategy/report/SEO changes
         run: |
           git config user.name  "autopilot-bot"
           git config user.email "actions@github.com"
-          git add data/state.json data/weekly_report.md || true
-          git commit -m "chore: weekly PDCA update $(date -u +%F)" || echo "no changes"
+          git add data/state.json data/weekly_report.md docs || true
+          git commit -m "chore: weekly PDCA + SEO update $(date -u +%F)" || echo "no changes"
           git push || echo "push skipped"
