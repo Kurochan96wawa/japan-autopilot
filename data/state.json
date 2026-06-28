@@ -168,6 +168,18 @@
       "search_intent": "Families want to understand if and how they can enjoy a traditional Japanese ryokan experience with their children, including identifying suitable ryokans, navigating etiquette, and preparing for the unique aspects of a ryokan stay.",
       "primary_keyword": "Ryokan with kids Japan",
       "board_hint": "Japan Accommodation for Families"
+    },
+    {
+      "topic": "Navigating Minor Illnesses in Japan with Kids: Clinics, Pharmacies, and Practical Tips for Parents",
+      "search_intent": "Parents traveling to Japan want to know what steps to take if their child becomes unwell, where to find medical help (clinics, hospitals, pharmacies), and how to communicate their child's needs in an unfamiliar healthcare system. They seek practical, actionable advice to prepare for and manage health concerns while abroad.",
+      "primary_keyword": "child illness Japan travel",
+      "board_hint": "Health & Safety, Practical Travel Tips"
+    },
+    {
+      "topic": "Staying in a Ryokan with Kids in Japan: Choosing a Family-Friendly Inn and Etiquette Guide",
+      "search_intent": "Families are interested in experiencing a traditional Japanese ryokan but need guidance on selecting an inn suitable for children, understanding expected etiquette, and knowing what amenities or considerations are important for a comfortable and respectful family stay. They are looking for practical advice on how to integrate this unique cultural experience into their family trip.",
+      "primary_keyword": "ryokan with kids Japan",
+      "board_hint": "Accommodation & Stays, Cultural Experiences"
     }
   ],
   "posted": [
@@ -725,18 +737,46 @@
   "performance": {
     "by_topic": {},
     "by_keyword": {},
-    "notes": []
+    "notes": [],
+    "impression_baseline": 0,
+    "shadowban_paused": false,
+    "pdca_history": [
+      {
+        "at": "2026-06-28T09:13:28.674401+00:00",
+        "ga4": false,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 25,
+          "total": 25
+        },
+        "flagged_fixable": []
+      }
+    ],
+    "pdca": {
+      "at": "2026-06-28T09:13:28.674401+00:00",
+      "ga4": false,
+      "counts": {
+        "winner": 0,
+        "fixable": 0,
+        "loser": 0,
+        "insufficient": 25,
+        "total": 25
+      },
+      "flagged_fixable": []
+    }
   },
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": null
+    "last_updated": "2026-06-28T09:13:28.674146+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 50
+    "llm_calls": 52
   }
 }
