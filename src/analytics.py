@@ -109,7 +109,6 @@ def load_pdca() -> dict:
                 cfg = yaml.safe_load(f) or {}
         except Exception as e:
             log.error("pdca.yaml読込失敗(既定値を使用): %s", e)
-    # 浅いマージ（section単位）
     merged = {k: dict(v) for k, v in _PDCA_DEFAULTS.items()}
     for k, v in (cfg or {}).items():
         if isinstance(v, dict):
@@ -189,7 +188,7 @@ def _classify_one(post: dict, pin_m: dict, ga_m: dict, cl: dict) -> dict:
         "avg_engagement_sec": ga_m["avg_engagement_sec"],
         "label": label,
         "reason": reason,
-        "post": post,  # 内部参照用（レポート/フラグ付けで使用、JSON保存時は落とす）
+        "post": post,
     }
 
 
@@ -281,7 +280,6 @@ def weekly_pdca(state: dict, settings_cfg: dict | None = None) -> dict:
     fixables = [r for r in results if r["label"] == "Fixable"]
     losers = [r for r in results if r["label"] == "Loser"]
 
-    # --- 戦略へ反映（GA4/Pinterestの実測でboost/avoidを補強）---
     strat = state.setdefault("strategy", {})
     fixcfg = pdca["fix"]
     if fixcfg.get("boost_winner_keywords", True):
@@ -296,24 +294,21 @@ def weekly_pdca(state: dict, settings_cfg: dict | None = None) -> dict:
         )
     strat["last_updated"] = now_iso()
 
-    # --- Fixableにフラグ／必要なら本文作り直し対象を抽出 ---
     max_fixes = int(fixcfg.get("max_fixes_per_week", 3))
     targeted = fixables[:max_fixes]
     rewrite_slugs = []
     for r in targeted:
         post = r["post"]
         if fixcfg.get("flag_for_repin", True):
-            post["needs_refresh"] = True   # 日次の再Pinで優先的に新角度を当てるための印
+            post["needs_refresh"] = True
         if fixcfg.get("enabled", True) and fixcfg.get("rewrite_article", False):
             rewrite_slugs.append(r["slug"])
 
-    # --- レポート生成（ファイル＋state履歴）---
     report_md = _write_report(results, strat, pdca, ga_on)
     rep_cfg = pdca["report"]
     if rep_cfg.get("write_markdown", True):
         try:
             rel = rep_cfg.get("path", "data/weekly_report.md")
-            # data/ 配下のみ許可（パス外書き込み防止）。それ以外はDATA_DIR直下に丸める。
             name = rel.split("/")[-1] or "weekly_report.md"
             out_path = DATA_DIR / name
             DATA_DIR.mkdir(parents=True, exist_ok=True)
