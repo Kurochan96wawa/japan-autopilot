@@ -377,11 +377,12 @@ def _footer() -> str:
         '<footer class="site"><div class="wrap">'
         '<div class="cols">'
         '<div class="colbrand"><h5>little<b>tabi</b></h5>'
-        '<p>Independent, research-based travel guides for families visiting Japan, written and edited from Tokyo. '
-        'We are not affiliated with any tourism board or the companies we mention.</p></div>'
+        '<p>Independent, research-based guides for families visiting Japan, written with AI and an automated '
+        'quality process. We are not affiliated with any tourism board or the companies we mention.</p></div>'
         '<div><h5>Explore</h5><ul>'
         '<li><a href="/index.html">Home</a></li>'
         '<li><a href="/about.html">About</a></li>'
+        '<li><a href="/how-we-make-guides.html">How we make our guides</a></li>'
         '<li><a href="/contact.html">Contact</a></li></ul></div>'
         '<div><h5>Legal</h5><ul>'
         '<li><a href="/disclosure.html">Affiliate Disclosure</a></li>'
@@ -624,13 +625,14 @@ def _about_inner() -> str:
         "with their children &mdash; from toddlers to teens. We focus on the practical, parent-specific "
         "questions the big travel sites skip: stroller access, kid-friendly food, getting around with "
         "little ones, what to pack, and staying safe and sane on the road.</p>"
-        "<h2>Based in Japan</h2><p>Unlike many Japan travel sites, littletabi is written and edited from <strong>Tokyo, Japan</strong>. Living here lets us keep details current and, where possible, check them in person &mdash; from which drugstores stock baby formula to how stroller-friendly a station really is.</p>"
         "<h2>How we create our guides</h2>"
-        "<p>Our guides are researched from public sources and written with the help of AI, then reviewed "
-        "by our editors in Japan for usefulness, clarity and accuracy. We aim to be specific and honest &mdash; "
-        "never clickbait, and we don't claim first-hand experiences we haven't had. Because details like "
-        "prices, opening hours and rules change often, please always confirm the latest information on "
-        "official websites before you travel.</p>"
+        "<p>We are upfront about how littletabi works: our guides are written with AI and an automated "
+        "quality process, drawing on publicly available information about Japan. We do <strong>not</strong> "
+        "claim to have personally visited every place, and we never invent first-hand stories. Instead we "
+        "focus on being specific, useful and honest, and on keeping information current &mdash; each guide "
+        "shows a last-updated date. Because details like prices, opening hours and rules change often, "
+        "please always confirm the latest information on official websites before you travel. "
+        "<a href=\"/how-we-make-guides.html\">Read more about how we make these guides</a>.</p>"
         "<h2>Independence &amp; funding</h2>"
         "<p>littletabi is not affiliated with any government tourism organisation or the businesses we "
         'mention. Some of our links are affiliate links, which help keep the site free &mdash; see our '
