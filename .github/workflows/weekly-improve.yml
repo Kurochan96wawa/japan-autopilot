@@ -1,6 +1,6 @@
 name: weekly-improve
 
-# 毎週月曜 21:00 UTC（火 6:00 JST）に成果分析→戦略更新
+# 毎週月曜 21:00 UTC（火 6:00 JST）に成果分析→戦略更新→週次PDCA(GA4×Pinterest)
 on:
   schedule:
     - cron: "0 21 * * 1"
@@ -24,11 +24,14 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          # ④週次PDCA: GA4 Data API のサービスアカウント鍵とプロパティID
+          GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
         run: python -m src.main improve
-      - name: Commit strategy update
+      - name: Commit strategy update & weekly report
         run: |
           git config user.name  "autopilot-bot"
           git config user.email "actions@github.com"
-          git add data/state.json || true
-          git commit -m "chore: weekly strategy update $(date -u +%F)" || echo "no changes"
+          git add data/state.json data/weekly_report.md || true
+          git commit -m "chore: weekly PDCA update $(date -u +%F)" || echo "no changes"
           git push || echo "push skipped"
