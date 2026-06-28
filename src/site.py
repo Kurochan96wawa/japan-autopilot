@@ -784,6 +784,60 @@ def _migrate_legacy(cfg: dict, popular: list) -> None:
         log.info("legacy記事を新レイアウトに移行: %s", path.name)
 
 
+# カテゴリ（クラスタ）ハブ。トピッククラスタごとに一覧ランディングを作り、回遊と主題権威を強化。
+CLUSTER_META = {
+    "transport": ("Getting Around Japan with Kids",
+                  "Trains, the Japan Rail Pass, strollers, car seats and day trips — how to move around Japan with little ones."),
+    "food": ("Eating in Japan with Kids",
+             "Kid-friendly meals, food allergies, sushi, ramen, themed cafes and konbini snacks for picky eaters."),
+    "baby": ("Babies & Toddlers in Japan",
+             "Diapers, formula, baby carriers, what to pack and beating jet lag with the littlest travellers."),
+    "accommodation": ("Where to Stay in Japan with Kids",
+                      "Family hotels with connecting rooms, ryokan and family-friendly onsen that work for kids."),
+    "attractions": ("Things to Do in Japan with Kids",
+                    "Disney, Universal, Nara's deer, gacha and seasonal tips for family-friendly fun."),
+    "practical": ("Japan Trip Planning for Families",
+                  "Money and budgeting, essential Japanese phrases and itineraries for your family trip."),
+}
+
+
+def _hub_slug(name: str) -> str:
+    return f"japan-with-kids-{name}"
+
+
+def _build_hubs(clusters: dict, slug_to_post: dict, lang: str, site_name: str) -> list:
+    """各クラスタのハブ（カテゴリ一覧）ページを生成して [(hub_slug, hub_title)] を返す。"""
+    hubs = []
+    for name, c in (clusters or {}).items():
+        title_h, intro = CLUSTER_META.get(name, (name.replace("-", " ").title(), TAGLINE))
+        order = [c.get("pillar")] + [s for s in c.get("members", []) or [] if s != c.get("pillar")]
+        members = [slug_to_post[s] for s in order if s in slug_to_post]
+        if not members:
+            continue
+        cards = "".join(
+            '<article class="card">'
+            f'<a class="ph" href="/{p["slug"]}.html"><img src="{_thumb(p)}" alt="{p["article_title"]}"></a>'
+            '<div class="body">'
+            f'<h3><a href="/{p["slug"]}.html">{p["article_title"]}</a></h3>'
+            f'<p>{_excerpt(p)}</p></div></article>'
+            for p in members
+        )
+        inner = (f"<h1>{title_h}</h1><p>{intro}</p>"
+                 f'<div class="grid">{cards}</div>')
+        _static_page(_hub_slug(name), lang, f"{title_h} | {site_name}", inner)
+        hubs.append((_hub_slug(name), title_h))
+    return hubs
+
+
+def _topics_block(hubs: list) -> str:
+    """ホームページ用の『トピックで探す』導線（ハブへのリンク群）。"""
+    if not hubs:
+        return ""
+    items = "".join(f'<li><a href="/{s}.html">{t}</a></li>' for s, t in hubs)
+    return ('<div class="wrap"><h2 class="sec-title">Browse by topic</h2>'
+            f'<div class="widget"><ul class="topics">{items}</ul></div></div>')
+
+
 def rebuild_index(state: dict) -> None:
     cfg = load_settings()
     base = cfg["site"]["base_url"].rstrip("/")
@@ -792,6 +846,8 @@ def rebuild_index(state: dict) -> None:
     posts = [p for p in reversed(state.get("posted", [])[-200:])
              if p.get("slug") and p.get("article_title")]
     popular = [(p["slug"], p["article_title"]) for p in posts[:6]]
+    slug_to_post = {p["slug"]: p for p in posts}
+    hubs = _build_hubs(linker.load_clusters(), slug_to_post, lang, site_name)
 
     if posts:
         f = posts[0]
@@ -826,6 +882,7 @@ def rebuild_index(state: dict) -> None:
 
     body_inner = (
         f'<div class="wrap">{feat}</div>'
+        f'{_topics_block(hubs)}'
         '<div class="wrap layout">'
         f'<main>{grid}</main>'
         f'{_sidebar(popular)}'
