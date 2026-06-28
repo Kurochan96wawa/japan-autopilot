@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Best Themed Cafes in Tokyo for Families: Beyond the Typical Maid Cafe",
-      "search_intent": "Parents are looking for unique, fun, and genuinely child-appropriate themed dining experiences in Tokyo that are not overly niche or adult-oriented.",
-      "primary_keyword": "themed cafes Tokyo family friendly",
-      "board_hint": "Tokyo with Kids | Eating in Japan"
-    },
-    {
-      "topic": "Gacha Gacha Machines in Japan: A Parent's Guide to Fun and Fair Play",
-      "search_intent": "Parents want to understand and manage their kids' interest in gacha machines, possibly finding specific locations or tips for responsible enjoyment.",
-      "primary_keyword": "gacha gacha Japan kids",
-      "board_hint": "Fun & Souvenirs | Cultural Quirks"
-    },
-    {
       "topic": "Navigating Japanese Meals with Picky Eaters: Kid-Friendly Dishes & Where to Find Them",
       "search_intent": "Parents are worried about their children not eating well in Japan or struggling to find appealing food options. They seek practical advice on specific kid-friendly Japanese dishes, common restaurant types suitable for families, and strategies for feeding kids with varying preferences.",
       "primary_keyword": "kid friendly Japanese food",
@@ -168,6 +156,18 @@
       "search_intent": "Parents are looking for a variety of engaging, often screen-free, ideas and strategies to keep their children entertained and content during extended travel periods, such as international flights, Shinkansen trips, and waiting times in Japan.",
       "primary_keyword": "kids travel activities Japan",
       "board_hint": "Family Travel Tips Japan, Kid-Friendly Japan Activities"
+    },
+    {
+      "topic": "Essential Packing List for Japan with Kids: From Comfort to Convenience",
+      "search_intent": "Parents need a comprehensive and practical checklist of items to pack for their children when traveling to Japan, covering clothing, health, entertainment, and other travel essentials specific to the Japanese environment and family travel needs.",
+      "primary_keyword": "Japan packing list kids",
+      "board_hint": "Japan Travel Planning for Families"
+    },
+    {
+      "topic": "Experiencing a Ryokan with Kids: A Guide to Family-Friendly Stays in Japan",
+      "search_intent": "Families want to understand if and how they can enjoy a traditional Japanese ryokan experience with their children, including identifying suitable ryokans, navigating etiquette, and preparing for the unique aspects of a ryokan stay.",
+      "primary_keyword": "Ryokan with kids Japan",
+      "board_hint": "Japan Accommodation for Families"
     }
   ],
   "posted": [
@@ -676,6 +676,50 @@
       "last_pin_desc": "Visiting Nara Deer Park with kids? Learn crucial safety tips for interacting with the deer, practical advice on stroller use, and details on family-friendly amenities. Discover admission prices and opening hours for top attractions like Todai-ji Temple and Nara National Museum. Make your Japan family vacation memorable and stress-free. #JapanTravelKids #NaraDeerPark #FamilyTravelJapan",
       "repin_times": [],
       "posted_at": "2026-06-27T08:20:41.957342+00:00"
+    },
+    {
+      "topic": "Best Themed Cafes in Tokyo for Families: Beyond the Typical Maid Cafe",
+      "slug": "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
+      "article_title": "Tokyo's Best Themed Cafes for Families (Beyond Maid Cafes)",
+      "primary_keyword": "themed cafes Tokyo family friendly",
+      "image_query": "Tokyo themed cafe kids",
+      "board_hint": "Tokyo with Kids | Eating in Japan",
+      "affiliates_used": [],
+      "has_affiliate": false,
+      "url": "https://littletabi.com/tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes.jpg"
+      ],
+      "img_hashes": [
+        "ffff80d39f020000"
+      ],
+      "last_pin_desc": "Explore Tokyo's top kid-friendly themed cafes, from Pokémon to Sanrio and Moomin. Get practical tips on reservations, allergies, and stroller access for a stress-free family adventure in Japan. #TokyoWithKids #JapanFamilyTravel #ThemedCafes",
+      "repin_times": [],
+      "posted_at": "2026-06-28T08:36:55.315672+00:00"
+    },
+    {
+      "topic": "Gacha Gacha Machines in Japan: A Parent's Guide to Fun and Fair Play",
+      "slug": "gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play",
+      "article_title": "Gacha Gacha in Japan: A Parent's Guide to Fun & Fair Play",
+      "primary_keyword": "gacha gacha Japan kids",
+      "image_query": "Japanese gacha machines kids",
+      "board_hint": "Fun & Souvenirs | Cultural Quirks",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play.jpg"
+      ],
+      "img_hashes": [
+        "ffc3817fff900000"
+      ],
+      "last_pin_desc": "Navigating gacha gacha machines in Japan with kids? Discover typical prices (300-700 yen), find family-friendly locations like Tokyo Solamachi with nursing rooms, and understand stroller access. A practical guide for parents planning Japan travel. #JapanTravel #FamilyJapan #GachaGacha",
+      "repin_times": [],
+      "posted_at": "2026-06-28T08:43:50.354298+00:00"
     }
   ],
   "performance": {
@@ -693,6 +737,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 47
+    "llm_calls": 50
   }
 }
