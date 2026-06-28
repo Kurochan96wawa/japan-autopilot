@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Staying in a Ryokan with Kids in Japan: Family-Friendly Tips & Etiquette",
-      "search_intent": "Parents want to experience a traditional Japanese inn (ryokan) but are unsure if it's suitable or enjoyable with children. They seek practical advice on choosing a ryokan, understanding etiquette, and how to make the experience comfortable and memorable for the whole family.",
-      "primary_keyword": "Ryokan with kids Japan",
-      "board_hint": "Japan Family Stays | Japan Accommodation for Kids"
-    },
-    {
-      "topic": "Rainy Day Activities in Japan with Kids: Fun Indoor Spots & Ideas for Families",
-      "search_intent": "Parents planning a trip to Japan are looking for backup indoor activities to keep their children entertained during unexpected bad weather, or when they need a break from outdoor sightseeing, seeking specific, engaging options beyond common tourist attractions.",
-      "primary_keyword": "Rainy day activities Japan kids",
-      "board_hint": "Japan Family Fun | Kids Activities Japan | Japan Travel Planning"
-    },
-    {
       "topic": "Navigating Shinkansen Oversized Baggage Rules: How to Reserve Bullet Train Seats for Families with Strollers",
       "search_intent": "Understand how to book specific seats on Japanese bullet trains that accommodate both large luggage and strollers under the current reservation rules.",
       "primary_keyword": "Shinkansen stroller reservation",
@@ -168,6 +156,18 @@
       "search_intent": "Families are interested in experiencing a traditional Japanese ryokan but need guidance on selecting an inn suitable for children, understanding expected etiquette, and knowing what amenities or considerations are important for a comfortable and respectful family stay. They are looking for practical advice on how to integrate this unique cultural experience into their family trip.",
       "primary_keyword": "ryokan with kids Japan",
       "board_hint": "Accommodation & Stays, Cultural Experiences"
+    },
+    {
+      "topic": "Navigating Healthcare in Japan with Kids: A Parent's Guide to Clinics, Pharmacies, and Emergencies",
+      "search_intent": "Parents want clear, practical information on accessing medical services for their children in Japan, including what to expect from clinics and pharmacies, understanding common medications, and steps for emergencies. They seek reassurance and preparation for health-related situations during their family trip.",
+      "primary_keyword": "healthcare Japan with kids",
+      "board_hint": "Japan Travel Logistics, Family Safety in Japan"
+    },
+    {
+      "topic": "Engaging Kids in Japanese Culture: Practical Tips for Temple Visits, Traditional Crafts, and Family-Friendly Etiquette",
+      "search_intent": "Parents are looking for actionable advice on how to introduce their children to authentic Japanese cultural experiences (such as visiting temples, engaging in craft workshops, or participating in local customs) respectfully and enjoyably. They seek guidance on cultural etiquette relevant to families.",
+      "primary_keyword": "Japanese culture kids Japan",
+      "board_hint": "Japan Cultural Experiences, Kid-Friendly Japan Activities"
     }
   ],
   "posted": [
@@ -764,6 +764,30 @@
       "repin_times": [],
       "quality_score": 82,
       "posted_at": "2026-06-28T10:54:02.906214+00:00"
+    },
+    {
+      "topic": "Staying in a Ryokan with Kids in Japan: Family-Friendly Tips & Etiquette",
+      "slug": "staying-in-a-ryokan-with-kids-family-friendly-japan-tips",
+      "article_title": "Staying in a Ryokan with Kids: Family-Friendly Japan Tips",
+      "primary_keyword": "Ryokan with kids Japan",
+      "image_query": "Japanese ryokan family kids",
+      "board_hint": "Japan Family Stays | Japan Accommodation for Kids",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/staying-in-a-ryokan-with-kids-family-friendly-japan-tips.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/staying-in-a-ryokan-with-kids-family-friendly-japan-tips.jpg"
+      ],
+      "img_hashes": [
+        "3bffcffef8000000"
+      ],
+      "last_pin_desc": "Planning a ryokan stay in Japan with your children? Discover essential family-friendly tips on child pricing, allergy accommodations, and booking strategies. Make your traditional Japanese inn experience memorable and stress-free with our expert guide. #JapanFamilyTravel #RyokanWithKids #JapanWithKids",
+      "repin_times": [],
+      "quality_score": 75,
+      "posted_at": "2026-06-28T11:33:57.471404+00:00"
     }
   ],
   "performance": {
@@ -821,6 +845,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 60
+    "llm_calls": 66
   }
 }
