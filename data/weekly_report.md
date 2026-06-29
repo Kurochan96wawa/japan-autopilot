@@ -1,6 +1,6 @@
 # 週次PDCAレポート 2026-06-29
 
-- GA4: 未接続（鍵未登録のためPinterest指標のみで判定） / 集計期間: 直近28日
+- GA4: 利用可 / 集計期間: 直近28日
 - 対象記事: 30件 （Winner 0 / Fixable 0 / Loser 0 / データ不足 30）
 
 ## Winners（伸びている → 横展開）
@@ -17,6 +17,10 @@
 
 ## データ不足（新しすぎ・判定保留）
 もう1〜2週ようすを見る。
+- **Kid-Friendly Japanese Meals: Navigating Picky Eaters** — PV 3, outbound 0 (CTR 0.0%), imp 0  `kid-friendly-japanese-meals-navigating-picky-eaters`
+- **Diapers, Formula & Baby Gear in Japan (2026)** — PV 2, outbound 0 (CTR 0.0%), imp 0  `diapers-formula-baby-gear-in-japan-what-to-pack-buy`
+- **Staying in a Ryokan with Kids in Japan (2026)** — PV 2, outbound 0 (CTR 0.0%), imp 0  `staying-in-a-ryokan-with-kids-family-friendly-japan-tips`
+- **Gacha Gacha in Japan: A Parent's Guide to Fun & Fair Play** — PV 1, outbound 0 (CTR 0.0%), imp 0  `gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play`
 - **Stroller-Friendly Tokyo: Family Travel Tips for 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `stroller-friendly-tokyo-navigating-the-city-with-kids`
 - **Japan Rail Pass with Kids: Worth It in 2026?** — PV 0, outbound 0 (CTR 0.0%), imp 0  `japan-rail-pass-with-kids-is-it-worth-it-for-families`
 - **Navigating Food Allergies in Japan with Kids (2026)** — PV 0, outbound 0 (CTR 0.0%), imp 0  `navigating-food-allergies-in-japan-with-kids-a-guide`
@@ -28,10 +32,6 @@
 - **Renting a Car in Japan with Car Seats: Family Tips for 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `renting-a-car-in-japan-with-car-seats-family-travel-guide`
 - **Exploring Kyoto with a Stroller in 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `kyoto-with-a-stroller-accessible-routes-kid-friendly-spots`
 - **Budget-Friendly Family Meals in Japan (2026)** — PV 0, outbound 0 (CTR 0.0%), imp 0  `budget-family-meals-in-japan-where-to-eat-with-kids`
-- **Day Trips from Tokyo with Kids: Family Fun in 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `family-day-trips-from-tokyo-kid-friendly-escapes`
-- **Best Convenience Store Snacks for Kids in Japan (2026)** — PV 0, outbound 0 (CTR 0.0%), imp 0  `japan-konbini-snacks-for-picky-eaters-kid-approved`
-- **Navigating Japan's Public Transport with Kids in 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `japan-public-transport-with-kids-fares-strollers-facilities`
-- **Kid-Friendly Sushi in Japan (2026): A Parent's Guide** — PV 0, outbound 0 (CTR 0.0%), imp 0  `kid-friendly-sushi-in-japan-a-guide-for-young-palates`
 
 ## 戦略アップデート
 - boost_keywords: []
