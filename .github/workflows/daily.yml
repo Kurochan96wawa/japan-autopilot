@@ -55,6 +55,9 @@ jobs:
       - name: Refresh lead-magnet (PDF + signup forms, idempotent)
         run: python -m src.leadmagnet
 
+      - name: SEO fixups (canonical consolidation + hub enrichment, idempotent)
+        run: python -m src.seo_fixups
+
       - name: Commit results (state + site)
         run: |
           git config user.name  "autopilot-bot"
