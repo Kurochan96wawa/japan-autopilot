@@ -3,6 +3,7 @@
   python -m src.main improve  → 週次: 成果集計→戦略更新→週次PDCA(GA4×Pinterest)→shadowban監視
   python -m src.main dry      → APIに投げず動作確認（生成とサイトのみ）
   python -m src.main regen    → 既存記事を現行プロンプト/テンプレで再生成（URL維持・SNS投稿なし）
+  python -m src.main rebuild  → LLM不要。サイト再生成＋既存ページへSEO/EEATバックフィルのみ反映
 
 全工程に guards.py の安全装置を通す（落とし穴対策。詳細 PITFALLS.md）。
 """
@@ -337,6 +338,17 @@ def _rewrite_fixable(state, cfg, slugs) -> int:
     return n
 
 
+def run_rebuild() -> None:
+    """LLMを一切呼ばずにサイトを再生成するだけのモード（無料・無リスク）。
+    site.rebuild_index が既存docs/全ページへ内部リンク/rel=sponsored/透明性ノート/Org schema/
+    カテゴリハブ/sitemap/llms.txt/IndexNowキー を冪等で後付けする。レート制限と無関係に、
+    構造的なSEO/E-E-A-T改善を即座に本番反映するための安全弁。"""
+    cfg = load_settings(); ensure_dirs(); state = load_state()
+    site.rebuild_index(state); save_state(state)
+    _ping_indexnow(state, cfg, all_urls=True)
+    log.info("rebuild完了: サイト再生成＋既存ページへバックフィル（LLM未使用）")
+
+
 def run_improve() -> None:
     cfg = load_settings(); ensure_dirs(); state = load_state()
     rows = analytics.collect_metrics(state)
@@ -375,8 +387,10 @@ if __name__ == "__main__":
         run_daily(dry=True)
     elif mode == "regen":
         run_regen()
+    elif mode == "rebuild":
+        run_rebuild()
     elif mode == "improve":
         run_improve()
     else:
-        print("usage: python -m src.main [daily|dry|regen|improve]")
+        print("usage: python -m src.main [daily|dry|regen|rebuild|improve]")
         sys.exit(1)
