@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Hands-Free Travel in Japan: Using Luggage Forwarding Services with Kids",
-      "search_intent": "Parents want to know how to manage luggage easily, avoid carrying it on crowded trains, and send it ahead. They are looking for practical solutions to lighten their load while traveling between cities, making the journey less stressful with children.",
-      "primary_keyword": "Japan luggage forwarding family",
-      "board_hint": "Japan Travel Logistics, Family Travel Hacks Japan"
-    },
-    {
-      "topic": "Engaging Museums in Japan for Kids (Beyond Ghibli): Interactive Fun for All Ages",
-      "search_intent": "Parents are looking for cultural or educational activities in Japan that are specifically designed to keep children engaged and entertained, offering alternatives or complementary experiences to major theme parks or popular anime museums. They want practical recommendations for museums that cater to different age groups and interests.",
-      "primary_keyword": "kid friendly museums Japan",
-      "board_hint": "Japan Family Activities, Kid-Friendly Japan Itineraries"
-    },
-    {
       "topic": "Navigating Japan's Public Transport with Kids: A Guide to IC Cards, Subways, and Buses",
       "search_intent": "Parents need practical, clear guidance on using Japan's public transportation network with children, including how to purchase and use IC cards (like Suica or Pasmo), understand subway and bus systems, and manage fares for different age groups to ensure smooth and stress-free travel.",
       "primary_keyword": "Japan public transport kids",
@@ -931,6 +919,31 @@
       "is_money_page": true,
       "quality_score": 70,
       "posted_at": "2026-06-29T05:23:16.760527+00:00"
+    },
+    {
+      "topic": "Hands-Free Travel in Japan: Using Luggage Forwarding Services with Kids",
+      "slug": "hands-free-travel-in-japan-with-kids-2026",
+      "article_title": "Hands-Free Travel in Japan with Kids (2026)",
+      "primary_keyword": "Japan luggage forwarding family",
+      "image_query": "family traveling Japan",
+      "board_hint": "Japan Travel Logistics, Family Travel Hacks Japan",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/hands-free-travel-in-japan-with-kids-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/hands-free-travel-in-japan-with-kids-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "fe3c81000000f6ff"
+      ],
+      "last_pin_desc": "Explore family travel tips for Japan! Learn how luggage forwarding services can lighten your load while visiting kid-friendly attractions.",
+      "repin_times": [],
+      "quality_score": 82,
+      "posted_at": "2026-06-29T14:01:15.837996+00:00"
     }
   ],
   "performance": {
@@ -1024,6 +1037,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 135
+    "llm_calls": 142
   }
 }
