@@ -11,6 +11,8 @@
   * 固有名詞は捏造しない。実在が確認できたもののみ記載し、容量/価格/部屋タイプは「公式で確認」と明記。
   * アフィリンクは Booking(=Travelpayoutsスクリプトが自動アフィリ化) / Klook。rel="sponsored nofollow noopener"。
 
+#4（dataviz前面＋透明性）も同ファイルで後段冪等適用する。
+
 実行: `python -m src.quality_fixups`（daily.yml / extras.yml の task=quality_fixups から）。
 """
 from __future__ import annotations
@@ -368,15 +370,85 @@ def _ensure_sitemap_tool() -> int:
     return 0
 
 
+# ============================================================
+# #4 独自図(dataviz)を前面へ＋冒頭に正直な透明性ストリップ
+# ============================================================
+# 監査#4: ストック写真クレジットが冒頭・独自図が下＝「行った人」感が無く信頼に天井。
+# 対処: ①datavizの独自図を byline 直後（写真より前）へ前出し ②byline直後に正直な透明性ノート。
+# 架空の人間著者は作らない方針は維持し、"AI生成・公式照合・未訪問"を正直に明記する。
+_TRUST_STRIP = (
+    '<p id="trust-strip" class="trust-strip" style="margin:.4em 0 1.1em;padding:.55em .85em;'
+    'background:#fff0f6;border:1px solid #ffe0ee;border-radius:10px;font-size:.86rem;color:#6b7280">'
+    'AI-assisted guide, fact-checked against official and primary sources &mdash; not a sponsored stay. '
+    'We don&rsquo;t claim to have personally visited every place; we verify details, cite official sites, '
+    'and flag anything you should confirm before you go. '
+    '<a href="/how-we-make-guides.html">How we make these guides &rarr;</a></p>'
+)
+
+_BYLINE_RE = re.compile(r'<p[^>]*class="byline"[^>]*>.*?</p>', re.S)
+_DV_FIG_RE = re.compile(r'<figure[^>]*class="[^"]*dataviz[^"]*"[^>]*>.*?</figure>', re.S)
+_DV_FIG_SVG_RE = re.compile(r'<figure[^>]*>(?:(?!</figure>).)*?<svg.*?</figure>', re.S)
+_PHOTO_FIG_RE = re.compile(r'<figure[^>]*>(?:(?!</figure>).)*?Pexels.*?</figure>', re.S)
+
+
+def _hoist_dataviz(html: str):
+    """独自図(dataviz)をストック写真より前（byline直後）へ移動。冪等（既に前なら何もしない）。"""
+    mb = _BYLINE_RE.search(html)
+    if not mb:
+        return html, False
+    mdv = _DV_FIG_RE.search(html) or _DV_FIG_SVG_RE.search(html)
+    mph = _PHOTO_FIG_RE.search(html)
+    if not mdv or not mph:
+        return html, False
+    if mdv.start() < mph.start():  # 既に写真より前＝冪等
+        return html, False
+    fig = mdv.group(0)
+    html = html[:mdv.start()] + html[mdv.end():]   # 元位置から除去
+    at = mb.end()                                   # byline直後へ挿入（bylineは両者より前なので位置不変）
+    return html[:at] + fig + html[at:], True
+
+
+def _inject_trust_strip(html: str):
+    """byline直後に正直な透明性ストリップを挿入。冪等（id重複回避）。"""
+    if 'id="trust-strip"' in html:
+        return html, False
+    mb = _BYLINE_RE.search(html)
+    if not mb:
+        return html, False
+    at = mb.end()
+    return html[:at] + _TRUST_STRIP + html[at:], True
+
+
+def _front_trust_and_dataviz() -> dict:
+    hoisted = 0
+    stripped = 0
+    for path in SITE_DIR.glob("*.html"):
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        orig = html
+        html, h = _hoist_dataviz(html)
+        html, s = _inject_trust_strip(html)
+        if html != orig:
+            path.write_text(html, encoding="utf-8")
+            hoisted += 1 if h else 0
+            stripped += 1 if s else 0
+            log.info("quality_fixups: #4 %s (dataviz前面=%s 透明性=%s)", path.stem, h, s)
+    return {"dataviz_hoisted": hoisted, "trust_strip": stripped}
+
+
 def run() -> dict:
     m = _inject_money_picks()
     t = _build_allergy_tool()
     a = _inject_allergy_inline()
     b = _strip_offtopic_bullets()
     s = _ensure_sitemap_tool()
-    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d",
-             m, t, a, b, s)
-    return {"money_picks": m, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s}
+    f = _front_trust_and_dataviz()
+    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d",
+             m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"])
+    return {"money_picks": m, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
+            "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"]}
 
 
 def main() -> None:
