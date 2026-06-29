@@ -176,47 +176,4 @@ Return ONLY the JSON."""
         live = [m for m in matched if m.get("url") and "REPLACE_WITH" not in m["url"]]
         has_link = any(m["url"] in html_now for m in live)
         if live and not has_link:
-            m0 = live[0]
-            cta = (
-                '<p style="background:#fff0f6;border:1px solid #ffe0ee;border-radius:12px;'
-                'padding:14px 16px;margin:1.6em 0">'
-                f'<a href="{m0["url"]}" rel="nofollow sponsored noopener" target="_blank">'
-                f'<strong>{m0.get("cta", "See family-friendly options")} →</strong></a></p>'
-            )
-            if "<h2>FAQ" in html_now:
-                data["article_html"] = html_now.replace("<h2>FAQ", cta + "<h2>FAQ", 1)
-            else:
-                data["article_html"] = html_now + cta
-
-    data["disclosure"] = aff.get("disclosure", "")
-    data["jp_sources"] = jp.get("sources", [])
-    data["topic"] = topic
-    data["primary_keyword"] = keyword
-    data["board_hint"] = topic_item.get("board_hint", "")
-    data["affiliates_used"] = [m["id"] for m in matched]
-    data["has_affiliate"] = bool(matched)
-    log.info("コンテンツ生成完了: %s (aff=%s)", topic, data["affiliates_used"])
-    return data
-
-
-def fresh_pin_copy(topic: str, primary_keyword: str, variant: int) -> dict:
-    """既存記事を再Pinするとき用の“新しい文面・新しい画像クエリ”を生成。
-    同じ記事でも切り口を変えることで Fresh Pin として扱われる。"""
-    cfg = load_settings()
-    niche = cfg["niche"]
-    prompt = f"""For an existing article about "{topic}" (keyword: {primary_keyword}),
-write a FRESH Pinterest pin (angle #{variant + 1}, different hook from previous pins).
-Niche: {niche['name']}. Audience: {niche['audience']}. Tone: {niche['tone']}.
-Warm, witty, human voice — a quick relatable parent moment is welcome (never robotic).
-Return ONLY JSON:
-{{"pin_title": "<=100 chars, new angle>",
-  "pin_description": "<keyword-rich, 2-3 sentences, <=480 chars, max 3 hashtags>",
-  "overlay_text": "<=40 chars punchy text for the image>",
-  "image_query": "<2-4 word Pexels query, different scene if possible>"}}"""
-    try:
-        d = generate(prompt, as_json=True)
-        return d
-    except Exception as e:
-        log.error("fresh_pin_copy失敗: %s", e)
-        return {"pin_title": topic, "pin_description": topic,
-                "overlay_text": topic[:40], "image_query": "Japan family travel"}
+        
