@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Navigating Shinkansen Oversized Baggage Rules: How to Reserve Bullet Train Seats for Families with Strollers",
-      "search_intent": "Understand how to book specific seats on Japanese bullet trains that accommodate both large luggage and strollers under the current reservation rules.",
-      "primary_keyword": "Shinkansen stroller reservation",
-      "board_hint": "Japan Travel Logistics & Transport"
-    },
-    {
-      "topic": "Buying Baby Diapers, Wipes, and Formula in Japan: A Practical Guide to Drugstores, Sizes, and Translations",
-      "search_intent": "Find out where to purchase baby essentials in Japan, decode local packaging sizes, and locate specialized baby retailers like Akachan Honpo.",
-      "primary_keyword": "buying diapers in Japan",
-      "board_hint": "Japan with Babies & Toddlers"
-    },
-    {
       "topic": "Hands-Free Travel in Japan: Using Luggage Forwarding Services with Kids",
       "search_intent": "Parents want to know how to manage luggage easily, avoid carrying it on crowded trains, and send it ahead. They are looking for practical solutions to lighten their load while traveling between cities, making the journey less stressful with children.",
       "primary_keyword": "Japan luggage forwarding family",
@@ -819,6 +807,55 @@
       "repin_times": [],
       "quality_score": 75,
       "posted_at": "2026-06-28T11:33:57.471404+00:00"
+    },
+    {
+      "topic": "Navigating Shinkansen Oversized Baggage Rules: How to Reserve Bullet Train Seats for Families with Strollers",
+      "slug": "shinkansen-oversized-baggage-rules-for-families-in-2026",
+      "article_title": "Shinkansen Oversized Baggage Rules for Families in 2026",
+      "primary_keyword": "Shinkansen stroller reservation",
+      "image_query": "Japan Shinkansen family travel",
+      "board_hint": "Japan Travel Logistics & Transport",
+      "affiliates_used": [
+        "regional_pass",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/shinkansen-oversized-baggage-rules-for-families-in-2026.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/shinkansen-oversized-baggage-rules-for-families-in-2026.jpg"
+      ],
+      "img_hashes": [
+        "071ffff840000000"
+      ],
+      "last_pin_desc": "Discover essential tips for families traveling on the Shinkansen with strollers in Japan. Learn about oversized baggage rules, seat reservations, and family-friendly amenities at stations. Make your journey smooth and enjoyable with our practical guide. #JapanTravel #FamilyTravel #Shinkansen",
+      "repin_times": [],
+      "quality_score": 81,
+      "posted_at": "2026-06-29T04:07:59.637919+00:00"
+    },
+    {
+      "topic": "Buying Baby Diapers, Wipes, and Formula in Japan: A Practical Guide to Drugstores, Sizes, and Translations",
+      "slug": "buying-baby-diapers-wipes-and-formula-in-japan-2026",
+      "article_title": "Buying Baby Diapers, Wipes, and Formula in Japan (2026)",
+      "primary_keyword": "buying diapers in Japan",
+      "image_query": "Japan baby shopping",
+      "board_hint": "Japan with Babies & Toddlers",
+      "affiliates_used": [
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/buying-baby-diapers-wipes-and-formula-in-japan-2026.html",
+      "pins_count": 1,
+      "image_variants": [
+        "img/buying-baby-diapers-wipes-and-formula-in-japan-2026.jpg"
+      ],
+      "img_hashes": [
+        "c7ff0f3f3c000800"
+      ],
+      "last_pin_desc": "Traveling with kids? Find out where to buy diapers, wipes, and formula in Japan. This guide covers the best stores, sizes, and useful translations for parents.",
+      "repin_times": [],
+      "quality_score": 82,
+      "posted_at": "2026-06-29T04:08:37.852878+00:00"
     }
   ],
   "performance": {
@@ -888,6 +925,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 92
+    "llm_calls": 99
   }
 }
