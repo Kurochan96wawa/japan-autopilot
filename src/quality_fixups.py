@@ -11,7 +11,7 @@
   * 固有名詞は捏造しない。実在が確認できたもののみ記載し、容量/価格/部屋タイプは「公式で確認」と明記。
   * アフィリンクは Booking(=Travelpayoutsスクリプトが自動アフィリ化) / Klook。rel="sponsored nofollow noopener"。
 
-#4（dataviz前面＋透明性）も同ファイルで後段冪等適用する。
+#4（dataviz前面＋透明性）・#2（新幹線の家族予約手順）も同ファイルで後段冪等適用する。
 
 実行: `python -m src.quality_fixups`（daily.yml / extras.yml の task=quality_fixups から）。
 """
@@ -438,6 +438,77 @@ def _front_trust_and_dataviz() -> dict:
     return {"dataviz_hoisted": hoisted, "trust_strip": stripped}
 
 
+# ============================================================
+# #2 難所の手前で止まらない：新幹線の家族予約を手順化
+# ============================================================
+# 監査#2: 「Travel to Kyoto via the Shinkansen…about 2 hours」で終わり、予約方法・大型荷物・
+# ベビーカー・家族の概算費用が空白。子連れ最大のロジを手順で埋める。
+# 事実は2026-06に裏取り済（smartEX/EKINET予約、大型荷物160-250cmは事前予約無料・未予約¥1,000で
+# 最後列後ろに収納、6歳未満は膝上で2名まで無料・6-11歳は半額）。価格は概算＋「公式で確認」。
+_SHINKANSEN_STEPS = (
+    '<section id="shinkansen-steps" class="howto" style="margin:1.8em 0;border:1px solid #ffe0ee;'
+    'border-radius:14px;padding:6px 18px 10px;background:#fffafc">'
+    '<h2>Booking the Shinkansen with a family: a step-by-step</h2>'
+    '<p>&ldquo;Take the bullet train&rdquo; is the easy part. Here is how families actually book it with little kids, '
+    'big suitcases and a stroller. Fares and rules change &mdash; confirm on the official sites before you travel '
+    '(as of 2026).</p>'
+    '<ol>'
+    '<li><strong>Reserve seats &mdash; don&rsquo;t wing it with kids.</strong> Book reserved seats in English on the '
+    'official apps: <a href="https://smart-ex.jp/en/" rel="nofollow noopener" target="_blank">smartEX</a> for the '
+    'Tokaido/Sanyo/Kyushu Shinkansen (Tokyo&ndash;Kyoto&ndash;Osaka&ndash;Hiroshima) or '
+    '<a href="https://www.eki-net.com/en/" rel="nofollow noopener" target="_blank">EKINET</a> for JR East. You can '
+    'also book at a JR ticket office (Midori-no-madoguchi) or a green ticket machine. Reserve a few days ahead in '
+    'peak seasons.</li>'
+    '<li><strong>Book the oversized-baggage seats for big suitcases.</strong> On the Tokaido/Sanyo/Kyushu Shinkansen, '
+    'a bag whose height&nbsp;+&nbsp;width&nbsp;+&nbsp;depth totals 160&ndash;250&nbsp;cm needs a free '
+    '&ldquo;oversized baggage&rdquo; seat reservation &mdash; the last-row seats, with a storage area behind them. '
+    'Reserving it costs nothing extra; turning up without one is a &yen;1,000 surcharge on board. Bags over '
+    '250&nbsp;cm aren&rsquo;t allowed.</li>'
+    '<li><strong>Strollers: book the last row.</strong> Fold the stroller and store it in the space behind the rear '
+    'seats, so reserve the last row of the car. A folded stroller doesn&rsquo;t need its own reservation.</li>'
+    '<li><strong>Know the kids&rsquo; fares.</strong> Up to two children under 6 ride free per paying adult if they '
+    'sit on your lap; if a young child takes their own seat, you pay a child fare. Children aged 6&ndash;11 pay half '
+    'the adult fare with their own reserved seat.</li>'
+    '<li><strong>Budget roughly.</strong> A Tokyo&ndash;Kyoto reserved seat is around &yen;14,000 per adult one way, '
+    'so two adults + one 6&ndash;11 child is roughly &yen;35,000 one way &mdash; confirm exact fares for your dates '
+    'on the official site. A Japan Rail Pass can be cheaper if you take several long trips.</li>'
+    '<li><strong>On the day.</strong> Arrive 20&ndash;30 minutes early, use station elevators (most are '
+    'stroller-accessible), and grab ekiben (station bento boxes) so hungry kids are sorted for the ride.</li>'
+    '</ol>'
+    '</section>'
+)
+
+# 旅程/交通系の記事だけを対象（slug判定）＋本文にShinkansen言及があるもの。
+_SHINKANSEN_SLUG_HINT = ("itinerary", "transport", "getting-around", "shinkansen", "public-transport")
+
+
+def _inject_shinkansen_steps() -> int:
+    done = 0
+    for path in SITE_DIR.glob("*.html"):
+        slug = path.stem
+        if not any(k in slug for k in _SHINKANSEN_SLUG_HINT):
+            continue
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if 'id="shinkansen-steps"' in html or "Shinkansen" not in html:  # 冪等＋無関係skip
+            continue
+        if "<h2>FAQ" in html:
+            new = html.replace("<h2>FAQ", _SHINKANSEN_STEPS + "<h2>FAQ", 1)
+        elif '<section class="related"' in html:
+            new = html.replace('<section class="related"', _SHINKANSEN_STEPS + '<section class="related"', 1)
+        elif "</article>" in html:
+            new = html.replace("</article>", _SHINKANSEN_STEPS + "</article>", 1)
+        else:
+            continue
+        if new != html:
+            path.write_text(new, encoding="utf-8")
+            done += 1
+            log.info("quality_fixups: #2 新幹線家族予約手順 注入 %s", slug)
+    return done
+
+
 def run() -> dict:
     m = _inject_money_picks()
     t = _build_allergy_tool()
@@ -445,10 +516,11 @@ def run() -> dict:
     b = _strip_offtopic_bullets()
     s = _ensure_sitemap_tool()
     f = _front_trust_and_dataviz()
-    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d",
-             m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"])
+    k = _inject_shinkansen_steps()
+    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d",
+             m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k)
     return {"money_picks": m, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
-            "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"]}
+            "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"], "shinkansen_steps": k}
 
 
 def main() -> None:
