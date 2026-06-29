@@ -509,6 +509,68 @@ def _inject_shinkansen_steps() -> int:
     return done
 
 
+# ============================================================
+# #7 年齢帯（0-2/3-5/6-12）で要点を分岐
+# ============================================================
+# 監査#7: 「young children」で一括り。2歳と8歳で必要なものは激変するのに分岐が無い。
+# 旅程系の記事に、ペース配分と取捨選択を年齢帯で示す早見表を注入（一般的な育児ガイド・捏造なし）。
+_AGE_BANDS = (
+    '<section id="age-bands" class="age-bands" style="margin:1.8em 0;border:1px solid #ffe0ee;'
+    'border-radius:14px;padding:6px 18px 10px;background:#fffafc">'
+    '<h2>Same trip, very different kids: tailoring by age</h2>'
+    '<p>&ldquo;Young children&rdquo; covers a lot of ground. Here is how to adjust the pace and the picks by age '
+    '&mdash; every child is different, so treat this as a starting point.</p>'
+    '<table><thead><tr><th>Age</th><th>Pace &amp; logistics</th><th>What tends to land</th></tr></thead><tbody>'
+    '<tr><td><strong>0&ndash;2 (babies &amp; toddlers)</strong></td>'
+    '<td>Plan around naps &mdash; one main outing a day, then back for a midday rest. Bring or rent a stroller and '
+    'use the nursing/diaper rooms in department stores and big stations. Under-6s ride trains free on a lap.</td>'
+    '<td>Parks and gardens, gentle animal encounters, sensory spots and short boat rides. Keep it low-key.</td></tr>'
+    '<tr><td><strong>3&ndash;5 (preschoolers)</strong></td>'
+    '<td>Many still need a rest or a quiet hour. Short attention spans &mdash; build in downtime, keep snacks handy, '
+    'and a stroller still helps on long days.</td>'
+    '<td>Character parks (Tokyo Disneyland over the bigger-ride DisneySea), aquariums, hands-on museums, '
+    'train-spotting.</td></tr>'
+    '<tr><td><strong>6&ndash;12 (school age)</strong></td>'
+    '<td>Can handle fuller days with breaks and more walking. They pay a child fare (about half) on trains and many '
+    'attractions &mdash; and love being involved in choosing the day&rsquo;s plan.</td>'
+    '<td>teamLab, theme parks with bigger rides, interactive and science museums, ramen- or food-making, a day trip '
+    'by Shinkansen.</td></tr>'
+    '</tbody></table>'
+    '<p style="font-size:.85rem;color:#6b7280">Mixed ages? Anchor the day on the youngest child&rsquo;s nap and '
+    'energy, then add one &ldquo;big-kid&rdquo; activity the older ones will love.</p>'
+    '</section>'
+)
+
+_AGE_SLUG_HINT = ("itinerary", "things-to-do", "young-children", "days-in", "with-kids")
+
+
+def _inject_age_bands() -> int:
+    done = 0
+    for path in SITE_DIR.glob("*.html"):
+        slug = path.stem
+        if not any(k in slug for k in _AGE_SLUG_HINT):
+            continue
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if 'id="age-bands"' in html:  # 冪等
+            continue
+        if "<h2>FAQ" in html:
+            new = html.replace("<h2>FAQ", _AGE_BANDS + "<h2>FAQ", 1)
+        elif '<section class="related"' in html:
+            new = html.replace('<section class="related"', _AGE_BANDS + '<section class="related"', 1)
+        elif "</article>" in html:
+            new = html.replace("</article>", _AGE_BANDS + "</article>", 1)
+        else:
+            continue
+        if new != html:
+            path.write_text(new, encoding="utf-8")
+            done += 1
+            log.info("quality_fixups: #7 年齢帯分岐 注入 %s", slug)
+    return done
+
+
 def run() -> dict:
     m = _inject_money_picks()
     t = _build_allergy_tool()
@@ -517,10 +579,13 @@ def run() -> dict:
     s = _ensure_sitemap_tool()
     f = _front_trust_and_dataviz()
     k = _inject_shinkansen_steps()
-    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d",
-             m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k)
+    g = _inject_age_bands()
+    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d",
+             m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g)
     return {"money_picks": m, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
-            "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"], "shinkansen_steps": k}
+            "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"],
+            "shinkansen_steps": k, "age_bands": g}
+
 
 
 def main() -> None:
