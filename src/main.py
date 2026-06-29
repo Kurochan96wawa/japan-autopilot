@@ -12,7 +12,7 @@ import sys
 import time
 from .util import load_settings, load_affiliates, ensure_dirs, log
 from .state import load_state, save_state, record_post, now_iso
-from . import ideas, content as content_mod, images, site, guards, rubric
+from . import ideas, content as content_mod, images, site, guards, rubric, critic
 from . import indexnow
 from . import publish_pinterest as pin
 from . import publish_threads as threads
@@ -90,6 +90,17 @@ def _build_quality_content(topic, cfg, state):
         # リスク表現(価格/営業時間等)は理想的には避けたいが、旅行記事では頻出。
         # 破棄せず警告のみ（記事ゼロを防ぐ）。古い情報の最終チェックは月次の目視で。
         log.warning("リスク表現あり(掲載は継続): %s / %s", topic.get("topic"), risky)
+    # 施策01: マルチエージェントQAゲート。別役割AIが相互批評＋一次ソース事実照合し、
+    # revise→自動修正 / reject・低スコア→破棄。例外時は素通し（記事ゼロを防ぐ）。
+    try:
+        gate_ok, c, crep = critic.gate(c, cfg, c.get("jp_facts", ""))
+        guards.add_llm_calls(state, 1)
+        if not gate_ok:
+            log.error("QAゲートで非承認→破棄: %s (issues=%s)",
+                      topic.get("topic"), crep.get("issues"))
+            return None
+    except Exception as e:
+        log.error("QAゲート例外(掲載は継続): %s", e)
     if rep:
         c["quality_score"] = rep.get("total")
     return c
@@ -226,171 +237,4 @@ def _ping_indexnow(state, cfg, all_urls: bool = False) -> None:
     """Bing等へ新規/更新URLを即時通知（Googleは非対応のためsitemapに任せる）。失敗は無視。"""
     try:
         base = cfg["site"]["base_url"].rstrip("/")
-        posts = [p for p in state.get("posted", []) if p.get("slug")]
-        sel = posts if all_urls else posts[-3:]
-        urls = [f"{base}/{p['slug']}.html" for p in sel] + [base + "/"]
-        indexnow.ping(urls)
-    except Exception as e:
-        log.error("IndexNow通知に失敗(続行): %s", e)
-
-
-def run_daily(dry: bool = False) -> None:
-    cfg = load_settings(); aff = load_affiliates()
-    ensure_dirs(); state = load_state()
-    guards.ensure_account_start(state)
-
-    # shadowban検知中は投稿停止（回復まで安全側に）
-    if guards.shadowban_paused(state, cfg):
-        log.error("shadowban疑いで投稿停止中。weekly改善での回復待ち。")
-        save_state(state); return
-    if not guards.budget_ok(state, cfg):
-        save_state(state); return
-
-    ideas.refill_topics(state); guards.add_llm_calls(state, 1)
-    base_url = cfg["site"]["base_url"].rstrip("/")
-    board_cache: dict = {}
-    new_cap, repin_cap = guards.effective_caps(state, cfg)
-
-    new_n = _new_articles(state, cfg, aff, board_cache, base_url, dry, new_cap)
-    repin_n = _repin_existing(state, cfg, aff, board_cache, base_url, dry, repin_cap)
-
-    site.rebuild_index(state); save_state(state)
-    if not dry:
-        _ping_indexnow(state, cfg)   # 新規記事をBing等へ即時通知
-    log.info("日次完了: 新規%d / 再Pin%d (今日の累計=%d)",
-             new_n, repin_n, guards.posts_today(state))
-
-
-def run_regen() -> None:
-    """既存の投稿記事を、現在の（正直な）プロンプト＆新テンプレートで再生成して上書きする。
-    slug(URL)は維持。Pinterest等へは一切投稿しない。嘘の一人称体験などを一掃する用途。"""
-    cfg = load_settings(); ensure_dirs(); state = load_state()
-    n = 0
-    for rec in state.get("posted", []):
-        slug = rec.get("slug")
-        if not slug:
-            continue
-        topic_item = {
-            "topic": rec.get("topic") or rec.get("article_title", ""),
-            "primary_keyword": rec.get("primary_keyword", ""),
-            "board_hint": rec.get("board_hint", ""),
-        }
-        try:
-            # 一括再生成では日本語グラウンディングを省く（free-tier 429連発回避・呼び出し半減）
-            c = content_mod.build_content(topic_item, research=False)
-        except Exception as e:
-            log.error("regen失敗(スキップ) %s: %s", slug, e)
-            continue
-        guards.add_llm_calls(state, 1)
-        image_rel = (rec.get("image_variants") or [f"img/{slug}.jpg"])[0]
-        try:
-            site.render_article(c, image_rel, {}, slug)
-        except Exception as e:
-            log.error("再描画失敗(スキップ) %s: %s", slug, e)
-            continue
-        rec["article_title"] = c.get("article_title", rec.get("article_title"))
-        rec["primary_keyword"] = c.get("primary_keyword", rec.get("primary_keyword", ""))
-        rec["meta_description"] = c.get("meta_description", "")
-        rec["last_pin_desc"] = c.get("pin_description", rec.get("last_pin_desc", ""))
-        n += 1
-        log.info("regen: %s 再生成", slug)
-        # RPM平準化のため記事間に小休止（free-tierの瞬間的な429連発を緩和）
-        time.sleep(4)
-    site.rebuild_index(state); save_state(state)
-    _ping_indexnow(state, cfg, all_urls=True)   # 全URLをBing等へ通知
-    log.info("regen完了: %d記事を正直な文体で再生成", n)
-
-
-def _rewrite_fixable(state, cfg, slugs) -> int:
-    """④週次PDCAでFixable判定かつ rewrite_article=true の記事だけ本文を作り直す。
-    slug(URL)は維持。投稿はしない。ルーブリック基準を満たした時だけ差し替える。"""
-    if not slugs:
-        return 0
-    target = set(slugs)
-    n = 0
-    for rec in state.get("posted", []):
-        slug = rec.get("slug")
-        if slug not in target:
-            continue
-        topic_item = {
-            "topic": rec.get("topic") or rec.get("article_title", ""),
-            "primary_keyword": rec.get("primary_keyword", ""),
-            "board_hint": rec.get("board_hint", ""),
-        }
-        c = _build_quality_content(topic_item, cfg, state)  # ルーブリック込み
-        if not c:
-            log.warning("Fixable再生成が品質基準未達 → 既存を維持: %s", slug)
-            continue
-        image_rel = (rec.get("image_variants") or [f"img/{slug}.jpg"])[0]
-        try:
-            site.render_article(c, image_rel, {}, slug)
-        except Exception as e:
-            log.error("Fixable再描画失敗(スキップ) %s: %s", slug, e)
-            continue
-        rec["article_title"] = c.get("article_title", rec.get("article_title"))
-        rec["meta_description"] = c.get("meta_description", "")
-        rec["quality_score"] = c.get("quality_score")
-        rec["needs_refresh"] = True   # 本文を刷新したので再Pinも当てたい
-        n += 1
-        log.info("Fixable本文を再生成: %s", slug)
-    if n:
-        site.rebuild_index(state)
-    return n
-
-
-def run_rebuild() -> None:
-    """LLMを一切呼ばずにサイトを再生成するだけのモード（無料・無リスク）。
-    site.rebuild_index が既存docs/全ページへ内部リンク/rel=sponsored/透明性ノート/Org schema/
-    カテゴリハブ/sitemap/llms.txt/IndexNowキー を冪等で後付けする。レート制限と無関係に、
-    構造的なSEO/E-E-A-T改善を即座に本番反映するための安全弁。"""
-    cfg = load_settings(); ensure_dirs(); state = load_state()
-    site.rebuild_index(state); save_state(state)
-    _ping_indexnow(state, cfg, all_urls=True)
-    log.info("rebuild完了: サイト再生成＋既存ページへバックフィル（LLM未使用）")
-
-
-def run_improve() -> None:
-    cfg = load_settings(); ensure_dirs(); state = load_state()
-    rows = analytics.collect_metrics(state)
-    if guards.detect_shadowban(rows, state):
-        state.setdefault("performance", {})["shadowban_paused"] = True
-    else:
-        state.setdefault("performance", {})["shadowban_paused"] = False
-    analytics.update_strategy(state); guards.add_llm_calls(state, 1)
-
-    # ④週次PDCA: GA4×Pinterestで記事をWinner/Fixable/Loserに分類→戦略反映→レポート
-    try:
-        summary = analytics.weekly_pdca(state, cfg)
-        if summary.get("rewrite_slugs"):
-            _rewrite_fixable(state, cfg, summary["rewrite_slugs"])
-    except Exception as e:
-        log.error("週次PDCA失敗(他工程は継続): %s", e)
-
-    # 守りの自動レポート（重複検知・GSC表示の前週比）を週次レポートに追記
-    try:
-        from . import dedupe, seo_health
-        rep = "\n" + dedupe.report() + "\n" + seo_health.report()
-        with open("data/weekly_report.md", "a", encoding="utf-8") as f:
-            f.write(rep)
-    except Exception as e:
-        log.error("守りレポート生成に失敗(続行): %s", e)
-
-    ideas.refill_topics(state); guards.add_llm_calls(state, 1)
-    save_state(state); log.info("週次改善完了")
-
-
-if __name__ == "__main__":
-    mode = sys.argv[1] if len(sys.argv) > 1 else "daily"
-    if mode == "daily":
-        run_daily(dry=False)
-    elif mode == "dry":
-        run_daily(dry=True)
-    elif mode == "regen":
-        run_regen()
-    elif mode == "rebuild":
-        run_rebuild()
-    elif mode == "improve":
-        run_improve()
-    else:
-        print("usage: python -m src.main [daily|dry|regen|rebuild|improve]")
-        sys.exit(1)
+        posts = [p for p in stat
