@@ -1,6 +1,6 @@
 name: weekly-improve
 
-# 毎週月曜 21:00 UTC（火 6:00 JST）に成果分析→戦略更新→週次PDCA(GA4×Pinterest)
+# 毎週月曜 21:00 UTC（火 6:00 JST）に成果分析→戦略更新
 on:
   schedule:
     - cron: "0 21 * * 1"
@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  models: read             # GitHub Models(無料LLM)を GITHUB_TOKEN で呼ぶため
 
 jobs:
   improve:
@@ -18,24 +19,20 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - name: Run improve + SEO
+      - name: Run improve
         env:
+          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
-          # ④週次PDCA: GA4 Data API のサービスアカウント鍵とプロパティID
-          GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
-          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
-          # ⑤SEO改善: GSC(Search Console) のサイトURL（ドメインプロパティ）
-          GSC_SITE_URL: ${{ vars.GSC_SITE_URL || 'sc-domain:littletabi.com' }}
-        run: |
-          python -m src.main improve
-          python -m src.seo
-      - name: Commit strategy/report/SEO changes
+        run: python -m src.main improve
+      - name: Commit strategy update
         run: |
           git config user.name  "autopilot-bot"
           git config user.email "actions@github.com"
-          git add data/state.json data/weekly_report.md docs || true
-          git commit -m "chore: weekly PDCA + SEO update $(date -u +%F)" || echo "no changes"
+          git add data/state.json || true
+          git commit -m "chore: weekly strategy update $(date -u +%F)" || echo "no changes"
           git push || echo "push skipped"
