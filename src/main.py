@@ -294,6 +294,16 @@ def run_regen() -> None:
             log.error("regen失敗(スキップ) %s: %s", slug, e)
             continue
         guards.add_llm_calls(state, 1)
+        # 施策01: 既存記事の一括再生成にもQAゲートを適用（AI丸出し/具体性欠如/壊れHTML/YMYLを無人で是正）。
+        # revise→自動修正。reject時は既存版を維持（良い記事を壊さない）。例外時は原文採用。
+        try:
+            gate_ok, c, _crep = critic.gate(c, cfg, c.get("jp_facts", ""))
+            guards.add_llm_calls(state, 1)
+            if not gate_ok:
+                log.warning("regen: QAゲート非承認のため既存版を維持: %s", slug)
+                continue
+        except Exception as e:
+            log.error("regen QAゲート例外(原文採用): %s", e)
         image_rel = (rec.get("image_variants") or [f"img/{slug}.jpg"])[0]
         try:
             site.render_article(c, image_rel, {}, slug)
