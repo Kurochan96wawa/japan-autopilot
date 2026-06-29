@@ -301,6 +301,20 @@ def _upgrade_seo(cfg) -> None:
             log.info("SEO後付け: %s", path.name)
 
 
+# 既存記事HTMLに残る“東京で執筆・編集/日本の編集者がレビュー”等の不正確な表現を正直化する置換表。
+# フッターやAbout文は記事を作り直さない限り更新されないため、バックフィルで文字列置換する（冪等・LLM不要）。
+_HONESTY_FIXES = [
+    ("written and edited from Tokyo",
+     "written with AI and an automated quality process"),
+    ("written and edited by our team in Japan",
+     "written with AI and an automated quality process"),
+    ("reviewed by our editors in Japan for usefulness and accuracy",
+     "checked with an automated quality process for usefulness and accuracy"),
+    ("reviewed by our editors in Japan",
+     "checked with an automated quality process"),
+]
+
+
 def _upgrade_eeat_links(cfg) -> None:
     """既存記事HTMLに“本文を作り直さずに”次を冪等で後付けする（LLM不要・レート制限回避）:
     ①関連ガイドの内部リンク ②rel=sponsored ③正直な透明性ノート ④Organization JSON-LD。
@@ -354,6 +368,12 @@ def _upgrade_eeat_links(cfg) -> None:
         if new_txt != txt:
             txt = new_txt
             changed = True
+
+        # ⑤ 旧フッター/About文の不正確表現を正直化（記事を作り直さずに反映・冪等）
+        for bad, good in _HONESTY_FIXES:
+            if bad in txt:
+                txt = txt.replace(bad, good)
+                changed = True
 
         if changed:
             path.write_text(txt, encoding="utf-8")
@@ -728,9 +748,12 @@ def _migrate_legacy(cfg: dict, popular: list) -> None:
     canonical/og の旧プレースホルダURLも現行 base_url に修正する。自己修復。"""
     base = cfg["site"]["base_url"].rstrip("/")
     lang_default = cfg["niche"].get("language", "en")
-    skip = {"index.html", "about.html", "disclosure.html", "privacy.html", "contact.html"}
+    skip = {"index.html", "about.html", "disclosure.html", "privacy.html",
+            "contact.html", "how-we-make-guides.html"}
     for path in SITE_DIR.glob("*.html"):
-        if path.name in skip:
+        # 静的ページ（about等）とカテゴリハブ(japan-with-kids-*)は記事ではないので移行対象外。
+        # これを除外しないと、bylineの無い静的ページを“旧記事”と誤認して本文を空に潰してしまう。
+        if path.name in skip or path.name.startswith("japan-with-kids-"):
             continue
         try:
             txt = path.read_text(encoding="utf-8")
