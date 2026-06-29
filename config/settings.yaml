@@ -23,6 +23,7 @@ niche:
     - "Always disclose affiliate relationships clearly."
     - "Respect Japanese local communities and over-tourism concerns."
     - "Be specific and long-tail; avoid generic 'top 10 Japan' posts big media already own."
+    - "Vary the voice; avoid an AI house style. Use exclamation marks sparingly, skip stock reassurances like 'no need to panic' or 'worth packing for', and don't end every article with the same upbeat sign-off. Let the closing fit the specific topic."
 
 # 投稿スケジュール（GitHub Actions の cron と合わせる）
 schedule:
