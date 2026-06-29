@@ -58,6 +58,9 @@ jobs:
       - name: SEO fixups (canonical consolidation + hub enrichment, idempotent)
         run: python -m src.seo_fixups
 
+      - name: Quality fixups (named money-page picks + allergy card, idempotent)
+        run: python -m src.quality_fixups
+
       - name: Commit results (state + site)
         run: |
           git config user.name  "autopilot-bot"
