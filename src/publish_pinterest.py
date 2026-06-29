@@ -60,6 +60,9 @@ def create_pin(content: dict, image_url: str, link_url: str, board_id: str,
         "media_source": {"source_type": "image_url", "url": image_url},
     }
     r = requests.post(f"{API}/pins", headers=_headers(), json=payload, timeout=90)
+    log.info("pinterest create_pin: HTTP %s", r.status_code)  # 死活ログ（公開できているか可視化）
+    if r.status_code == 403:
+        log.error("pinterest 403: Trial上限/未承認の可能性。Standard API審査が必要かも（要確認: API tier）。body=%s", r.text[:200])
     if r.status_code >= 400:
         log.error("Pin作成失敗 %s: %s", r.status_code, r.text)
         r.raise_for_status()
