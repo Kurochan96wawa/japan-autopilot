@@ -66,8 +66,8 @@ site:
 # ※AI生成画像は使わない（旅行者は本物の写真を求めるため）
 images:
   source: "pexels"        # pexels | none
-  pin_width: 1000
-  pin_height: 1500        # Pinterest推奨 2:3 縦長
+  pin_width: 1200
+  pin_height: 1800        # Pinterest推奨 2:3 縦長
   overlay: true           # 写真にタイトル帯を載せる
   pexels_pool: 15         # 取得候補数（多めに取り、Pinごとに別写真を使う＝Fresh Pins）
 
