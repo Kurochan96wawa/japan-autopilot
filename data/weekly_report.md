@@ -1,7 +1,7 @@
-# 週次PDCAレポート 2026-06-29
+# 週次PDCAレポート 2026-06-30
 
 - GA4: 利用可 / 集計期間: 直近28日
-- 対象記事: 30件 （Winner 0 / Fixable 0 / Loser 0 / データ不足 30）
+- 対象記事: 36件 （Winner 0 / Fixable 0 / Loser 0 / データ不足 36）
 
 ## Winners（伸びている → 横展開）
 勝ち筋。似たテーマ・キーワードを増やす。boost_keywordsに反映済み。
@@ -21,6 +21,7 @@
 - **Diapers, Formula & Baby Gear in Japan (2026)** — PV 2, outbound 0 (CTR 0.0%), imp 0  `diapers-formula-baby-gear-in-japan-what-to-pack-buy`
 - **Staying in a Ryokan with Kids in Japan (2026)** — PV 2, outbound 0 (CTR 0.0%), imp 0  `staying-in-a-ryokan-with-kids-family-friendly-japan-tips`
 - **Gacha Gacha in Japan: A Parent's Guide to Fun & Fair Play** — PV 1, outbound 0 (CTR 0.0%), imp 0  `gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play`
+- **Tokyo Disneyland vs DisneySea with Kids: Which Park? (2026)** — PV 1, outbound 0 (CTR 0.0%), imp 0  `tokyo-disneyland-vs-disneysea-young-kids`
 - **Stroller-Friendly Tokyo: Family Travel Tips for 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `stroller-friendly-tokyo-navigating-the-city-with-kids`
 - **Japan Rail Pass with Kids: Worth It in 2026?** — PV 0, outbound 0 (CTR 0.0%), imp 0  `japan-rail-pass-with-kids-is-it-worth-it-for-families`
 - **Navigating Food Allergies in Japan with Kids (2026)** — PV 0, outbound 0 (CTR 0.0%), imp 0  `navigating-food-allergies-in-japan-with-kids-a-guide`
@@ -31,7 +32,6 @@
 - **Tokyo Disney vs. DisneySea with Kids in 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `tokyo-disney-vs-disneysea-for-kids`
 - **Renting a Car in Japan with Car Seats: Family Tips for 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `renting-a-car-in-japan-with-car-seats-family-travel-guide`
 - **Exploring Kyoto with a Stroller in 2026** — PV 0, outbound 0 (CTR 0.0%), imp 0  `kyoto-with-a-stroller-accessible-routes-kid-friendly-spots`
-- **Budget-Friendly Family Meals in Japan (2026)** — PV 0, outbound 0 (CTR 0.0%), imp 0  `budget-family-meals-in-japan-where-to-eat-with-kids`
 
 ## 戦略アップデート
 - boost_keywords: []
@@ -44,9 +44,18 @@ _このレポートは weekly-improve により自動生成・上書きされま
 
 ## サイト健全性（GSC・表示回数の前週比）
 
-- 今週: 表示 0 / クリック 0
+- 今週: 表示 2 / クリック 1
 - 前週: 表示 0 / クリック 0
-- まだ表示回数0。インデックス進行中（新規ドメインは数週かかる）。URL検査での手動インデックス申請とサイトマップ送信を継続。
+- 急落なし。
 
 ## SEO改善（GSC連動）
-- まだ検索データがありません（インデックス進行待ち）。次週から判定します。
+- 集計: 直近28日 / 対象ページ1 / クエリ0
+
+### タイトル/メタを自動改善（低CTR）
+- （該当なし）
+
+### あと一歩ページ（8〜20位 → 強化＋再Pin優先）
+- （該当なし）
+
+### 新規ネタ起案（検索需要はあるが記事が無いクエリ）
+- （該当なし）
