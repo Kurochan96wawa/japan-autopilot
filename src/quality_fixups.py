@@ -733,8 +733,46 @@ def _add_to_sitemap(loc: str) -> None:
     log.info("quality_fixups: sitemapにembedsページ追加")
 
 
+# ============================================================
+# #18 重複記事のカニバリ是正：近似重複クラスタを代表1本にcanonical集約（冪等・可逆）
+# ============================================================
+# autopilotが量産した同一トピックの近似重複を、確認済みの明示マップで代表ページへcanonical集約。
+# site.pyが毎回self-canonicalを再生成→本処理が後段で上書きするため、マップを消せば原状復帰（可逆）。
+# 自動判定はしない（誤集約でのインデックス落ち防止）。
+_CANONICAL_OVERRIDE = {
+    "navigating-japan-s-public-transport-with-kids-2026":
+        "japan-public-transport-with-kids-fares-strollers-facilities",
+    "buying-baby-diapers-wipes-and-formula-in-japan-2026":
+        "diapers-formula-baby-gear-in-japan-what-to-pack-buy",
+    "diapers-formula-in-japan-brands-sizes-where-to-buy":
+        "diapers-formula-baby-gear-in-japan-what-to-pack-buy",
+}
+
+
+def _apply_canonical_overrides() -> int:
+    done = 0
+    for dup, primary in _CANONICAL_OVERRIDE.items():
+        path = SITE_DIR / f"{dup}.html"
+        if not path.exists():
+            continue
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        old = '<link rel="canonical" href="https://littletabi.com/' + dup + '.html">'
+        want = '<link rel="canonical" href="https://littletabi.com/' + primary + '.html">'
+        if want in html:
+            continue
+        if old in html:
+            path.write_text(html.replace(old, want, 1), encoding="utf-8")
+            done += 1
+            log.info("quality_fixups: canonical override %s -> %s", dup, primary)
+    return done
+
+
 def run() -> dict:
     m = _inject_money_picks()
+    c = _apply_canonical_overrides()
     t = _build_allergy_tool()
     a = _inject_allergy_inline()
     b = _strip_offtopic_bullets()
@@ -745,7 +783,7 @@ def run() -> dict:
     e = _build_embeds()
     log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d",
              m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e)
-    return {"money_picks": m, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
+    return {"money_picks": m, "canonical_dedup": c, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
             "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"],
             "shinkansen_steps": k, "age_bands": g, "embeds": e}
 
