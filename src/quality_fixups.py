@@ -541,33 +541,41 @@ _AGE_BANDS = (
     '</section>'
 )
 
-_AGE_SLUG_HINT = ("itinerary", "things-to-do", "young-children", "days-in", "with-kids")
+# 旅程系のみに限定（過剰注入の防止。アドバイザー指摘: food-allergies等に出ていた）。
+_AGE_SLUG_HINT = ("itinerary", "things-to-do", "days-in")
+_AGE_BANDS_RE = re.compile(r'<section id="age-bands".*?</section>', re.S)
 
 
 def _inject_age_bands() -> int:
     done = 0
     for path in SITE_DIR.glob("*.html"):
         slug = path.stem
-        if not any(k in slug for k in _AGE_SLUG_HINT):
-            continue
+        target = any(k in slug for k in _AGE_SLUG_HINT)
         try:
             html = path.read_text(encoding="utf-8")
         except Exception:
             continue
-        if 'id="age-bands"' in html:  # 冪等
-            continue
-        if "<h2>FAQ" in html:
-            new = html.replace("<h2>FAQ", _AGE_BANDS + "<h2>FAQ", 1)
-        elif '<section class="related"' in html:
-            new = html.replace('<section class="related"', _AGE_BANDS + '<section class="related"', 1)
-        elif "</article>" in html:
-            new = html.replace("</article>", _AGE_BANDS + "</article>", 1)
-        else:
-            continue
-        if new != html:
-            path.write_text(new, encoding="utf-8")
-            done += 1
-            log.info("quality_fixups: #7 年齢帯分岐 注入 %s", slug)
+        has = 'id="age-bands"' in html
+        if target:
+            if has:  # 冪等
+                continue
+            if "<h2>FAQ" in html:
+                new = html.replace("<h2>FAQ", _AGE_BANDS + "<h2>FAQ", 1)
+            elif '<section class="related"' in html:
+                new = html.replace('<section class="related"', _AGE_BANDS + '<section class="related"', 1)
+            elif "</article>" in html:
+                new = html.replace("</article>", _AGE_BANDS + "</article>", 1)
+            else:
+                continue
+            if new != html:
+                path.write_text(new, encoding="utf-8")
+                done += 1
+                log.info("quality_fixups: #7 年齢帯分岐 注入 %s", slug)
+        elif has:  # 非対象ページに混入していたら除去（過剰注入の是正・自己修正）
+            new = _AGE_BANDS_RE.sub("", html)
+            if new != html:
+                path.write_text(new, encoding="utf-8")
+                log.info("quality_fixups: #7 年齢帯分岐 除去（非対象） %s", slug)
     return done
 
 
