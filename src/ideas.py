@@ -5,6 +5,35 @@ from .util import load_settings, log
 from .llm import generate
 
 
+def mine_question_keywords(max_n: int = 12) -> list:
+    """Googleオートコンプリートから実際に検索されている長尾“質問”を機械収集（無料・鍵不要）。
+    競合ゼロの長尾は被リンク無しでも上位を取りやすい。生成プロンプトの優先キーワードに供給する。
+    ネットワーク失敗時も空リストを返し、ネタ生成は止めない（fail closed）。"""
+    import requests
+    seeds = ["japan with kids", "tokyo with a toddler", "japan with a baby",
+             "how to travel japan with kids", "what to pack japan with kids",
+             "is japan good with kids", "kyoto with kids", "stroller in japan",
+             "japan family itinerary", "can you take a baby to japan"]
+    qwords = ("how", "what", "can", "do", "does", "is", "are", "when", "where",
+              "with kids", "with a baby", "toddler", "stroller", "baby")
+    seen, out = set(), []
+    for s in seeds:
+        try:
+            r = requests.get("https://suggestqueries.google.com/complete/search",
+                             params={"client": "firefox", "q": s}, timeout=8)
+            data = r.json()
+            sugg = data[1] if isinstance(data, list) and len(data) > 1 else []
+        except Exception:
+            continue
+        for q in sugg:
+            ql = str(q).lower().strip()
+            if ql and ql not in seen and any(w in ql for w in qwords):
+                seen.add(ql)
+                out.append(str(q).strip())
+    log.info("ideas: autocompleteから質問キーワード %d件を収集", len(out))
+    return out[:max_n]
+
+
 def refill_topics(state: dict) -> dict:
     cfg = load_settings()
     niche = cfg["niche"]
@@ -15,7 +44,7 @@ def refill_topics(state: dict) -> dict:
         return state
 
     strat = state.get("strategy", {})
-    boost = strat.get("boost_keywords", [])
+    boost = (strat.get("boost_keywords", []) or []) + mine_question_keywords()
     avoid = strat.get("avoid_keywords", [])
     posted_titles = [p.get("topic", "") for p in state.get("posted", [])][-100:]
 
