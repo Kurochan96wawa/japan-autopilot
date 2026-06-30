@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Staying Connected in Japan: SIM Cards, Pocket Wi-Fi, and Free Wi-Fi for Families",
-      "search_intent": "Parents traveling to Japan with kids need reliable internet access for navigation, communication, and entertainment. They are searching for the most practical, cost-effective, and family-friendly options for staying connected, including understanding the differences between SIM cards, pocket Wi-Fi devices, and available public Wi-Fi services.",
-      "primary_keyword": "Japan internet family travel",
-      "board_hint": "Japan Travel Planning; Family Travel Logistics"
-    },
-    {
-      "topic": "Beyond Theme Parks: Best Children's Museums and Interactive Learning Spots in Japan",
-      "search_intent": "Families are looking for engaging, educational, and fun activities in Japan for children that are not traditional theme parks. They want specific recommendations for children's museums, science centers, or other interactive exhibits that cater to various age groups, offering enriching cultural or scientific experiences.",
-      "primary_keyword": "Japan children's museums",
-      "board_hint": "Kid-Friendly Japan Activities; Japan Itineraries for Families"
-    },
-    {
       "topic": "Essential Packing List for Family Travel to Japan with Kids: Seasonal Considerations and Practical Tips",
       "search_intent": "Parents are looking for a comprehensive and practical guide on what to pack for their children and themselves for a trip to Japan, considering the country's unique climate variations and cultural practices (e.g., shoe removal), as well as specific items helpful for traveling with kids.",
       "primary_keyword": "Japan packing list kids",
@@ -991,6 +979,56 @@
       "quality_score": 82,
       "posted_at": "2026-06-30T07:45:00.068137+00:00",
       "meta_description": "Discover how to make visiting Japan's temples and shrines enjoyable and engaging for kids with fun activities and etiquette tips."
+    },
+    {
+      "topic": "Staying Connected in Japan: SIM Cards, Pocket Wi-Fi, and Free Wi-Fi for Families",
+      "slug": "staying-connected-in-japan-for-families-2026",
+      "article_title": "Staying Connected in Japan for Families (2026)",
+      "primary_keyword": "Japan internet family travel",
+      "image_query": "Japan family travel",
+      "board_hint": "Japan Travel Planning; Family Travel Logistics",
+      "affiliates_used": [
+        "experiences",
+        "hotels",
+        "esim"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/staying-connected-in-japan-for-families-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/staying-connected-in-japan-for-families-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "fc7c3cf83808183e"
+      ],
+      "last_pin_desc": "Explore essential connectivity options for families traveling in Japan, including SIM cards, pocket Wi-Fi rentals, and free Wi-Fi spots. Stay connected effortlessly!",
+      "repin_times": [],
+      "quality_score": 81,
+      "posted_at": "2026-06-30T10:43:54.266199+00:00"
+    },
+    {
+      "topic": "Beyond Theme Parks: Best Children's Museums and Interactive Learning Spots in Japan",
+      "slug": "best-children-s-museums-and-learning-spots-in-japan-2026",
+      "article_title": "Best Children's Museums and Learning Spots in Japan (2026)",
+      "primary_keyword": "Japan children's museums",
+      "image_query": "children exploring Japan museum",
+      "board_hint": "Kid-Friendly Japan Activities; Japan Itineraries for Families",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/best-children-s-museums-and-learning-spots-in-japan-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/best-children-s-museums-and-learning-spots-in-japan-2026.jpg"
+      ],
+      "img_hashes": [
+        "0000003fffe78c0c"
+      ],
+      "last_pin_desc": "Uncover Japan's best children's museums and interactive learning spots in 2026. Perfect for family travel! Discover hands-on fun and learning experiences for kids of all ages.",
+      "repin_times": [],
+      "quality_score": 82,
+      "posted_at": "2026-06-30T10:52:50.496625+00:00"
     }
   ],
   "performance": {
@@ -1102,6 +1140,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 222
+    "llm_calls": 230
   }
 }
