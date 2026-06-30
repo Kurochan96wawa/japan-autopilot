@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Navigating Japan's Public Transport with Kids: A Guide to IC Cards, Subways, and Buses",
-      "search_intent": "Parents need practical, clear guidance on using Japan's public transportation network with children, including how to purchase and use IC cards (like Suica or Pasmo), understand subway and bus systems, and manage fares for different age groups to ensure smooth and stress-free travel.",
-      "primary_keyword": "Japan public transport kids",
-      "board_hint": "Japan Travel Logistics for Families"
-    },
-    {
-      "topic": "Making Temples and Shrines Fun for Kids in Japan: Engaging Activities and Etiquette",
-      "search_intent": "Parents want to visit cultural sites like temples and shrines in Japan but are looking for ways to keep their children engaged, understand basic etiquette, and prevent boredom. They need practical tips on how to make these visits meaningful and enjoyable for the whole family.",
-      "primary_keyword": "temple etiquette kids Japan",
-      "board_hint": "Japan Cultural Experiences for Families"
-    },
-    {
       "topic": "Staying Connected in Japan: SIM Cards, Pocket Wi-Fi, and Free Wi-Fi for Families",
       "search_intent": "Parents traveling to Japan with kids need reliable internet access for navigation, communication, and entertainment. They are searching for the most practical, cost-effective, and family-friendly options for staying connected, including understanding the differences between SIM cards, pocket Wi-Fi devices, and available public Wi-Fi services.",
       "primary_keyword": "Japan internet family travel",
@@ -171,10 +159,12 @@
       "url": "https://YOUR_GITHUB_USERNAME.github.io/japan-autopilot/stroller-friendly-tokyo-navigating-the-city-with-kids.html",
       "pins_count": 0,
       "image_variants": [
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
-        "fffee48df1f80000"
+        "fffee48df1f80000",
+        "fec6884c1c003c3c"
       ],
       "last_pin_desc": "Planning a family trip to Tokyo? Discover stroller-friendly attractions, dining options, and tips for navigating the city with kids in 2026!",
       "repin_times": [],
@@ -944,6 +934,55 @@
       "repin_times": [],
       "quality_score": 82,
       "posted_at": "2026-06-29T14:01:15.837996+00:00"
+    },
+    {
+      "topic": "Navigating Japan's Public Transport with Kids: A Guide to IC Cards, Subways, and Buses",
+      "slug": "navigating-japan-s-public-transport-with-kids-2026",
+      "article_title": "Navigating Japan's Public Transport with Kids (2026)",
+      "primary_keyword": "Japan public transport kids",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan Travel Logistics for Families",
+      "affiliates_used": [
+        "experiences",
+        "regional_pass"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/navigating-japan-s-public-transport-with-kids-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/navigating-japan-s-public-transport-with-kids-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ff1881020000f6ff"
+      ],
+      "last_pin_desc": "Traveling in Japan with kids? Discover how to navigate public transport smoothly with our guide on IC cards, fares, and stroller access. Perfect for families!",
+      "repin_times": [],
+      "quality_score": 81,
+      "posted_at": "2026-06-30T07:38:45.048616+00:00"
+    },
+    {
+      "topic": "Making Temples and Shrines Fun for Kids in Japan: Engaging Activities and Etiquette",
+      "slug": "making-temples-shrines-fun-for-kids-in-japan-2026",
+      "article_title": "Making Temples & Shrines Fun for Kids in Japan (2026)",
+      "primary_keyword": "temple etiquette kids Japan",
+      "image_query": "family at Japanese temple",
+      "board_hint": "Japan Cultural Experiences for Families",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/making-temples-shrines-fun-for-kids-in-japan-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/making-temples-shrines-fun-for-kids-in-japan-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "1010183c1878ff80"
+      ],
+      "last_pin_desc": "Learn how to engage your kids while visiting temples and shrines in Japan. Enjoy activities, discover etiquette, and find family-friendly facilities for a memorable trip! #JapanTravel #FamilyFun #KidsActivities",
+      "repin_times": [],
+      "quality_score": 82,
+      "posted_at": "2026-06-30T07:45:00.068137+00:00"
     }
   ],
   "performance": {
@@ -1037,6 +1076,6 @@
   },
   "usage": {
     "month": "2026-06",
-    "llm_calls": 142
+    "llm_calls": 150
   }
 }
