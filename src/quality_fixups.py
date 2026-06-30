@@ -571,6 +571,160 @@ def _inject_age_bands() -> int:
     return done
 
 
+# ============================================================
+# 流入B 被引用資産：埋め込みウィジェット＋Dataset schema
+# ============================================================
+# 他サイトがiframeで貼れる小型ウィジェット（貼られる＝自然な被リンク）と、
+# AI/Google Dataset Searchが拾える schema.org/Dataset を用意する。
+# 素材は#3で作った実在の独自データ（日本語アレルギーフレーズ）を再利用。
+EMBED_CARD_REL = "embed/allergy-card.html"
+EMBEDS_PAGE_REL = "tools/embeds.html"
+
+
+def _base_url() -> str:
+    try:
+        b = (load_settings().get("site", {}) or {}).get("base_url") or "https://littletabi.com"
+    except Exception:
+        b = "https://littletabi.com"
+    return b.rstrip("/")
+
+
+def _embed_card_html(base: str) -> str:
+    # iframe埋め込み専用の小型カード。サイトchrome無し・noindex・末尾に出典リンク（=被リンク）。
+    return (
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        '<meta name="robots" content="noindex">'
+        '<title>Japanese Allergy Card (embed) | littletabi</title>'
+        '<style>'
+        'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;'
+        'color:#1f2937;margin:0;background:#fff}'
+        '.w{max-width:520px;margin:0 auto;padding:12px 14px}'
+        'h2{font-size:1.05rem;margin:.2em 0 .5em;color:#b8005a}'
+        'table{width:100%;border-collapse:collapse;font-size:.92rem}'
+        'td{border-bottom:1px solid #f0e6ec;padding:5px 4px;vertical-align:top}'
+        '.ja{font-weight:600}.src{font-size:.78rem;color:#6b7280;margin-top:8px}'
+        '.src a{color:#b8005a}'
+        '</style></head><body><div class="w">'
+        '<h2>Japanese allergy phrases for kids</h2>'
+        '<table><tbody>'
+        '<tr><td>My child has food allergies.</td><td class="ja" lang="ja">この子は食物アレルギーがあります。</td></tr>'
+        '<tr><td>It is severe — even a small amount is dangerous.</td><td class="ja" lang="ja">重いアレルギーです。少しでも入ると危険です。</td></tr>'
+        '<tr><td>Does this contain ___ ?</td><td class="ja" lang="ja">これに ___ は入っていますか？</td></tr>'
+        '<tr><td>Could you make it without ___ ?</td><td class="ja" lang="ja">___ を抜いてもらえますか？</td></tr>'
+        '<tr><td>Emergency — call an ambulance (119).</td><td class="ja" lang="ja">緊急です。119番に電話してください。</td></tr>'
+        '</tbody></table>'
+        '<p class="src">Free widget &middot; data by <a href="' + base + '" target="_blank" rel="noopener">littletabi</a> '
+        '&middot; <a href="' + base + '/' + ALLERGY_TOOL_REL + '" target="_blank" rel="noopener">full printable card</a></p>'
+        '</div></body></html>'
+    )
+
+
+def _embeds_page_html(base: str) -> str:
+    iframe_src = base + "/" + EMBED_CARD_REL
+    snippet = (
+        '&lt;iframe src="' + iframe_src + '" width="100%" height="430" loading="lazy" '
+        'style="border:1px solid #eee;border-radius:12px" title="Japanese allergy card for kids"&gt;&lt;/iframe&gt;\n'
+        '&lt;p&gt;Widget by &lt;a href="' + base + '"&gt;littletabi&lt;/a&gt;&lt;/p&gt;'
+    )
+    dataset = (
+        '{"@context":"https://schema.org","@type":"Dataset",'
+        '"name":"Japanese food-allergy communication phrases for family travellers",'
+        '"description":"A curated English to Japanese set of phrases and allergen terms for communicating '
+        'children\'s food allergies at restaurants in Japan.",'
+        '"creator":{"@type":"Organization","name":"littletabi","url":"' + base + '"},'
+        '"license":"https://creativecommons.org/licenses/by/4.0/",'
+        '"url":"' + base + '/' + EMBEDS_PAGE_REL + '",'
+        '"isAccessibleForFree":true,'
+        '"distribution":[{"@type":"DataDownload","encodingFormat":"text/html",'
+        '"contentUrl":"' + base + '/' + EMBED_CARD_REL + '"}]}'
+    )
+    return (
+        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        '<title>Free embeddable widgets for family-travel sites | littletabi</title>'
+        '<meta name="description" content="Free, embeddable widgets and open data for family-travel sites: '
+        'a Japanese allergy phrase card you can drop into any page with one line of HTML.">'
+        '<link rel="canonical" href="' + base + '/' + EMBEDS_PAGE_REL + '">'
+        '<script type="application/ld+json">' + dataset + '</script>'
+        '<style>'
+        ':root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--line:#ececf1}'
+        'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;'
+        'color:var(--ink);background:#fffdfb;margin:0;line-height:1.6}'
+        '.wrap{max-width:760px;margin:0 auto;padding:24px 18px}a{color:var(--accent)}'
+        '.brand{font-weight:800;color:var(--ink);text-decoration:none}.brand b{color:var(--accent)}'
+        'h1{font-size:1.5rem}.card{border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:18px 0;background:#fff}'
+        'pre{background:#0f172a;color:#e2e8f0;padding:12px 14px;border-radius:10px;overflow:auto;font-size:.82rem;white-space:pre-wrap}'
+        '.note{font-size:.85rem;color:var(--muted)}'
+        '</style></head><body><div class="wrap">'
+        '<p><a class="brand" href="/index.html">little<b>tabi</b></a></p>'
+        '<h1>Free embeddable widgets &amp; open data</h1>'
+        '<p>Run a family-travel blog or resource site? You are welcome to embed our widgets for free. '
+        'They are lightweight, mobile-friendly, and released under a <a '
+        'href="https://creativecommons.org/licenses/by/4.0/" rel="nofollow noopener" target="_blank">CC BY 4.0</a> '
+        'licence &mdash; just keep the small attribution link.</p>'
+        '<div class="card">'
+        '<h2>Japanese allergy phrase card</h2>'
+        '<p>English &rarr; Japanese phrases to communicate a child&rsquo;s food allergies at restaurants. '
+        'Live preview:</p>'
+        '<iframe src="' + iframe_src + '" width="100%" height="430" loading="lazy" '
+        'style="border:1px solid #eee;border-radius:12px" title="Japanese allergy card for kids"></iframe>'
+        '<p>Paste this one line where you want it to appear:</p>'
+        '<pre>' + snippet + '</pre>'
+        '<p class="note">The phrases are for communication only, not medical advice. Japan&rsquo;s mandatory '
+        'allergen list changes &mdash; confirm current details on the Consumer Affairs Agency site.</p>'
+        '</div>'
+        '<p class="note">More widgets (a family-trip cost estimator and a station accessibility lookup) are on the '
+        'way. Want one for your site? <a href="/' + THANKS_OR_CONTACT + '">Get in touch</a>.</p>'
+        '<p><a href="/index.html">&larr; Back to all guides</a></p>'
+        '</div></body></html>'
+    )
+
+
+# 連絡導線（存在する索引/トップに寄せる。無ければトップ）。
+THANKS_OR_CONTACT = "index.html"
+
+
+def _build_embeds() -> int:
+    base = _base_url()
+    done = 0
+    targets = {
+        EMBED_CARD_REL: _embed_card_html(base),
+        EMBEDS_PAGE_REL: _embeds_page_html(base),
+    }
+    for rel, html in targets.items():
+        path = SITE_DIR / rel
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if path.exists() and path.read_text(encoding="utf-8") == html:  # 冪等
+                continue
+            path.write_text(html, encoding="utf-8")
+            done += 1
+            log.info("quality_fixups: 流入B 埋め込み資産生成 %s", rel)
+        except Exception as e:
+            log.error("quality_fixups: embed生成失敗 %s: %s", rel, e)
+    # embedsページ（被引用用・indexable）をsitemapに収録（embedカード自体はnoindexなので入れない）
+    _add_to_sitemap(f"{base}/{EMBEDS_PAGE_REL}")
+    return done
+
+
+def _add_to_sitemap(loc: str) -> None:
+    sm = SITE_DIR / "sitemap.xml"
+    if not sm.exists():
+        return
+    try:
+        xml = sm.read_text(encoding="utf-8")
+    except Exception:
+        return
+    if loc in xml or "</urlset>" not in xml:
+        return
+    today = datetime.date.today().isoformat()
+    block = (f"<url>\n<loc>{loc}</loc>\n<lastmod>{today}</lastmod>\n"
+             "<changefreq>monthly</changefreq>\n<priority>0.6</priority>\n</url>\n")
+    sm.write_text(xml.replace("</urlset>", block + "</urlset>", 1), encoding="utf-8")
+    log.info("quality_fixups: sitemapにembedsページ追加")
+
+
 def run() -> dict:
     m = _inject_money_picks()
     t = _build_allergy_tool()
@@ -580,11 +734,13 @@ def run() -> dict:
     f = _front_trust_and_dataviz()
     k = _inject_shinkansen_steps()
     g = _inject_age_bands()
-    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d",
-             m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g)
+    e = _build_embeds()
+    log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d",
+             m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e)
     return {"money_picks": m, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
             "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"],
-            "shinkansen_steps": k, "age_bands": g}
+            "shinkansen_steps": k, "age_bands": g, "embeds": e}
+
 
 
 
