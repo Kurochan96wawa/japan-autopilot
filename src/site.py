@@ -139,6 +139,7 @@ def _social_tags(title: str, desc: str, url: str, image: str = "",
     """Open Graph + Twitter Card メタ群を返す（PinterestのRich Pin/SNS共有の見栄えにも効く）。"""
     t, d = _esc_attr(title), _esc_attr(desc)
     tags = [
+        '<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1">',
         f'<meta property="og:type" content="{type_}">',
         f'<meta property="og:site_name" content="{BRAND}">',
         f'<meta property="og:title" content="{t}">',
