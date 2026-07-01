@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Essential Packing List for Family Travel to Japan with Kids: Seasonal Considerations and Practical Tips",
-      "search_intent": "Parents are looking for a comprehensive and practical guide on what to pack for their children and themselves for a trip to Japan, considering the country's unique climate variations and cultural practices (e.g., shoe removal), as well as specific items helpful for traveling with kids.",
-      "primary_keyword": "Japan packing list kids",
-      "board_hint": "Japan Travel Essentials"
-    },
-    {
-      "topic": "Healthcare for Kids in Japan: What Parents Need to Know for Illnesses and Emergencies",
-      "search_intent": "Parents need to understand the Japanese healthcare system, how to access medical services for their children if they fall ill or have an emergency, where to find pharmacies, and what to expect regarding medical care for foreign travelers.",
-      "primary_keyword": "Kids healthcare Japan travel",
-      "board_hint": "Japan Travel Safety"
-    },
-    {
       "topic": "The Ultimate Packing List for Japan with Kids: Seasonal Essentials & Smart Space-Saving Tips",
       "search_intent": "Parents are looking for a comprehensive, practical checklist detailing essential items to pack for their children when traveling to Japan, considering seasonal weather variations, specific child-related needs, and advice on efficient packing strategies.",
       "primary_keyword": "packing list Japan kids",
@@ -1029,6 +1017,56 @@
       "repin_times": [],
       "quality_score": 82,
       "posted_at": "2026-06-30T10:52:50.496625+00:00"
+    },
+    {
+      "topic": "Essential Packing List for Family Travel to Japan with Kids: Seasonal Considerations and Practical Tips",
+      "slug": "essential-packing-list-for-family-travel-to-japan-2026",
+      "article_title": "Essential Packing List for Family Travel to Japan (2026)",
+      "primary_keyword": "Japan packing list kids",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan Travel Essentials",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/essential-packing-list-for-family-travel-to-japan-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/essential-packing-list-for-family-travel-to-japan-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ff1881020000f6ff"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan in 2026? Discover essential packing tips tailored for parents traveling with kids, including seasonal considerations and safety gear. Make your journey smoother with our practical advice. #JapanTravel #FamilyTravel #TravelWithKids",
+      "repin_times": [],
+      "quality_score": 80,
+      "posted_at": "2026-07-01T10:57:02.855097+00:00"
+    },
+    {
+      "topic": "Healthcare for Kids in Japan: What Parents Need to Know for Illnesses and Emergencies",
+      "slug": "healthcare-for-kids-in-japan-a-parent-s-guide-2026",
+      "article_title": "Healthcare for Kids in Japan: A Parent's Guide (2026)",
+      "primary_keyword": "Kids healthcare Japan travel",
+      "image_query": "Japan family travel healthcare",
+      "board_hint": "Japan Travel Safety",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/healthcare-for-kids-in-japan-a-parent-s-guide-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/healthcare-for-kids-in-japan-a-parent-s-guide-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ff1881020000f6ff"
+      ],
+      "last_pin_desc": "Traveling to Japan with kids? Learn essential healthcare tips for illnesses and emergencies. Stay prepared for a smooth family trip in 2026!",
+      "repin_times": [],
+      "quality_score": 82,
+      "posted_at": "2026-07-01T11:04:30.962398+00:00"
     }
   ],
   "performance": {
@@ -1139,7 +1177,7 @@
     "started": "2026-06-23"
   },
   "usage": {
-    "month": "2026-06",
-    "llm_calls": 230
+    "month": "2026-07",
+    "llm_calls": 8
   }
 }
