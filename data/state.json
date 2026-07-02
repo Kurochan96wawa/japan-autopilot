@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "The Ultimate Packing List for Japan with Kids: Seasonal Essentials & Smart Space-Saving Tips",
-      "search_intent": "Parents are looking for a comprehensive, practical checklist detailing essential items to pack for their children when traveling to Japan, considering seasonal weather variations, specific child-related needs, and advice on efficient packing strategies.",
-      "primary_keyword": "packing list Japan kids",
-      "board_hint": "Japan Trip Planning with Kids"
-    },
-    {
-      "topic": "Osaka with Young Kids: Top Interactive Museums and Free Playgrounds for Family Fun",
-      "search_intent": "Parents traveling to Osaka with young children (toddlers to elementary age) are seeking specific, engaging activities beyond theme parks, including educational and interactive museums, as well as accessible and free playgrounds for active play.",
-      "primary_keyword": "Osaka kids activities",
-      "board_hint": "Osaka Family Fun"
-    },
-    {
       "topic": "What to Do if Your Child Gets Sick in Japan: A Practical Guide for Traveling Parents",
       "search_intent": "Parents want to understand how to access medical care or over-the-counter remedies for common childhood illnesses or minor injuries while traveling in Japan. They seek information on pharmacies, doctor visits, and essential vocabulary, aiming for preparedness and peace of mind.",
       "primary_keyword": "child sick Japan travel",
@@ -1067,6 +1055,55 @@
       "repin_times": [],
       "quality_score": 82,
       "posted_at": "2026-07-01T11:04:30.962398+00:00"
+    },
+    {
+      "topic": "The Ultimate Packing List for Japan with Kids: Seasonal Essentials & Smart Space-Saving Tips",
+      "slug": "ultimate-packing-list-for-japan-with-kids-2026",
+      "article_title": "Ultimate Packing List for Japan with Kids (2026)",
+      "primary_keyword": "packing list Japan kids",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan Trip Planning with Kids",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/ultimate-packing-list-for-japan-with-kids-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/ultimate-packing-list-for-japan-with-kids-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ff1881020000f6ff"
+      ],
+      "last_pin_desc": "Discover the ultimate packing list for your family trip to Japan in 2026. Get seasonal essentials and clever space-saving tips for stress-free travel. #JapanTravel #FamilyTravel #PackingList",
+      "repin_times": [],
+      "quality_score": 83,
+      "posted_at": "2026-07-02T08:37:29.044599+00:00"
+    },
+    {
+      "topic": "Osaka with Young Kids: Top Interactive Museums and Free Playgrounds for Family Fun",
+      "slug": "osaka-with-young-kids-museums-playgrounds-2026",
+      "article_title": "Osaka with Young Kids: Museums & Playgrounds (2026)",
+      "primary_keyword": "Osaka kids activities",
+      "image_query": "Osaka family travel",
+      "board_hint": "Osaka Family Fun",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/osaka-with-young-kids-museums-playgrounds-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/osaka-with-young-kids-museums-playgrounds-2026.jpg"
+      ],
+      "img_hashes": [
+        "82c1f1fffede0000"
+      ],
+      "last_pin_desc": "Plan an unforgettable family trip to Osaka in 2026! Discover interactive museums and free playgrounds perfect for young kids. Explore all the fun spots and make memories together! #Osaka #FamilyTravel #Kids",
+      "repin_times": [],
+      "quality_score": 84,
+      "posted_at": "2026-07-02T08:43:57.022615+00:00"
     }
   ],
   "performance": {
@@ -1178,6 +1215,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 8
+    "llm_calls": 17
   }
 }
