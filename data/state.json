@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "What to Do if Your Child Gets Sick in Japan: A Practical Guide for Traveling Parents",
-      "search_intent": "Parents want to understand how to access medical care or over-the-counter remedies for common childhood illnesses or minor injuries while traveling in Japan. They seek information on pharmacies, doctor visits, and essential vocabulary, aiming for preparedness and peace of mind.",
-      "primary_keyword": "child sick Japan travel",
-      "board_hint": "Japan with Kids Safety, Family Travel Logistics"
-    },
-    {
-      "topic": "Beyond Theme Parks: Authentic Japanese Cultural Experiences for Kids",
-      "search_intent": "Parents are looking for hands-on, engaging, and culturally immersive activities in Japan for their children that go beyond common tourist attractions like temples and theme parks. They want ideas for workshops, specific museums, or unique local interactions that are educational and fun.",
-      "primary_keyword": "Japanese cultural activities kids",
-      "board_hint": "Japan Cultural Immersion, Kid-Friendly Japan Activities"
-    },
-    {
       "topic": "Staying Connected in Japan with Kids: Best eSIMs, Pocket WiFi & SIM Cards for Families",
       "search_intent": "Parents need reliable internet access in Japan for navigation, emergencies, entertainment for kids, and communication. They want to understand the most suitable options (eSIM, pocket WiFi, local SIM) for family travel, comparing cost, ease of use, and multi-device connectivity.",
       "primary_keyword": "Japan internet family travel",
@@ -124,11 +112,13 @@
       "pins_count": 0,
       "image_variants": [
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
         "fffee48df1f80000",
-        "fec6884c1c003c3c"
+        "fec6884c1c003c3c",
+        "fec6804c1c003c3c"
       ],
       "last_pin_desc": "Planning a trip to Tokyo with kids? Discover stroller-friendly routes, attractions, and dining options for a memorable family adventure in 2026! #TokyoTravel #FamilyTravel #JapanWithKids",
       "repin_times": [],
@@ -1104,6 +1094,54 @@
       "repin_times": [],
       "quality_score": 84,
       "posted_at": "2026-07-02T08:43:57.022615+00:00"
+    },
+    {
+      "topic": "What to Do if Your Child Gets Sick in Japan: A Practical Guide for Traveling Parents",
+      "slug": "what-to-do-if-your-child-gets-sick-in-japan-2026",
+      "article_title": "What to Do if Your Child Gets Sick in Japan (2026)",
+      "primary_keyword": "child sick Japan travel",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan with Kids Safety, Family Travel Logistics",
+      "affiliates_used": [
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/what-to-do-if-your-child-gets-sick-in-japan-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/what-to-do-if-your-child-gets-sick-in-japan-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "fe3881000000f6ff"
+      ],
+      "last_pin_desc": "Traveling in Japan with kids? Discover essential steps to take if your child gets sick, including finding medical care and dealing with costs. Stay prepared! #FamilyTravel #Japan #TravelWithKids",
+      "repin_times": [],
+      "quality_score": 86,
+      "posted_at": "2026-07-03T09:46:54.746652+00:00"
+    },
+    {
+      "topic": "Beyond Theme Parks: Authentic Japanese Cultural Experiences for Kids",
+      "slug": "authentic-japanese-cultural-experiences-for-kids-2026",
+      "article_title": "Authentic Japanese Cultural Experiences for Kids (2026)",
+      "primary_keyword": "Japanese cultural activities kids",
+      "image_query": "Japanese cultural activities for kids",
+      "board_hint": "Japan Cultural Immersion, Kid-Friendly Japan Activities",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/authentic-japanese-cultural-experiences-for-kids-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/authentic-japanese-cultural-experiences-for-kids-2026.jpg"
+      ],
+      "img_hashes": [
+        "207cffeff7e30000"
+      ],
+      "last_pin_desc": "Explore unique cultural experiences for children in Japan, from performing arts to traditional crafts. Perfect for families visiting in 2026! #JapanTravel #FamilyFun #CulturalExperiences",
+      "repin_times": [],
+      "quality_score": 73,
+      "posted_at": "2026-07-03T09:53:27.361695+00:00"
     }
   ],
   "performance": {
@@ -1215,6 +1253,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 17
+    "llm_calls": 25
   }
 }
