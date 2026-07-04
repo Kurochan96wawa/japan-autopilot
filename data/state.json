@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Staying Connected in Japan with Kids: Best eSIMs, Pocket WiFi & SIM Cards for Families",
-      "search_intent": "Parents need reliable internet access in Japan for navigation, emergencies, entertainment for kids, and communication. They want to understand the most suitable options (eSIM, pocket WiFi, local SIM) for family travel, comparing cost, ease of use, and multi-device connectivity.",
-      "primary_keyword": "Japan internet family travel",
-      "board_hint": "Japan Travel Logistics"
-    },
-    {
-      "topic": "Japan Packing List for Families: Essentials for Traveling with Kids",
-      "search_intent": "Families preparing for a trip to Japan require a comprehensive guide on what to pack for children, covering clothing for various seasons, essential comfort items, entertainment for long journeys, and health/safety necessities, to ensure a smooth and enjoyable experience.",
-      "primary_keyword": "packing list Japan kids",
-      "board_hint": "Travel Planning & Packing"
-    },
-    {
       "topic": "Japan Family Packing List: Essentials for Traveling with Kids (All Seasons)",
       "search_intent": "Parents are looking for a comprehensive and practical packing list for a family trip to Japan, considering different seasons, specific items for children (medications, comfort items), and what can be bought locally versus what must be brought from home. They want to avoid overpacking while ensuring all necessities are covered.",
       "primary_keyword": "Japan family packing list kids",
@@ -113,12 +101,14 @@
       "image_variants": [
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
         "fffee48df1f80000",
         "fec6884c1c003c3c",
-        "fec6804c1c003c3c"
+        "fec6804c1c003c3c",
+        "fec6884c1c003c18"
       ],
       "last_pin_desc": "Planning a trip to Tokyo with kids? Discover stroller-friendly routes, attractions, and dining options for a memorable family adventure in 2026! #TokyoTravel #FamilyTravel #JapanWithKids",
       "repin_times": [],
@@ -1142,6 +1132,57 @@
       "repin_times": [],
       "quality_score": 73,
       "posted_at": "2026-07-03T09:53:27.361695+00:00"
+    },
+    {
+      "topic": "Staying Connected in Japan with Kids: Best eSIMs, Pocket WiFi & SIM Cards for Families",
+      "slug": "staying-connected-in-japan-with-kids-in-2026",
+      "article_title": "Staying Connected in Japan with Kids in 2026",
+      "primary_keyword": "Japan internet family travel",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan Travel Logistics",
+      "affiliates_used": [
+        "experiences",
+        "hotels",
+        "esim"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/staying-connected-in-japan-with-kids-in-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/staying-connected-in-japan-with-kids-in-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "fe1881000000f6ff"
+      ],
+      "last_pin_desc": "Explore the best internet options for families traveling in Japan. Learn about eSIMs, Pocket WiFi, and family discounts to stay connected in 2026.",
+      "repin_times": [],
+      "quality_score": 83,
+      "posted_at": "2026-07-04T08:16:32.211059+00:00"
+    },
+    {
+      "topic": "Japan Packing List for Families: Essentials for Traveling with Kids",
+      "slug": "japan-packing-list-for-families-in-2026",
+      "article_title": "Japan Packing List for Families in 2026",
+      "primary_keyword": "packing list Japan kids",
+      "image_query": "family travel Japan",
+      "board_hint": "Travel Planning & Packing",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/japan-packing-list-for-families-in-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/japan-packing-list-for-families-in-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ff1881020000f6ff"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan in 2026? Check out our essential packing list for a smooth journey with kids, including snacks, gear, and safety tips.",
+      "repin_times": [],
+      "quality_score": 83,
+      "posted_at": "2026-07-04T08:25:20.641918+00:00"
     }
   ],
   "performance": {
@@ -1253,6 +1294,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 25
+    "llm_calls": 35
   }
 }
