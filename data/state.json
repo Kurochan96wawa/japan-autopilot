@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Japan Family Packing List: Essentials for Traveling with Kids (All Seasons)",
-      "search_intent": "Parents are looking for a comprehensive and practical packing list for a family trip to Japan, considering different seasons, specific items for children (medications, comfort items), and what can be bought locally versus what must be brought from home. They want to avoid overpacking while ensuring all necessities are covered.",
-      "primary_keyword": "Japan family packing list kids",
-      "board_hint": "Japan Travel Tips with Kids"
-    },
-    {
-      "topic": "Visiting Temples and Shrines in Japan with Kids: Engaging Young Travelers Respectfully",
-      "search_intent": "Parents want to experience Japan's rich cultural heritage by visiting temples and shrines but are unsure how to make these visits meaningful and engaging for their children while maintaining respect for the sites. They seek practical tips for etiquette, storytelling, and activities to keep kids interested.",
-      "primary_keyword": "Japan temples shrines kids etiquette",
-      "board_hint": "Kid-Friendly Cultural Experiences in Japan"
-    },
-    {
       "topic": "Family Health Emergencies in Japan: A Practical Guide to Clinics, Pharmacies, and Insurance",
       "search_intent": "Parents seek clear, actionable information on how to handle health concerns, find medical services, understand common medications, and navigate travel insurance coverage for their children while traveling in Japan.",
       "primary_keyword": "medical help Japan kids",
@@ -102,13 +90,15 @@
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
         "fffee48df1f80000",
         "fec6884c1c003c3c",
         "fec6804c1c003c3c",
-        "fec6884c1c003c18"
+        "fec6884c1c003c18",
+        "70000868ffff4c00"
       ],
       "last_pin_desc": "Planning a trip to Tokyo with kids? Discover stroller-friendly routes, attractions, and dining options for a memorable family adventure in 2026! #TokyoTravel #FamilyTravel #JapanWithKids",
       "repin_times": [],
@@ -1183,6 +1173,55 @@
       "repin_times": [],
       "quality_score": 83,
       "posted_at": "2026-07-04T08:25:20.641918+00:00"
+    },
+    {
+      "topic": "Japan Family Packing List: Essentials for Traveling with Kids (All Seasons)",
+      "slug": "japan-family-packing-list-essentials-for-traveling-with-kids",
+      "article_title": "Japan Family Packing List: Essentials for Traveling with Kids (2026)",
+      "primary_keyword": "Japan family packing list kids",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan Travel Tips with Kids",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/japan-family-packing-list-essentials-for-traveling-with-kids.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/japan-family-packing-list-essentials-for-traveling-with-kids-v1.jpg"
+      ],
+      "img_hashes": [
+        "7e3c81000000f6ff"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan? Discover essential packing tips for all seasons, including baby gear rentals, kid-friendly snacks, and health essentials to make your journey smoother and more enjoyable. Perfect for parents traveling with kids!",
+      "repin_times": [],
+      "quality_score": 73,
+      "posted_at": "2026-07-05T08:33:42.406900+00:00"
+    },
+    {
+      "topic": "Visiting Temples and Shrines in Japan with Kids: Engaging Young Travelers Respectfully",
+      "slug": "visiting-temples-and-shrines-in-japan-with-kids-2026",
+      "article_title": "Visiting Temples and Shrines in Japan with Kids (2026)",
+      "primary_keyword": "Japan temples shrines kids etiquette",
+      "image_query": "family visiting Japanese temple",
+      "board_hint": "Kid-Friendly Cultural Experiences in Japan",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/visiting-temples-and-shrines-in-japan-with-kids-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/visiting-temples-and-shrines-in-japan-with-kids-2026.jpg"
+      ],
+      "img_hashes": [
+        "02030367c7476602"
+      ],
+      "last_pin_desc": "Discover how to navigate Japan's stunning temples and shrines with your kids in 2026. Learn about family-friendly facilities, stroller access, and cultural etiquette. Make your family trip memorable! #JapanTravel #FamilyTravel #TravelWithKids",
+      "repin_times": [],
+      "quality_score": 85,
+      "posted_at": "2026-07-05T08:39:37.408430+00:00"
     }
   ],
   "performance": {
@@ -1294,6 +1333,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 35
+    "llm_calls": 43
   }
 }
