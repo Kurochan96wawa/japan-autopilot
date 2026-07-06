@@ -850,6 +850,32 @@ def _scrub_hallucinations() -> int:
     return fixed
 
 
+# ============================================================
+# 1-6 「(as of 2026 …)」の多用を抑制（1記事2回まで。超過分を除去）
+# 機械的な連発は読者体験と信頼性を損なうため、後段で冪等に上限を適用する。
+# ============================================================
+_ASOF_RE = re.compile(r"\s*\(as of 2026[^)]*\)")
+
+
+def _limit_asof(max_keep: int = 2) -> int:
+    fixed = 0
+    for path in SITE_DIR.glob("*.html"):
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        seen = [0]
+        def repl(m):
+            seen[0] += 1
+            return m.group(0) if seen[0] <= max_keep else ""
+        new = _ASOF_RE.sub(repl, html)
+        if new != html:
+            path.write_text(new, encoding="utf-8")
+            fixed += 1
+            log.info("quality_fixups: (as of 2026)を%d回に制限 %s", max_keep, path.stem)
+    return fixed
+
+
 def run() -> dict:
     m = _inject_money_picks()
     hx = _scrub_hallucinations()
@@ -862,11 +888,12 @@ def run() -> dict:
     k = _inject_shinkansen_steps()
     g = _inject_age_bands()
     e = _build_embeds()
+    q = _limit_asof()
     log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d",
              m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e)
     return {"money_picks": m, "scrub": hx, "canonical_dedup": c, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
             "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"],
-            "shinkansen_steps": k, "age_bands": g, "embeds": e}
+            "shinkansen_steps": k, "age_bands": g, "embeds": e, "asof": q}
 
 
 
