@@ -157,10 +157,14 @@ def _form_widget(base: str) -> str:
     )
 
 def inject_forms(base: str) -> int:
-    """docs配下の全ページのサイドバー(aside.side)に登録フォームを冪等注入。"""
+    """docs配下の全ページのサイドバー(aside.side)に登録フォームを冪等注入/更新。
+    旧ウィジェット（Web3Forms版）は丸ごと最新（Kit）へ置換する。"""
     widget = _form_widget(base)
     n = 0
     skip = {f"{THANKS_SLUG}.html"}
+    old_re = re.compile(
+        r'(?:<script async src="https://f.convertkit.com[^"]*"></script>)?'
+        r'<div class="widget" id="lead-form-widget".*?</form></div>', re.S)
     for path in SITE_DIR.glob("*.html"):
         if path.name in skip:
             continue
@@ -168,14 +172,19 @@ def inject_forms(base: str) -> int:
             html = path.read_text(encoding="utf-8")
         except Exception:
             continue
-        if 'id="lead-form-widget"' in html or '<aside class="side">' not in html:
+        if "app.kit.com/forms/9651205" in html:
+            continue  # 既に最新（Kit）＝冪等スキップ
+        if 'id="lead-form-widget"' in html:
+            new_html = old_re.sub(lambda _m: widget, html, count=1)
+            if new_html != html:
+                path.write_text(new_html, encoding="utf-8")
+                n += 1
             continue
-        # About widgetの直後に入れる（無ければ aside 先頭）
+        if '<aside class="side">' not in html:
+            continue
         anchor = '<div class="widget about">'
         idx = html.find(anchor)
         if idx >= 0:
-            end = html.find('</div>', idx)
-            # aboutウィジェットは入れ子pがあるので、ウィジェット閉じを探す（次の<div class="widget"）
             nxt = html.find('<div class="widget', idx + len(anchor))
             insert_at = nxt if nxt >= 0 else html.find('</aside>', idx)
             html = html[:insert_at] + widget + html[insert_at:]
@@ -183,7 +192,7 @@ def inject_forms(base: str) -> int:
             html = html.replace('<aside class="side">', '<aside class="side">' + widget, 1)
         path.write_text(html, encoding="utf-8")
         n += 1
-    log.info("リード登録フォーム注入: %dページ", n)
+    log.info("リード登録フォーム注入/更新: %dページ", n)
     return n
 
 
