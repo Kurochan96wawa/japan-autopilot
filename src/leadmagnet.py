@@ -134,28 +134,27 @@ def build_pdf(path) -> bool:
 
 # ---------------- フォーム widget（サイドバー注入用）----------------
 def _form_widget(base: str) -> str:
-    thanks = f"{base}/{THANKS_SLUG}.html"
+    """メール登録フォーム（Kit/ConvertKit フォーム 9651205 に直結）。
+    ダブルオプトイン→確認後に get-the-japan-checklist へリダイレクト（Kit側設定）。
+    ck.5.js が非同期でインライン成功表示を担う。base は将来用に残す。"""
     inp = ("width:100%;border:1px solid #ececf1;border-radius:10px;"
            "padding:9px 11px;font:inherit;margin:0")
     btn = ("background:#b8005a;color:#fff;border:0;border-radius:10px;"
            "padding:9px 12px;font-weight:700;cursor:pointer")
     return (
+        '<script async src="https://f.convertkit.com/ckjs/ck.5.js"></script>'
         '<div class="widget" id="lead-form-widget" style="background:#fff0f6;border-color:#ffe0ee">'
         '<h4>Free: Japan-with-kids checklist</h4>'
         '<p style="color:#6b7280;font-size:.9rem;margin:.2em 0 .7em">'
-        'A pre-departure checklist + a 7-day Tokyo itinerary (PDF). No spam — unsubscribe anytime.</p>'
-        '<form action="https://api.web3forms.com/submit" method="POST" '
+        'A pre-departure checklist + a 7-day Tokyo itinerary (PDF). No spam &mdash; unsubscribe anytime.</p>'
+        '<form action="https://app.kit.com/forms/9651205/subscriptions" method="post" '
+        'class="seva-form formkit-form" data-sv-form="9651205" data-uid="f5350a8d30" '
+        'data-format="inline" data-version="5" '
         'style="display:flex;flex-direction:column;gap:8px">'
-        f'<input type="hidden" name="access_key" value="{WEB3FORMS_KEY}">'
-        '<input type="hidden" name="subject" value="New checklist signup — littletabi">'
-        '<input type="hidden" name="from_name" value="littletabi lead magnet">'
-        f'<input type="hidden" name="redirect" value="{thanks}">'
-        '<input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">'
-        f'<input type="email" name="email" required placeholder="Your email" style="{inp}">'
-        f'<button type="submit" style="{btn}">Send me the checklist</button>'
+        f'<input type="email" name="email_address" required placeholder="Your email" style="{inp}">'
+        f'<button type="submit" data-element="submit" style="{btn}">Send me the checklist</button>'
         '</form></div>'
     )
-
 
 def inject_forms(base: str) -> int:
     """docs配下の全ページのサイドバー(aside.side)に登録フォームを冪等注入。"""
