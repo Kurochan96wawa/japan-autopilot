@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Family Health Emergencies in Japan: A Practical Guide to Clinics, Pharmacies, and Insurance",
-      "search_intent": "Parents seek clear, actionable information on how to handle health concerns, find medical services, understand common medications, and navigate travel insurance coverage for their children while traveling in Japan.",
-      "primary_keyword": "medical help Japan kids",
-      "board_hint": "Japan Travel Safety & Health"
-    },
-    {
-      "topic": "Navigating Japanese Etiquette with Kids: Tips for Family-Friendly Cultural Immersion",
-      "search_intent": "Parents want to understand and teach their children basic Japanese social customs to ensure respectful interactions, avoid misunderstandings, and enhance their family's cultural experience in Japan.",
-      "primary_keyword": "Japanese etiquette kids",
-      "board_hint": "Japan Cultural Immersion for Families"
-    },
-    {
       "topic": "Navigating Medical Care in Japan for Traveling Families: What to Do If Your Child Gets Sick",
       "search_intent": "Parents need clear, practical steps and information on how to access medical services, understand the healthcare system, and prepare for potential childhood illnesses or minor injuries while on a family trip to Japan.",
       "primary_keyword": "child medical emergency Japan travel",
@@ -91,6 +79,7 @@
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
@@ -98,7 +87,8 @@
         "fec6884c1c003c3c",
         "fec6804c1c003c3c",
         "fec6884c1c003c18",
-        "70000868ffff4c00"
+        "70000868ffff4c00",
+        "1f9f1f0040003d38"
       ],
       "last_pin_desc": "Planning a trip to Tokyo with kids? Discover stroller-friendly routes, attractions, and dining options for a memorable family adventure in 2026! #TokyoTravel #FamilyTravel #JapanWithKids",
       "repin_times": [],
@@ -1222,6 +1212,54 @@
       "repin_times": [],
       "quality_score": 85,
       "posted_at": "2026-07-05T08:39:37.408430+00:00"
+    },
+    {
+      "topic": "Family Health Emergencies in Japan: A Practical Guide to Clinics, Pharmacies, and Insurance",
+      "slug": "family-health-emergencies-in-japan-a-2026-guide",
+      "article_title": "Family Health Emergencies in Japan: A 2026 Guide",
+      "primary_keyword": "medical help Japan kids",
+      "image_query": "family health Japan",
+      "board_hint": "Japan Travel Safety & Health",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/family-health-emergencies-in-japan-a-2026-guide.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/family-health-emergencies-in-japan-a-2026-guide.jpg"
+      ],
+      "img_hashes": [
+        "077f7f6f48000000"
+      ],
+      "last_pin_desc": "Discover essential tips for managing family health emergencies while traveling in Japan. Learn about clinics, pharmacies, and insurance for kids. Ensure your family's safety and health on your trip! #FamilyTravel #Japan #Health",
+      "repin_times": [],
+      "quality_score": 80,
+      "posted_at": "2026-07-06T12:30:18.319157+00:00"
+    },
+    {
+      "topic": "Navigating Japanese Etiquette with Kids: Tips for Family-Friendly Cultural Immersion",
+      "slug": "navigating-japanese-etiquette-with-kids-in-2026",
+      "article_title": "Navigating Japanese Etiquette with Kids in 2026",
+      "primary_keyword": "Japanese etiquette kids",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan Cultural Immersion for Families",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/navigating-japanese-etiquette-with-kids-in-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/navigating-japanese-etiquette-with-kids-in-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "fe3881000000f6ff"
+      ],
+      "last_pin_desc": "Navigate Japanese etiquette with kids for a smooth family trip. Learn about transportation, dining, and public manners to enhance your cultural experience in 2026. #FamilyTravel #Japan2026 #CulturalEtiquette",
+      "repin_times": [],
+      "quality_score": 78,
+      "posted_at": "2026-07-06T12:37:16.160065+00:00"
     }
   ],
   "performance": {
@@ -1333,6 +1371,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 43
+    "llm_calls": 51
   }
 }
