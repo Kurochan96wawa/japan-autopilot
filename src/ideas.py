@@ -3,6 +3,35 @@ state の topics_queue に貯める。"""
 from __future__ import annotations
 from .util import load_settings, log
 from .llm import generate
+import difflib
+import re
+
+# 生成前dedupe（3-3）: タイトルの類似で近似重複トピックを生成前に弾く。標準ライブラリのみ。
+_TITLE_STOP = {"the", "a", "an", "in", "on", "at", "for", "with", "and", "to", "of", "your", "you",
+               "japan", "japanese", "kids", "kid", "child", "children", "family", "families",
+               "travel", "travelling", "traveling", "trip", "guide", "tips", "best", "how", "what",
+               "is", "are", "2026", "2025"}
+
+
+def _title_tokens(t):
+    toks = re.findall(r"[a-z0-9]+", (t or "").lower())
+    return {w for w in toks if len(w) > 2 and w not in _TITLE_STOP}
+
+
+def _too_similar(a, b):
+    ta, tb = _title_tokens(a), _title_tokens(b)
+    if ta and tb:
+        jac = len(ta & tb) / len(ta | tb)
+        if jac >= 0.55:
+            return True
+    return difflib.SequenceMatcher(None, (a or "").lower(), (b or "").lower()).ratio() >= 0.78
+
+
+def _dup_of(topic, existing):
+    for e in existing:
+        if e and _too_similar(topic, e):
+            return e
+    return None
 
 
 def mine_question_keywords(max_n: int = 12) -> list:
@@ -70,10 +99,21 @@ Return ONLY a JSON array. Each item:
         ideas = generate(prompt, as_json=True)
         if isinstance(ideas, dict):
             ideas = ideas.get("ideas") or list(ideas.values())
+        existing = ([str(p.get("topic", "")) for p in state.get("posted", [])]
+                    + [str(p.get("article_title", "")) for p in state.get("posted", [])]
+                    + [str(q.get("topic", "")) for q in queue])
+        added = 0
         for it in ideas:
-            if isinstance(it, dict) and it.get("topic"):
-                queue.append(it)
-        log.info("ネタを %d 件追加。queue=%d", len(ideas), len(queue))
+            if not (isinstance(it, dict) and it.get("topic")):
+                continue
+            dup = _dup_of(it["topic"], existing)
+            if dup:
+                log.info("ideas: 生成前dedupeで破棄 '%s'（類似: '%s'）", it["topic"], dup)
+                continue
+            queue.append(it)
+            existing.append(it["topic"])  # 同一バッチ内の相互照合
+            added += 1
+        log.info("ネタを %d 件追加（dedupe後）。queue=%d", added, len(queue))
     except Exception as e:
         log.error("ネタ生成失敗: %s", e)
     return state
