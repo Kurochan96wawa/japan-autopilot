@@ -241,7 +241,7 @@ def _allergy_tool_html() -> str:
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         '<title>Printable Japanese Allergy Card for Kids (free) | littletabi</title>'
         '<meta name="description" content="Free printable allergy card in Japanese for children travelling in Japan. '
-        'Fill in your child\'s allergens, add key phrases, then print or save.">'
+        'Fill in your child&rsquo;s allergens on screen, add key phrases, then print or save.">'
         '<link rel="canonical" href="https://littletabi.com/' + ALLERGY_TOOL_REL + '">'
         '<style>'
         ':root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--soft:#fff0f6;--line:#ececf1}'
@@ -253,33 +253,53 @@ def _allergy_tool_html() -> str:
         '.card h2{margin:.1em 0 .3em;font-size:1.15rem;color:var(--accent)}'
         '.row{margin:.5em 0;padding-bottom:.5em;border-bottom:1px dashed var(--line)}'
         '.ja{font-size:1.15rem}.en{color:var(--muted);font-size:.9rem}'
-        '.fill{display:inline-block;min-width:160px;border-bottom:1.5px solid var(--ink);height:1.2em}'
+        '.fill{display:inline-block;min-width:150px;border-bottom:1.5px solid var(--ink);'
+        'min-height:1.3em;padding:0 4px;outline:none}'
+        '.fill:focus{background:var(--soft)}'
         '.btn{display:inline-block;background:var(--accent);color:#fff;border:0;border-radius:10px;'
         'padding:11px 20px;font-weight:700;cursor:pointer;text-decoration:none;font-size:1rem}'
         '.note{font-size:.82rem;color:var(--muted)}'
+        '.dashi{background:var(--soft);border-radius:8px;padding:.5em .7em}'
+        '.epipen-ctl{margin-top:.5em}'
+        '.epipen-line{display:none;margin-top:.35em}'
+        '#epipen:checked ~ .epipen-line{display:block}'
         '.brand{font-weight:800;color:var(--ink);text-decoration:none}.brand b{color:var(--accent)}'
-        '@media print{.noprint{display:none}body{background:#fff}.card{box-shadow:none}}'
+        '@media print{.noprint{display:none}body{background:#fff}.card{box-shadow:none}'
+        '.epipen-ctl input{display:none}}'
         '</style></head><body><div class="wrap">'
         '<p class="noprint"><a class="brand" href="/index.html">little<b>tabi</b></a></p>'
         '<h1>Printable Japanese allergy card for kids</h1>'
-        '<p class="noprint">Write your child&rsquo;s allergens in the blanks, then <button class="btn" '
-        'onclick="window.print()">Print / Save as PDF</button>. Show this to restaurant staff in Japan.</p>'
+        '<p class="noprint">Type your child&rsquo;s details into the blanks below, tick the EpiPen box only if '
+        'they carry one, then <button class="btn" onclick="window.print()">Print / Save as PDF</button>. '
+        'Show this to restaurant staff in Japan.</p>'
         '<div class="card">'
         '<h2>アレルギーカード &middot; Allergy Card</h2>'
         '<div class="row"><div class="ja">この子は次の食物アレルギーがあります。</div>'
         '<div class="en">This child is allergic to the following foods:</div>'
-        '<div style="margin:.4em 0"><span class="fill"></span> <span class="fill"></span> <span class="fill"></span></div></div>'
+        '<div style="margin:.4em 0"><span class="fill" contenteditable="true" role="textbox" '
+        'aria-label="allergens"></span> <span class="fill" contenteditable="true"></span> '
+        '<span class="fill" contenteditable="true"></span></div></div>'
         '<div class="row"><div class="ja">重いアレルギーです。少しでも入ると危険です。</div>'
         '<div class="en">It is a severe allergy. Even a trace is dangerous.</div></div>'
         '<div class="row"><div class="ja">上記の食材を使わずに調理してもらえますか？接触（コンタミ）にも注意してください。</div>'
         '<div class="en">Could you prepare food without these, and avoid cross-contamination?</div></div>'
-        '<div class="row"><div class="ja">緊急時は119番（救急車）に電話してください。エピペンを持っています。</div>'
-        '<div class="en">In an emergency, please call 119 (ambulance). We carry an EpiPen.</div></div>'
-        '<div class="row"><div class="en"><strong>Child&rsquo;s name / age:</strong> <span class="fill"></span> '
-        '&nbsp; <strong>Carer&rsquo;s phone:</strong> <span class="fill"></span></div></div>'
+        '<div class="row dashi"><div class="ja">※魚・甲殻類アレルギーの場合は、だし（出汁）・魚介エキスにもご注意ください。'
+        '多くの和食はかつおだし（魚）を使っています。</div>'
+        '<div class="en">If your child is allergic to fish or shellfish: note that dashi (Japanese soup stock) '
+        'and seafood extracts are used very widely &mdash; most Japanese dishes contain bonito-fish dashi.</div></div>'
+        '<div class="row"><div class="ja">緊急時は119番（救急車）に電話してください。</div>'
+        '<div class="en">In an emergency, please call 119 (ambulance).</div>'
+        '<div class="epipen-ctl"><input type="checkbox" id="epipen">'
+        '<label for="epipen" class="noprint en"> Tick only if your child carries an EpiPen (adrenaline '
+        'auto-injector) &mdash; エピペン携帯時のみチェック</label>'
+        '<div class="epipen-line"><div class="ja">この子はエピペン（アドレナリン自己注射薬）を携帯しています。</div>'
+        '<div class="en">This child carries an EpiPen (adrenaline auto-injector).</div></div></div></div>'
+        '<div class="row"><div class="en"><strong>Child&rsquo;s name / age:</strong> '
+        '<span class="fill" contenteditable="true"></span> &nbsp; '
+        '<strong>Carer&rsquo;s phone:</strong> <span class="fill" contenteditable="true"></span></div></div>'
         '</div>'
         '<p class="note"><strong>Allergen words to copy in</strong> (EN &rarr; JA): '
-        'egg 卵 · milk 牛乳 · wheat 小麦 · buckwheat そば · '
+        'egg 卵 · milk 乳（牛乳・チーズ・バター・乳製品すべて） · wheat 小麦 · buckwheat そば · '
         'peanut 落花生 · shrimp えび · crab かに · walnut くるみ · '
         'soy 大豆 · sesame ごま · fish 魚 · cashew カシューナッツ · '
         'kiwi キウイ · peach もも · apple りんご · gelatin ゼラチン.</p>'
@@ -289,7 +309,6 @@ def _allergy_tool_html() -> str:
         '<p class="noprint"><a href="/' + ALLERGY_SLUG + '.html">&larr; Back to the food-allergy guide</a></p>'
         '</div></body></html>'
     )
-
 
 def _build_allergy_tool() -> int:
     path = SITE_DIR / ALLERGY_TOOL_REL
@@ -376,14 +395,18 @@ def _ensure_sitemap_tool() -> int:
 # 監査#4: ストック写真クレジットが冒頭・独自図が下＝「行った人」感が無く信頼に天井。
 # 対処: ①datavizの独自図を byline 直後（写真より前）へ前出し ②byline直後に正直な透明性ノート。
 # 架空の人間著者は作らない方針は維持し、"AI生成・公式照合・未訪問"を正直に明記する。
-_TRUST_STRIP = (
-    '<p id="trust-strip" class="trust-strip" style="margin:.4em 0 1.1em;padding:.55em .85em;'
-    'background:#fff0f6;border:1px solid #ffe0ee;border-radius:10px;font-size:.86rem;color:#6b7280">'
-    'AI-assisted guide, fact-checked against official and primary sources &mdash; not a sponsored stay. '
-    'We don&rsquo;t claim to have personally visited every place; we verify details, cite official sites, '
-    'and flag anything you should confirm before you go. '
-    '<a href="/how-we-make-guides.html">How we make these guides &rarr;</a></p>'
-)
+_TRUST_STRIP_RE = re.compile(r'<p id="trust-strip".*?</p>', re.S)
+
+
+def _trust_strip_html(stay: bool) -> str:
+    extra = (' We don&rsquo;t take paid or sponsored stays &mdash; we recommend places on merit.'
+             if stay else '')
+    return ('<p id="trust-strip" class="trust-strip" style="margin:.4em 0 1.1em;padding:.55em .85em;'
+            'background:#fff0f6;border:1px solid #ffe0ee;border-radius:10px;font-size:.86rem;color:#6b7280">'
+            'AI-generated guide, checked with an automated quality process. '
+            'Details are linked to official sources where possible &mdash; always confirm before you travel.'
+            + extra +
+            ' <a href="/how-we-make-guides.html">How we make these guides &rarr;</a></p>')
 
 _BYLINE_RE = re.compile(r'<p[^>]*class="byline"[^>]*>.*?</p>', re.S)
 _DV_FIG_RE = re.compile(r'<figure[^>]*class="[^"]*dataviz[^"]*"[^>]*>.*?</figure>', re.S)
@@ -409,15 +432,18 @@ def _hoist_dataviz(html: str):
 
 
 def _inject_trust_strip(html: str):
-    """byline直後に正直な透明性ストリップを挿入。冪等（id重複回避）。"""
+    """byline直後に正直な透明性ストリップを挿入/更新。冪等（既存も新文言へ置換）。"""
+    stay = any(k in html for k in ("best-family-hotels", "connecting-rooms",
+                                   "kitchenettes", "family-hotels", "where-to-stay"))
+    strip = _trust_strip_html(stay)
     if 'id="trust-strip"' in html:
-        return html, False
+        new = _TRUST_STRIP_RE.sub(lambda _m: strip, html, count=1)
+        return new, (new != html)
     mb = _BYLINE_RE.search(html)
     if not mb:
         return html, False
     at = mb.end()
-    return html[:at] + _TRUST_STRIP + html[at:], True
-
+    return html[:at] + strip + html[at:], True
 
 def _front_trust_and_dataviz() -> dict:
     hoisted = 0
