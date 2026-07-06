@@ -716,7 +716,7 @@ def _embeds_page_html(base: str) -> str:
 
 
 # 連絡導線（存在する索引/トップに寄せる。無ければトップ）。
-THANKS_OR_CONTACT = "index.html"
+THANKS_OR_CONTACT = "contact.html"
 
 
 def _build_embeds() -> int:
