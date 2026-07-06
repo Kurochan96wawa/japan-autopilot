@@ -796,8 +796,63 @@ def _apply_canonical_overrides() -> int:
     return done
 
 
+# ============================================================
+# 1-2 ハルシネーション/事実誤認の除去（冪等スクラブ）
+# 実在確認できない固有名詞・訪日客向け直販eSIMという虚偽前提・捏造価格・虚偽購入方法を
+# 後段で除去/修正する。正しい代替が確認できたものだけ書き換え、それ以外は削除（削除がデフォルト）。
+# ============================================================
+_SCRUB = {
+    "japan-esim-for-families-compared": [
+        ("<li><strong>Suzuki's Fun Train:</strong> An interactive way for kids to learn about Japanese culture.</li>", ""),
+        ("<li><strong>Suzuki&rsquo;s Fun Train:</strong> An interactive way for kids to learn about Japanese culture.</li>", ""),
+        ("Tokyo's Shinkansen (bullet trains) offer excellent Wi-Fi",
+         "Japan's Shinkansen (bullet trains) offer free Wi-Fi on many lines"),
+        ("Tokyo&rsquo;s Shinkansen (bullet trains) offer excellent Wi-Fi",
+         "Japan&rsquo;s Shinkansen (bullet trains) offer free Wi-Fi on many lines"),
+        ("the best eSIM options are the Softbank 5G and DOCOMO 4G LTE plans, providing reliable internet access for navigating, entertainment, and family communication.",
+         "the easiest way to stay online is a travel eSIM that runs on Japan's major networks (SoftBank or NTT DOCOMO), giving you reliable data for navigating, entertainment, and family communication."),
+        ("For instance, a 5GB plan from Softbank costs around 4,500 yen (as of 2026; confirm on the official site). ", ""),
+        ("Plans typically range from 3,000 to 10,000 yen (as of 2026; confirm on the official site)",
+         "Prices vary by data amount and trip length &mdash; always confirm the current price before you buy"),
+    ],
+}
+_SCRUB_RE = {
+    "japan-esim-for-families-compared": [
+        (re.compile(r"<table><tr><th>eSIM Provider</th>.*?</table>", re.S), ""),
+    ],
+    "japan-family-itinerary-tokyo-kyoto-osaka-with-young-children": [
+        (re.compile(r"Consider using the <a [^>]*>Disney Premier Access</a> for shorter wait times at popular attractions\."),
+         "Disney Premier Access (paid ride reservations) is sold only in the official Tokyo Disney Resort app, not on third-party sites."),
+    ],
+}
+
+
+def _scrub_hallucinations() -> int:
+    fixed = 0
+    slugs = set(_SCRUB) | set(_SCRUB_RE)
+    for slug in slugs:
+        path = SITE_DIR / f"{slug}.html"
+        if not path.exists():
+            continue
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        orig = html
+        for a, b in _SCRUB.get(slug, []):
+            html = html.replace(a, b)
+        for rx, b in _SCRUB_RE.get(slug, []):
+            html = rx.sub(lambda _m: b, html)
+        if html != orig:
+            path.write_text(html, encoding="utf-8")
+            fixed += 1
+            log.info("quality_fixups: 1-2 ハルシネーション除去 %s", slug)
+    return fixed
+
+
 def run() -> dict:
     m = _inject_money_picks()
+    hx = _scrub_hallucinations()
     c = _apply_canonical_overrides()
     t = _build_allergy_tool()
     a = _inject_allergy_inline()
@@ -809,7 +864,7 @@ def run() -> dict:
     e = _build_embeds()
     log.info("quality_fixups完了: 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d",
              m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e)
-    return {"money_picks": m, "canonical_dedup": c, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
+    return {"money_picks": m, "scrub": hx, "canonical_dedup": c, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
             "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"],
             "shinkansen_steps": k, "age_bands": g, "embeds": e}
 
