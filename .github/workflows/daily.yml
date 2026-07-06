@@ -64,6 +64,9 @@ jobs:
       - name: Web Stories (AMP, idempotent)
         run: python -m src.webstory || echo "webstory skipped"
 
+      - name: Link linter (revenue links, fail-closed)
+        run: python -m src.link_linter
+
       - name: Commit results (state + site)
         run: |
           git config user.name  "autopilot-bot"
