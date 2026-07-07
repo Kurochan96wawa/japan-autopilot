@@ -61,6 +61,9 @@ jobs:
       - name: Quality fixups (named money-page picks + allergy card, idempotent)
         run: python -m src.quality_fixups
 
+      - name: Facts fixups (cross-article consistency, idempotent)
+        run: python -m src.facts_fixups
+
       - name: Web Stories (AMP, idempotent)
         run: python -m src.webstory || echo "webstory skipped"
 
