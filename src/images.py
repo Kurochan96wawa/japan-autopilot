@@ -27,7 +27,55 @@ _OVERLAY_STYLES = [
 ]
 
 
+# ============================================================
+# Phase 2-3: 画像の都市整合（Pexelsクエリに Japan/都市 を必ず含め、
+# altが記事の都市と矛盾する写真は後回し=汎用/中立を優先）。
+# ============================================================
+_JP_CITIES = {
+    "tokyo", "kyoto", "osaka", "nara", "yokohama", "nagoya", "hiroshima",
+    "fukuoka", "sapporo", "hokkaido", "okinawa", "kobe", "kanazawa", "hakone",
+    "nikko", "shizuoka", "okazaki", "hachioji", "kamakura", "kawasaki",
+    "chiba", "saitama", "sendai", "nagano", "dotonbori", "shinjuku", "shibuya",
+    "asakusa", "arashiyama",
+}
+_CITY_ALIASES = {
+    "dotonbori": "osaka", "shinjuku": "tokyo", "shibuya": "tokyo",
+    "asakusa": "tokyo", "arashiyama": "kyoto", "hachioji": "tokyo",
+    "kawasaki": "tokyo", "yokohama": "tokyo",
+}
+
+
+def _cities_in(text: str) -> set:
+    t = (text or "").lower()
+    return {_CITY_ALIASES.get(c, c) for c in _JP_CITIES if c in t}
+
+
+def _ensure_japan(query: str) -> str:
+    q = (query or "").strip() or "Japan family travel children"
+    if "japan" not in q.lower():
+        q = q + " Japan"
+    return q
+
+
+def _photo_conflicts(photo: dict, want: set) -> bool:
+    """写真altが『記事の都市ではない』日本の都市のみを指すなら True（=場所違い）。"""
+    found = _cities_in(photo.get("alt") or "")
+    if not found or not want:
+        return False
+    return found.isdisjoint(want)
+
+
+def _rank_photos(photos: list, want: set) -> list:
+    """記事都市と矛盾しない写真を前に、矛盾する写真を後ろに（順序維持）。"""
+    if not want:
+        return photos
+    good = [p for p in photos if not _photo_conflicts(p, want)]
+    bad = [p for p in photos if _photo_conflicts(p, want)]
+    return good + bad
+
+
 def _pexels_photos(query: str, pool: int, orientation: str = "portrait") -> list[dict]:
+    query = _ensure_japan(query)
     key = os.environ.get("PEXELS_API_KEY")
     if not key:
         return []
@@ -81,6 +129,7 @@ def make_pin_image(slug: str, overlay_text: str, image_query: str, variant: int 
     credit = {"photographer": "", "url": ""}
 
     photos = _pexels_photos(image_query, pool) if cfg["source"] == "pexels" else []
+    photos = _rank_photos(photos, _cities_in(image_query + " " + slug))
     if photos:
         # variantごとに違う写真を選ぶ（候補が尽きたら巡回）
         p = photos[variant % len(photos)]
@@ -132,6 +181,7 @@ def fetch_body_images(query: str, slug: str, n: int = 2, skip: int = 1) -> list[
     photos = _pexels_photos(query, n + skip + 4, orientation="landscape")
     if not photos:
         return []
+    photos = _rank_photos(photos, _cities_in(query + " " + slug))
     img_dir = SITE_DIR / "img"
     img_dir.mkdir(parents=True, exist_ok=True)
     out: list[dict] = []
