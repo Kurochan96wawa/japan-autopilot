@@ -11,6 +11,17 @@ except Exception:  # pragma: no cover
     yaml = None
 
 
+# Phase 2-2: カニバリ統合で301した旧slug。related/内部リンクの候補から除外し、
+# 統合先へリンクを集約する（サイトマップ・index からの除外は site.py 側で参照）。
+REDIRECTED_SLUGS = {
+    "buying-baby-diapers-wipes-and-formula-in-japan-2026",
+    "diapers-formula-in-japan-brands-sizes-where-to-buy",
+    "tokyo-disney-vs-disneysea-for-kids",
+    "navigating-japan-s-public-transport-with-kids-2026",
+    "tokyo-family-hotels-connecting-rooms-kitchenettes",
+}
+
+
 def load_clusters(path: str = "config/clusters.yaml") -> dict:
     if not yaml or not os.path.exists(path):
         return {}
@@ -45,7 +56,7 @@ def related(slug: str, clusters: dict, n: int = 3) -> list:
         if not c:
             return []
         out = [s for s in ([c.get("pillar")] + list(c.get("members", []) or [])) if s and s != slug]
-        return out[:n + 1]
+        return [s for s in out if s not in REDIRECTED_SLUGS][:n + 1]
     sibs = [s for s in (c.get("members", []) or []) if s != slug]
     out = sibs[:n]
     if c.get("pillar") and c["pillar"] != slug:
@@ -56,7 +67,7 @@ def related(slug: str, clusters: dict, n: int = 3) -> list:
         if s not in seen:
             seen.add(s)
             dedup.append(s)
-    return dedup
+    return [s for s in dedup if s not in REDIRECTED_SLUGS]
 
 
 def load_titles(state_path: str = "data/state.json") -> dict:
