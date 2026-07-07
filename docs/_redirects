@@ -1,0 +1,20 @@
+# Cloudflare Pages 301 redirects — Phase 2-2 カニバリ統合（重複記事を統合先へ恒久リダイレクト）
+# 各行: /旧パス  /統合先  301 （.html と拡張子なしの両形式）
+
+# --- おむつ/ミルク: 2本 -> diapers-formula-baby-gear-in-japan-what-to-pack-buy ---
+/buying-baby-diapers-wipes-and-formula-in-japan-2026       /diapers-formula-baby-gear-in-japan-what-to-pack-buy  301
+/buying-baby-diapers-wipes-and-formula-in-japan-2026.html  /diapers-formula-baby-gear-in-japan-what-to-pack-buy  301
+/diapers-formula-in-japan-brands-sizes-where-to-buy        /diapers-formula-baby-gear-in-japan-what-to-pack-buy  301
+/diapers-formula-in-japan-brands-sizes-where-to-buy.html   /diapers-formula-baby-gear-in-japan-what-to-pack-buy  301
+
+# --- ディズニー: 1本 -> tokyo-disneyland-vs-disneysea-young-kids (マネーページ) ---
+/tokyo-disney-vs-disneysea-for-kids       /tokyo-disneyland-vs-disneysea-young-kids  301
+/tokyo-disney-vs-disneysea-for-kids.html  /tokyo-disneyland-vs-disneysea-young-kids  301
+
+# --- 交通: 1本 -> japan-public-transport-with-kids-fares-strollers-facilities ---
+/navigating-japan-s-public-transport-with-kids-2026       /japan-public-transport-with-kids-fares-strollers-facilities  301
+/navigating-japan-s-public-transport-with-kids-2026.html  /japan-public-transport-with-kids-fares-strollers-facilities  301
+
+# --- ホテル: 1本 -> best-family-hotels-tokyo-connecting-rooms (マネーページ) ---
+/tokyo-family-hotels-connecting-rooms-kitchenettes       /best-family-hotels-tokyo-connecting-rooms  301
+/tokyo-family-hotels-connecting-rooms-kitchenettes.html  /best-family-hotels-tokyo-connecting-rooms  301
