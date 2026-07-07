@@ -1,0 +1,48 @@
+# =====================================================================
+# 施策3-4: 記事間で共有される「事実」の単一情報源（single source of truth）。
+#
+# 目的: 記事ごとにLLMが数値を書くと矛盾する（例: ディズニーのベビーカー体重制限が
+#   記事Aは15kg・記事Bは20kg）。ここに公式確認済みの正値を一元化し、
+#   src/facts_fixups.py が記事間の矛盾を冪等に正規化する。
+#
+# ルール（指示書 §0-2 捏造禁止 / §3-4）:
+#   * value は必ず公式サイトで実在確認した現行値のみ。確認できない値は載せない。
+#   * verified_url … 確認に使ったURL。 verified_date … 確認日（YYYY-MM-DD）。
+#   * 6ヶ月超の項目は weekly_review が月次再確認対象としてIssueに出す。
+#   * normalize（任意）… facts_fixups が使う自動置換ルール。誤爆防止のため、近傍に
+#     context語と cue語が両方ある時だけ wrong（正規表現）を correct へ置換する。
+#     ★文書化された明確な矛盾にだけ付ける。曖昧なものは reference のみ（自動置換しない）。
+# =====================================================================
+
+facts:
+  - id: disney-stroller-rental
+    topic: "Tokyo Disney Resort stroller rental limits"
+    value: "Rental strollers at Tokyo Disneyland and Tokyo DisneySea are for children who can sit unassisted (about 7 months+), up to 100 cm tall and up to 15 kg."
+    verified_url: "https://www.tokyodisneyresort.jp/en/tdl/service/detail/010/"
+    verified_date: 2026-07-07
+    # 記事間で体重制限が 15kg と 16-25kg で矛盾していた（指示書 §1-2 で文書化）。
+    # ベビーカー文脈(context=stroller)かつ近傍に kg がある時だけ 15 kg へ統一。
+    normalize:
+      - context: "stroller"
+        cue: "kg"
+        wrong: '(?<![\d.])(1[6-9]|2[0-5])\s?kg'
+        correct: "15 kg"
+
+  - id: japan-tax-free-threshold
+    topic: "Japan tax-free shopping minimum and 2026 system change"
+    value: "Tax-free shopping requires at least 5,000 yen (pre-tax) at one store on the same day. From 2026-11-01 Japan switches to a refund method: pay the tax-inclusive price and claim the refund at the airport before departure."
+    verified_url: "https://www.japan-guide.com/news/tax-free-shopping.html"
+    verified_date: 2026-07-07
+    # reference のみ（"3,000 yen" 等が正当な価格の可能性があり自動置換は誤爆リスク）。
+
+  - id: shinkansen-oversized-baggage
+    topic: "Shinkansen oversized baggage reservation rule"
+    value: "On Tokaido/Sanyo/Kyushu/Nishi-Kyushu Shinkansen, baggage with total dimensions (length+width+height) of 160-250 cm needs a free advance reservation for an 'oversized baggage seat'. Over 250 cm is not allowed; max 30 kg. Without a reservation there is a 1,000 yen fee."
+    verified_url: "https://www.westjr.co.jp/travel-information/en/train-usage-guide/luggage/"
+    verified_date: 2026-07-07
+
+  - id: jr-child-fare
+    topic: "JR child fare rules"
+    value: "On JR, children aged 6-11 pay half the adult fare (Green/sleeper tickets are full price). Children under 6 ride free; up to two under-6 children per paying adult travel free in non-reserved seats."
+    verified_url: "https://global.jr-central.co.jp/en/tickets/type/adults_children.html"
+    verified_date: 2026-07-07
