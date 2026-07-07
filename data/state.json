@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Navigating Medical Care in Japan for Traveling Families: What to Do If Your Child Gets Sick",
-      "search_intent": "Parents need clear, practical steps and information on how to access medical services, understand the healthcare system, and prepare for potential childhood illnesses or minor injuries while on a family trip to Japan.",
-      "primary_keyword": "child medical emergency Japan travel",
-      "board_hint": "Japan Family Safety, Travel Health & Logistics"
-    },
-    {
-      "topic": "Keeping Kids Happy on Long Japan Journeys: Engaging Activities for Flights & Train Rides",
-      "search_intent": "Parents are looking for a variety of engaging, often screen-free, ideas and strategies to keep their children entertained and content during extended travel periods, such as international flights, Shinkansen trips, and waiting times in Japan.",
-      "primary_keyword": "kids travel activities Japan",
-      "board_hint": "Family Travel Tips Japan, Kid-Friendly Japan Activities"
-    },
-    {
       "topic": "Essential Packing List for Japan with Kids: From Comfort to Convenience",
       "search_intent": "Parents need a comprehensive and practical checklist of items to pack for their children when traveling to Japan, covering clothing, health, entertainment, and other travel essentials specific to the Japanese environment and family travel needs.",
       "primary_keyword": "Japan packing list kids",
@@ -151,10 +139,12 @@
       "url": "https://littletabi.com/tokyo-family-hotels-connecting-rooms-kitchenettes.html",
       "pins_count": 0,
       "image_variants": [
+        "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg",
         "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg"
       ],
       "img_hashes": [
-        "00087f7f7f3c0000"
+        "00087f7f7f3c0000",
+        "fc40f0fcfd7c3808"
       ],
       "last_pin_desc": "Discover the best family-friendly hotels in Tokyo offering connecting rooms and kitchenettes. Perfect for traveling with kids in 2026! #FamilyTravel #Tokyo #Japan",
       "repin_times": [],
@@ -1274,6 +1264,55 @@
       "repin_times": [],
       "quality_score": 78,
       "posted_at": "2026-07-06T12:37:16.160065+00:00"
+    },
+    {
+      "topic": "Navigating Medical Care in Japan for Traveling Families: What to Do If Your Child Gets Sick",
+      "slug": "navigating-medical-care-in-japan-for-families-2026",
+      "article_title": "Navigating Medical Care in Japan for Families (2026)",
+      "primary_keyword": "child medical emergency Japan travel",
+      "image_query": "Japan family travel",
+      "board_hint": "Japan Family Safety, Travel Health & Logistics",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/navigating-medical-care-in-japan-for-families-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/navigating-medical-care-in-japan-for-families-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "fc7c3cf83808183e"
+      ],
+      "last_pin_desc": "A practical guide for families traveling in Japan. Know what to do if your child gets sick, from costs to clinics. Stay prepared and informed! #JapanTravel #FamilyTravel #TravelWithKids",
+      "repin_times": [],
+      "quality_score": 80,
+      "posted_at": "2026-07-07T10:35:46.057408+00:00"
+    },
+    {
+      "topic": "Keeping Kids Happy on Long Japan Journeys: Engaging Activities for Flights & Train Rides",
+      "slug": "keeping-kids-happy-on-long-japan-journeys-2026",
+      "article_title": "Keeping Kids Happy on Long Japan Journeys (2026)",
+      "primary_keyword": "kids travel activities Japan",
+      "image_query": "family travel Japan",
+      "board_hint": "Family Travel Tips Japan, Kid-Friendly Japan Activities",
+      "affiliates_used": [
+        "experiences",
+        "regional_pass"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/keeping-kids-happy-on-long-japan-journeys-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/keeping-kids-happy-on-long-japan-journeys-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ff3c81000000f6ff"
+      ],
+      "last_pin_desc": "Explore fun activities to keep children entertained on flights and trains in Japan. Perfect for family travel in 2026! #JapanTravel #FamilyFun #TravelWithKids",
+      "repin_times": [],
+      "quality_score": 82,
+      "posted_at": "2026-07-07T10:45:21.516952+00:00"
     }
   ],
   "performance": {
@@ -1411,6 +1450,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 53
+    "llm_calls": 61
   }
 }
