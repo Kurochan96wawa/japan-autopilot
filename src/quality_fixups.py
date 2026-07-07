@@ -163,7 +163,13 @@ def _inject_money_picks() -> int:
             html = path.read_text(encoding="utf-8")
         except Exception:
             continue
-        if 'id="specific-picks"' in html:  # 冪等
+        if 'id="specific-picks"' in html:  # 既存あり → 現行ブロックへ置換（更新）
+            new = re.sub(r'<section id="specific-picks".*?</section>',
+                         lambda _m: block, html, count=1, flags=re.S)
+            if new != html:
+                path.write_text(new, encoding="utf-8")
+                done += 1
+                log.info("quality_fixups: 固有名詞ピック更新 %s", slug)
             continue
         # 比較表の直後に差し込む（無ければ最初の<h2>の直前、さらに無ければ</article>直前）
         m = re.search(r"</table>", html)
