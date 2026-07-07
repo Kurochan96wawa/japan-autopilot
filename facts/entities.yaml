@@ -159,6 +159,17 @@ entities:
     status: verified
     notes: "theme park"
 
+  # ---- Klook商品（Disney比較ページのCTA、Phase 2-1d、2026-07-07 検証）----
+  - id: klook-tdr-1day-pass
+    type: product
+    name_en: "Tokyo Disney Resort 1-Day Pass (Klook)"
+    aliases: ["Tokyo Disney 1-Day ticket"]
+    area: "Urayasu, Chiba"
+    verified_url: "https://www.klook.com/en-US/activity/695-tokyo-disney-resort-1-day-pass-tokyo/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "Klook official TDR partner; QR mobile e-ticket; aid=125283 deep link"
+
 # =====================================================================
 # 既知ブランド（本文で言及されるが「マネーページのピック」ではない汎用ブランド）。
 # entity_scan.py はこれらを「未登録エンティティ」として誤検知しないための許可リスト。
