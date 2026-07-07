@@ -25,9 +25,9 @@ THANKS_SLUG = "get-the-japan-checklist"
 # サンクスページから案内する人気ガイド（実在slug）。
 _POPULAR = [
     ("japan-family-itinerary-tokyo-kyoto-osaka-with-young-children", "Tokyo–Kyoto–Osaka itinerary with young kids"),
-    ("diapers-formula-in-japan-brands-sizes-where-to-buy", "Where to buy diapers & formula in Japan"),
+    ("diapers-formula-baby-gear-in-japan-what-to-pack-buy", "Where to buy diapers & formula in Japan"),
     ("best-family-hotels-tokyo-connecting-rooms", "Best family hotels in Tokyo (compared)"),
-    ("japan-public-transport-with-kids-fares-strollers-tips", "Getting around Japan with kids"),
+    ("japan-public-transport-with-kids-fares-strollers-facilities", "Getting around Japan with kids"),
 ]
 
 

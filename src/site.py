@@ -224,6 +224,8 @@ def _write_seo_files(cfg) -> None:
     rows = []
     for path in sorted(SITE_DIR.glob("*.html")):
         name = path.name
+        if name.endswith(".html") and name[:-5] in linker.REDIRECTED_SLUGS:
+            continue  # Phase 2-2: 301統合先へ寄せる旧slugはサイトマップから除外
         loc = base + "/" if name == "index.html" else f"{base}/{name}"
         if name == "index.html":
             pr = "1.0"
@@ -335,6 +337,12 @@ def _upgrade_eeat_links(cfg) -> None:
             continue
         slug = path.stem
         changed = False
+        # Phase 2-2: 301統合した旧slugへの関連リンク<li>を既存HTMLからも除去（内部リンク掃除）
+        for _r in linker.REDIRECTED_SLUGS:
+            _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_r) + r'\.html"[^>]*>.*?</a>\s*</li>', re.S)
+            if _pat.search(txt):
+                txt = _pat.sub("", txt)
+                changed = True
 
         # ① 内部リンク（関連ガイド）を bottom 開示の直前に挿入
         if 'class="related"' not in txt:
@@ -868,7 +876,8 @@ def rebuild_index(state: dict) -> None:
     site_name = cfg["site"]["site_name"]
     lang = cfg["niche"].get("language", "en")
     posts = [p for p in reversed(state.get("posted", [])[-200:])
-             if p.get("slug") and p.get("article_title")]
+             if p.get("slug") and p.get("article_title")
+             and p["slug"] not in linker.REDIRECTED_SLUGS]
     popular = [(p["slug"], p["article_title"]) for p in posts[:6]]
     slug_to_post = {p["slug"]: p for p in posts}
     hubs = _build_hubs(linker.load_clusters(), slug_to_post, lang, site_name)
