@@ -170,6 +170,147 @@ entities:
     status: verified
     notes: "Klook official TDR partner; QR mobile e-ticket; aid=125283 deep link"
 
+  # ---- 施設/アトラクション（japan-family-itinerary-... の旅程に実名注入。全て2026-07-07に公式で実在確認）----
+  - id: ueno-zoo
+    type: attraction
+    name_en: "Ueno Zoo"
+    aliases: ["Ueno Zoological Gardens"]
+    area: "Ueno, Tokyo"
+    verified_url: "https://www.tokyo-zoo.net/en/ueno/index.html"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "Tokyo Zoological Park Society; giant pandas, children's zoo"
+
+  - id: teamlab-planets-tokyo
+    type: attraction
+    name_en: "teamLab Planets TOKYO"
+    aliases: ["teamLab Planets"]
+    area: "Toyosu, Tokyo"
+    verified_url: "https://www.teamlab.art/e/planets/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "walk-through digital art museum; timed advance tickets"
+
+  - id: miraikan
+    type: attraction
+    name_en: "Miraikan"
+    aliases: ["National Museum of Emerging Science and Innovation"]
+    area: "Odaiba, Tokyo"
+    verified_url: "https://www.miraikan.jst.go.jp/en/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "hands-on science museum"
+
+  - id: ghibli-museum-mitaka
+    type: attraction
+    name_en: "Ghibli Museum, Mitaka"
+    aliases: ["Ghibli Museum"]
+    area: "Mitaka, Tokyo"
+    verified_url: "https://www.ghibli-museum.jp/en/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "advance-only timed tickets; name must match passport"
+
+  - id: sumida-aquarium
+    type: attraction
+    name_en: "Sumida Aquarium"
+    aliases: []
+    area: "Tokyo Skytree Town, Tokyo"
+    verified_url: "https://en.sumida-aquarium.com/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "indoor aquarium at Tokyo Skytree; rainy-day option"
+
+  - id: tokyo-disney-resort
+    type: attraction
+    name_en: "Tokyo Disney Resort"
+    aliases: ["Tokyo Disneyland", "Tokyo DisneySea"]
+    area: "Urayasu, Chiba"
+    verified_url: "https://www.tokyodisneyresort.jp/en/index.html"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "dated tickets recommended in advance"
+
+  - id: kyoto-railway-museum
+    type: attraction
+    name_en: "Kyoto Railway Museum"
+    aliases: []
+    area: "Umekoji, Kyoto"
+    verified_url: "https://www.kyotorailwaymuseum.jp/en/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "JR West railway museum near Kyoto Station"
+
+  - id: kyoto-aquarium
+    type: attraction
+    name_en: "Kyoto Aquarium"
+    aliases: []
+    area: "Umekoji Park, Kyoto"
+    verified_url: "https://en.kyoto-aquarium.com/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "indoor aquarium inside Umekoji Park"
+
+  - id: nara-park
+    type: attraction
+    name_en: "Nara Park"
+    aliases: []
+    area: "Nara"
+    verified_url: "https://www.visitnara.jp/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "free-roaming wild deer; official Nara travel guide"
+
+  - id: todaiji-temple
+    type: attraction
+    name_en: "Todaiji Temple"
+    aliases: ["Todai-ji"]
+    area: "Nara"
+    verified_url: "https://www.todaiji.or.jp/en/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "Great Buddha hall (Daibutsuden)"
+
+  - id: osaka-aquarium-kaiyukan
+    type: attraction
+    name_en: "Osaka Aquarium Kaiyukan"
+    aliases: ["Kaiyukan"]
+    area: "Tempozan, Osaka"
+    verified_url: "https://www.kaiyukan.com/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "large central tank with whale shark"
+
+  - id: universal-studios-japan
+    type: attraction
+    name_en: "Universal Studios Japan"
+    aliases: ["USJ"]
+    area: "Konohana-ku, Osaka"
+    verified_url: "https://www.usj.co.jp/web/en/us"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "dated tickets in advance; Super Nintendo World; ride height limits"
+
+  - id: abeno-harukas
+    type: attraction
+    name_en: "Abeno Harukas"
+    aliases: ["Harukas 300", "Abeno Harukas Observatory"]
+    area: "Tennoji, Osaka"
+    verified_url: "https://www.abenoharukas-300.jp/en/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "300m observatory above Tennoji Station"
+
+  - id: osaka-castle
+    type: attraction
+    name_en: "Osaka Castle"
+    aliases: ["Osaka-jo"]
+    area: "Chuo-ku, Osaka"
+    verified_url: "https://www.osakacastle.net/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "castle keep is an indoor museum; large surrounding park"
+
 # =====================================================================
 # 既知ブランド（本文で言及されるが「マネーページのピック」ではない汎用ブランド）。
 # entity_scan.py はこれらを「未登録エンティティ」として誤検知しないための許可リスト。
