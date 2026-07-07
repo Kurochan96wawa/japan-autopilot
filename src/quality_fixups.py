@@ -30,6 +30,8 @@ def _bk(name: str) -> str:
 
 _KLOOK_EXPERIENCES = ("https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337"
                       "&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fdestination%2Fco1012-japan%2F")
+_KLOOK_TDR = ("https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337"
+              "&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Factivity%2F695-tokyo-disney-resort-1-day-pass-tokyo%2F")
 _KLOOK_ESIM = ("https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337"
                "&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Factivity%2F"
                "109393-japan-esim-high-speed-internet-qr-code-voucher%2F")
@@ -139,7 +141,7 @@ _DISNEY_PICKS = (
     '<td>Slightly older kids (5+) and families who want newer themed areas; some big rides have height limits.</td></tr>'
     '</tbody></table>'
     '<p>Short on time? Pre-book park tickets so you skip the queue at the gate with tired kids: '
-    '<a href="' + _KLOOK_EXPERIENCES + '" ' + _SPONSORED + '><strong>Check family tickets &amp; experiences on Klook &rarr;</strong></a></p>'
+    '<a href="' + _KLOOK_TDR + '" ' + _SPONSORED + '><strong>Check Tokyo Disney 1-Day tickets on Klook &rarr;</strong></a></p>'
     '<p style="font-size:.85rem;color:#6b7280">For under-5s, Disneyland generally has more rides with no height '
     'requirement; DisneySea suits families with a wider age range. We earn a small commission only on qualifying '
     'purchases, at no extra cost to you.</p>'
