@@ -1,0 +1,46 @@
+name: weekly-review
+
+# 施策3-6: 週次レビュー・ダイジェストを自動でIssue化する。
+# 人間はこのIssueだけ見れば、レビュー待ち・違反・新規公開を把握できる（週30〜60分運用）。
+# cronは毎週月曜 23:00 UTC（火 08:00 JST）。GitHub cronは±1時間ずれる仕様（問題なし）。
+
+on:
+  schedule:
+    - cron: "0 23 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: weekly-review
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Build weekly review body
+        run: python -m src.weekly_review > weekly-review-body.md
+
+      - name: Create review issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "littletabi weekly review $(date -u +%F)" \
+            --body-file weekly-review-body.md \
+            --label "review" || \
+          gh issue create \
+            --title "littletabi weekly review $(date -u +%F)" \
+            --body-file weekly-review-body.md

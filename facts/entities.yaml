@@ -1,0 +1,166 @@
+# =====================================================================
+# 施策3-1: エンティティ・ホワイトリスト（実在確認済みの固有名詞の単一情報源）
+#
+# 目的: マネーページ/記事に書いてよいホテル名・商品名・施設名を一元管理する。
+#   ここに無い固有名詞を含む記事は自動公開しない（entity_scan.py がレビュー送り）。
+#
+# ルール（指示書 §2-0 / §3-1）:
+#   * 各エントリは必ず「公式サイト or Booking/Klook の実ページ」で実在確認したもの。
+#     「もっともらしいから」で足さない。確認できないものは書かない。
+#   * verified_url … 実在確認に使ったURL（公式優先）。
+#   * verified_date … 確認した日付（YYYY-MM-DD）。空 or 6ヶ月超は週次レビューで再確認対象。
+#   * status: verified … 確認済み。 pending_url … 掲載中だが公式URL再確認待ち（Phase 2-1で埋める）。
+#
+# 追記手順: Phase 2-1 のマネーページ再構築時、候補を fetch 検証 → ここに登録 → 記事に実名注入。
+# =====================================================================
+
+entities:
+  # ---- ホテル（best-family-hotels-tokyo-connecting-rooms に注入済みの実名ピック）----
+  - id: mimaru-suites-tokyo-asakusa
+    type: hotel
+    name_en: "MIMARU SUITES Tokyo Asakusa"
+    aliases: ["MIMARU Suites Asakusa"]
+    area: "Asakusa, Tokyo"
+    verified_url: "https://mimaruhotels.com/en/hotel/tokyo-asakusa-suites/"
+    verified_date: 2026-07-06
+    status: pending_url   # 前セッションでmoney-picksに注入。公式URLの最終スポット確認は Phase 2-1 レビューで
+    notes: "apartment hotel, every room 2+ bedrooms + kitchen + washer, sleeps ~6"
+
+  - id: mimaru-tokyo-ikebukuro
+    type: hotel
+    name_en: "MIMARU Tokyo Ikebukuro"
+    aliases: []
+    area: "Ikebukuro, Tokyo"
+    verified_url: "https://mimaruhotels.com/en/hotel/tokyo-ikebukuro/"
+    verified_date: 2026-07-06
+    status: pending_url
+    notes: "apartment-style family rooms, kitchenette"
+
+  - id: mimaru-tokyo-station-east
+    type: hotel
+    name_en: "MIMARU Tokyo Station East"
+    aliases: []
+    area: "Tokyo Station area"
+    verified_url: "https://mimaruhotels.com/en/hotel/tokyo-station-east/"
+    verified_date: 2026-07-06
+    status: pending_url
+    notes: "apartment-style, family capacity, near Tokyo Station"
+
+  - id: disney-ambassador-hotel
+    type: hotel
+    name_en: "Disney Ambassador Hotel"
+    aliases: []
+    area: "Tokyo Disney Resort, Urayasu"
+    verified_url: "https://www.tokyodisneyresort.jp/en/hotel/dah/"
+    verified_date: 2026-07-06
+    status: pending_url
+    notes: "official Disney hotel, character rooms, family friendly"
+
+  - id: tokyo-disneyland-hotel
+    type: hotel
+    name_en: "Tokyo Disneyland Hotel"
+    aliases: []
+    area: "Tokyo Disney Resort, Urayasu"
+    verified_url: "https://www.tokyodisneyresort.jp/en/hotel/tdh/"
+    verified_date: 2026-07-06
+    status: pending_url
+    notes: "official Disney hotel next to the park entrance"
+
+  # ---- eSIM 商品（japan-esim-for-families-compared に注入済み）----
+  - id: klook-japan-esim
+    type: product
+    name_en: "Klook Japan eSIM"
+    aliases: ["Klook Japan eSIM (Softbank 5G / DOCOMO)"]
+    area: "Japan (nationwide)"
+    verified_url: "https://www.klook.com/en-US/activity/109393-japan-esim-high-speed-internet-qr-code-voucher/"
+    verified_date: 2026-07-06
+    status: verified
+    notes: "Klook affiliate deep link (aid=125283) live; QR eSIM voucher"
+
+  - id: ubigi-japan-esim
+    type: product
+    name_en: "Ubigi"
+    aliases: ["Ubigi Japan eSIM"]
+    area: "Japan (nationwide)"
+    verified_url: "https://cellulardata.ubigi.com/"
+    verified_date: 2026-07-06
+    status: pending_url
+    notes: "eSIM provider; no affiliate yet, bare link OK"
+
+  - id: airalo-japan-esim
+    type: product
+    name_en: "Airalo"
+    aliases: ["Airalo Japan eSIM", "Moshi Moshi"]
+    area: "Japan (nationwide)"
+    verified_url: "https://www.airalo.com/japan-esim"
+    verified_date: 2026-07-06
+    status: pending_url
+    notes: "eSIM marketplace; affiliate is operator task (§7-3), bare link OK until approved"
+
+  # ---- 施設/アトラクション ----
+  - id: tokyo-disneyland
+    type: attraction
+    name_en: "Tokyo Disneyland"
+    aliases: []
+    area: "Urayasu, Chiba"
+    verified_url: "https://www.tokyodisneyresort.jp/en/tdl/"
+    verified_date: 2026-07-06
+    status: verified
+    notes: "theme park"
+
+  - id: tokyo-disneysea
+    type: attraction
+    name_en: "Tokyo DisneySea"
+    aliases: []
+    area: "Urayasu, Chiba"
+    verified_url: "https://www.tokyodisneyresort.jp/en/tds/"
+    verified_date: 2026-07-06
+    status: verified
+    notes: "theme park"
+
+# =====================================================================
+# 既知ブランド（本文で言及されるが「マネーページのピック」ではない汎用ブランド）。
+# entity_scan.py はこれらを「未登録エンティティ」として誤検知しないための許可リスト。
+# 実在は一般に確立しているもののみ（新規は追加前に確認）。
+# =====================================================================
+known_brands:
+  # ベビー用品（Phase 1-2 で修正済みの正しいブランド名）
+  - "Moony"
+  - "Merries"
+  - "Pampers"
+  - "GooN"
+  - "Genki"
+  # 交通・決済
+  - "Shinkansen"
+  - "JR Pass"
+  - "Japan Rail Pass"
+  - "Suica"
+  - "PASMO"
+  - "ICOCA"
+  - "Welcome Suica"
+  - "Pasmo Passport"
+  # 通信（訪日客向け直販eSIMは存在しないため商品としては扱わない。ネットワーク名のみ許可）
+  - "Softbank"
+  - "DOCOMO"
+  - "au"
+  # 店舗チェーン（実在の一般小売）
+  - "Don Quijote"
+  - "Akachan Honpo"
+  - "Nishimatsuya"
+  - "Aeon"
+  - "Matsumoto Kiyoshi"
+  - "7-Eleven"
+  - "FamilyMart"
+  - "Lawson"
+  # 主要都市・エリア（固有名詞だが検証対象外の地名）
+  - "Tokyo"
+  - "Kyoto"
+  - "Osaka"
+  - "Nara"
+  - "Hakone"
+  - "Yokohama"
+  - "Asakusa"
+  - "Shibuya"
+  - "Shinjuku"
+  - "Ueno"
+  - "Ikebukuro"
