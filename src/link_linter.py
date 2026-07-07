@@ -27,7 +27,13 @@ KLOOK_HOST = "affiliate.klook.com"
 KLOOK_AID = "aid=125283"
 
 # 301統合済みで内部リンクを禁止したい旧slug（現状は canonical のみ。301化後に追記）。
-REDIRECTED_SLUGS = set()
+REDIRECTED_SLUGS = {
+    "buying-baby-diapers-wipes-and-formula-in-japan-2026",
+    "diapers-formula-in-japan-brands-sizes-where-to-buy",
+    "tokyo-disney-vs-disneysea-for-kids",
+    "navigating-japan-s-public-transport-with-kids-2026",
+    "tokyo-family-hotels-connecting-rooms-kitchenettes",
+}
 
 _A_HREF = re.compile(r"""<a\b[^>]*?href=["']([^"']*)["'][^>]*>""", re.I)
 _A_FULL = re.compile(r"""<a\b([^>]*?)href=["']([^"']*)["']([^>]*)>""", re.I)
