@@ -67,6 +67,22 @@ _HOTELS_PICKS = (
     '<td>Official Disney hotel right by the park gates. The Family Room (Park View) sleeps up to 5 (~93 m&sup2;) '
     '&mdash; handy for multi-generation trips.</td>'
     '<td><a href="https://www.tokyodisneyresort.jp/en/hotel/tdh/room/detail/stnd_family_a/" ' + _NOFOLLOW + '>Official site</a></td></tr>'
+    '<tr><td><strong>Hilton Tokyo Bay</strong></td><td>Maihama (Disney)</td>'
+    '<td>Tokyo Disney Resort official partner hotel on the Maihama waterfront. The &ldquo;Happy Magic&rdquo; family '
+    'rooms have bunk beds kids love, with a park shuttle at the door.</td>'
+    '<td><a href="' + _bk("Hilton Tokyo Bay Maihama") + '" ' + _SPONSORED + '>See rates</a></td></tr>'
+    '<tr><td><strong>Grand Nikko Tokyo Bay Maihama</strong></td><td>Maihama (Disney)</td>'
+    '<td>Official Tokyo Disney Resort hotel with Japanese- and Western-style family rooms and a Disney Resort '
+    'Cruiser shuttle to the parks.</td>'
+    '<td><a href="' + _bk("Grand Nikko Tokyo Bay Maihama") + '" ' + _SPONSORED + '>See rates</a></td></tr>'
+    '<tr><td><strong>Keio Plaza Hotel Tokyo</strong></td><td>Shinjuku</td>'
+    '<td>Large, well-connected Shinjuku hotel with family rooms; themed Hello Kitty rooms are a hit with younger '
+    'kids (check current availability).</td>'
+    '<td><a href="' + _bk("Keio Plaza Hotel Tokyo Shinjuku") + '" ' + _SPONSORED + '>See rates</a></td></tr>'
+    '<tr><td><strong>Tokyu Stay Shinjuku</strong></td><td>Shinjuku</td>'
+    '<td>Every room has a washer-dryer and kitchenette with flexible bedding &mdash; ideal for longer family stays '
+    'and doing laundry mid-trip.</td>'
+    '<td><a href="' + _bk("Tokyu Stay Shinjuku") + '" ' + _SPONSORED + '>See rates</a></td></tr>'
     '</tbody></table>'
     '<p style="font-size:.85rem;color:#6b7280">Disney official hotels are booked on the Tokyo Disney Resort site, not '
     'general booking sites. For the MIMARU apartment hotels, the link opens a live search so you can compare current '
@@ -147,7 +163,13 @@ def _inject_money_picks() -> int:
             html = path.read_text(encoding="utf-8")
         except Exception:
             continue
-        if 'id="specific-picks"' in html:  # 冪等
+        if 'id="specific-picks"' in html:  # 既存あり → 現行ブロックへ置換（更新）
+            new = re.sub(r'<section id="specific-picks".*?</section>',
+                         lambda _m: block, html, count=1, flags=re.S)
+            if new != html:
+                path.write_text(new, encoding="utf-8")
+                done += 1
+                log.info("quality_fixups: 固有名詞ピック更新 %s", slug)
             continue
         # 比較表の直後に差し込む（無ければ最初の<h2>の直前、さらに無ければ</article>直前）
         m = re.search(r"</table>", html)

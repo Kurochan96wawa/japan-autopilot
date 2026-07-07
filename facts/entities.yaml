@@ -66,6 +66,47 @@ entities:
     status: pending_url
     notes: "official Disney hotel next to the park entrance"
 
+  # ---- Disney/舞浜エリアの家族向けオフィシャルホテル（Phase 2-1a、2026-07-07 検証）----
+  - id: hilton-tokyo-bay
+    type: hotel
+    name_en: "Hilton Tokyo Bay"
+    aliases: []
+    area: "Maihama, Urayasu (Tokyo Disney Resort)"
+    verified_url: "https://www.hilton.com/en/hotels/tyotbtw-hilton-tokyo-bay/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "Tokyo Disney Resort official partner hotel; Happy Magic family rooms with bunk beds; Maihama waterfront"
+
+  - id: grand-nikko-tokyo-bay-maihama
+    type: hotel
+    name_en: "Grand Nikko Tokyo Bay Maihama"
+    aliases: []
+    area: "Maihama, Urayasu (Tokyo Disney Resort)"
+    verified_url: "https://tokyobay.grandnikko.com/en/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "Tokyo Disney Resort official hotel; Japanese & Western family rooms; Disney Resort Cruiser shuttle"
+
+  - id: keio-plaza-hotel-tokyo
+    type: hotel
+    name_en: "Keio Plaza Hotel Tokyo"
+    aliases: ["Keio Plaza Hotel Shinjuku"]
+    area: "Shinjuku, Tokyo"
+    verified_url: "https://www.keioplaza.com/en/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "large family-friendly hotel in Shinjuku; Hello Kitty rooms (confirm current availability)"
+
+  - id: tokyu-stay-shinjuku
+    type: hotel
+    name_en: "Tokyu Stay Shinjuku"
+    aliases: []
+    area: "Shinjuku, Tokyo"
+    verified_url: "https://www.tokyustay.co.jp/en/hotel/shinjuku-tokyo/"
+    verified_date: 2026-07-07
+    status: verified
+    notes: "every room has washer-dryer + kitchenette; flexible bedding; good for longer family stays"
+
   # ---- eSIM 商品（japan-esim-for-families-compared に注入済み）----
   - id: klook-japan-esim
     type: product
