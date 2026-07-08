@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Essential Packing List for Japan with Kids: From Comfort to Convenience",
-      "search_intent": "Parents need a comprehensive and practical checklist of items to pack for their children when traveling to Japan, covering clothing, health, entertainment, and other travel essentials specific to the Japanese environment and family travel needs.",
-      "primary_keyword": "Japan packing list kids",
-      "board_hint": "Japan Travel Planning for Families"
-    },
-    {
-      "topic": "Experiencing a Ryokan with Kids: A Guide to Family-Friendly Stays in Japan",
-      "search_intent": "Families want to understand if and how they can enjoy a traditional Japanese ryokan experience with their children, including identifying suitable ryokans, navigating etiquette, and preparing for the unique aspects of a ryokan stay.",
-      "primary_keyword": "Ryokan with kids Japan",
-      "board_hint": "Japan Accommodation for Families"
-    },
-    {
       "topic": "Navigating Minor Illnesses in Japan with Kids: Clinics, Pharmacies, and Practical Tips for Parents",
       "search_intent": "Parents traveling to Japan want to know what steps to take if their child becomes unwell, where to find medical help (clinics, hospitals, pharmacies), and how to communicate their child's needs in an unfamiliar healthcare system. They seek practical, actionable advice to prepare for and manage health concerns while abroad.",
       "primary_keyword": "child illness Japan travel",
@@ -140,11 +128,13 @@
       "pins_count": 0,
       "image_variants": [
         "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg",
+        "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg",
         "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg"
       ],
       "img_hashes": [
         "00087f7f7f3c0000",
-        "fc40f0fcfd7c3808"
+        "fc40f0fcfd7c3808",
+        "fc00f0fcfd7c3c00"
       ],
       "last_pin_desc": "Discover the best family-friendly hotels in Tokyo offering connecting rooms and kitchenettes. Perfect for traveling with kids in 2026! #FamilyTravel #Tokyo #Japan",
       "repin_times": [],
@@ -1313,6 +1303,56 @@
       "repin_times": [],
       "quality_score": 82,
       "posted_at": "2026-07-07T10:45:21.516952+00:00"
+    },
+    {
+      "topic": "Essential Packing List for Japan with Kids: From Comfort to Convenience",
+      "slug": "essential-packing-list-for-japan-with-kids-2026",
+      "article_title": "Essential Packing List for Japan with Kids (2026)",
+      "primary_keyword": "Japan packing list kids",
+      "image_query": "family travel Japan",
+      "board_hint": "Japan Travel Planning for Families",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/essential-packing-list-for-japan-with-kids-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/essential-packing-list-for-japan-with-kids-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ff1881020000f6ff"
+      ],
+      "last_pin_desc": "Planning a family trip to Japan in 2026? Check out our essential packing list to ensure a smooth journey with kids of all ages! From snacks to safety gear, we've got you covered for traveling with children. #FamilyTravel #Japan2026 #TravelWithKids",
+      "repin_times": [],
+      "quality_score": 73,
+      "posted_at": "2026-07-08T07:19:23.182364+00:00"
+    },
+    {
+      "topic": "Experiencing a Ryokan with Kids: A Guide to Family-Friendly Stays in Japan",
+      "slug": "family-friendly-ryokan-stays-in-japan-2026",
+      "article_title": "Family-Friendly Ryokan Stays in Japan (2026)",
+      "primary_keyword": "Ryokan with kids Japan",
+      "image_query": "family ryokan Japan",
+      "board_hint": "Japan Accommodation for Families",
+      "affiliates_used": [
+        "experiences",
+        "hotels"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/family-friendly-ryokan-stays-in-japan-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/family-friendly-ryokan-stays-in-japan-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "ffff747c7c180000"
+      ],
+      "last_pin_desc": "Discover the best family-friendly ryokan stays in Japan! Learn about child fares, amenities, and how to book for a smooth family experience.",
+      "repin_times": [],
+      "quality_score": 83,
+      "posted_at": "2026-07-08T07:25:02.822812+00:00"
     }
   ],
   "performance": {
@@ -1450,6 +1490,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 61
+    "llm_calls": 69
   }
 }
