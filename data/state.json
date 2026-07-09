@@ -2,18 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Navigating Minor Illnesses in Japan with Kids: Clinics, Pharmacies, and Practical Tips for Parents",
-      "search_intent": "Parents traveling to Japan want to know what steps to take if their child becomes unwell, where to find medical help (clinics, hospitals, pharmacies), and how to communicate their child's needs in an unfamiliar healthcare system. They seek practical, actionable advice to prepare for and manage health concerns while abroad.",
-      "primary_keyword": "child illness Japan travel",
-      "board_hint": "Health & Safety, Practical Travel Tips"
-    },
-    {
-      "topic": "Staying in a Ryokan with Kids in Japan: Choosing a Family-Friendly Inn and Etiquette Guide",
-      "search_intent": "Families are interested in experiencing a traditional Japanese ryokan but need guidance on selecting an inn suitable for children, understanding expected etiquette, and knowing what amenities or considerations are important for a comfortable and respectful family stay. They are looking for practical advice on how to integrate this unique cultural experience into their family trip.",
-      "primary_keyword": "ryokan with kids Japan",
-      "board_hint": "Accommodation & Stays, Cultural Experiences"
-    },
-    {
       "topic": "Navigating Healthcare in Japan with Kids: A Parent's Guide to Clinics, Pharmacies, and Emergencies",
       "search_intent": "Parents want clear, practical information on accessing medical services for their children in Japan, including what to expect from clinics and pharmacies, understanding common medications, and steps for emergencies. They seek reassurance and preparation for health-related situations during their family trip.",
       "primary_keyword": "healthcare Japan with kids",
@@ -129,12 +117,14 @@
       "image_variants": [
         "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg",
         "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg",
+        "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg",
         "img/tokyo-family-hotels-connecting-rooms-kitchenettes.jpg"
       ],
       "img_hashes": [
         "00087f7f7f3c0000",
         "fc40f0fcfd7c3808",
-        "fc00f0fcfd7c3c00"
+        "fc00f0fcfd7c3c00",
+        "fc00f0fcfd7c3808"
       ],
       "last_pin_desc": "Discover the best family-friendly hotels in Tokyo offering connecting rooms and kitchenettes. Perfect for traveling with kids in 2026! #FamilyTravel #Tokyo #Japan",
       "repin_times": [],
@@ -1353,6 +1343,56 @@
       "repin_times": [],
       "quality_score": 83,
       "posted_at": "2026-07-08T07:25:02.822812+00:00"
+    },
+    {
+      "topic": "Navigating Minor Illnesses in Japan with Kids: Clinics, Pharmacies, and Practical Tips for Parents",
+      "slug": "navigating-kids-minor-illnesses-in-japan-2026",
+      "article_title": "Navigating Kids' Minor Illnesses in Japan (2026)",
+      "primary_keyword": "child illness Japan travel",
+      "image_query": "Japan family travel",
+      "board_hint": "Health & Safety, Practical Travel Tips",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/navigating-kids-minor-illnesses-in-japan-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/navigating-kids-minor-illnesses-in-japan-2026.jpg"
+      ],
+      "img_hashes": [
+        "ffff7f0100000000"
+      ],
+      "last_pin_desc": "Traveling to Japan with kids? Learn how to navigate minor illnesses, find clinics, and get essential pharmacy advice for a smooth trip.",
+      "repin_times": [],
+      "quality_score": 88,
+      "posted_at": "2026-07-09T10:36:41.232819+00:00"
+    },
+    {
+      "topic": "Staying in a Ryokan with Kids in Japan: Choosing a Family-Friendly Inn and Etiquette Guide",
+      "slug": "staying-in-a-ryokan-with-kids-in-japan-2026",
+      "article_title": "Staying in a Ryokan with Kids in Japan (2026)",
+      "primary_keyword": "ryokan with kids Japan",
+      "image_query": "family in ryokan",
+      "board_hint": "Accommodation & Stays, Cultural Experiences",
+      "affiliates_used": [
+        "experiences",
+        "hotels"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/staying-in-a-ryokan-with-kids-in-japan-2026.html",
+      "pins_count": 0,
+      "image_variants": [
+        "img/staying-in-a-ryokan-with-kids-in-japan-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "000000bcbebebfff"
+      ],
+      "last_pin_desc": "Planning a trip to Japan with kids? Explore tips for choosing family-friendly ryokans, dining with children, and essential etiquette for a smooth stay! Perfect for parents traveling in 2026. #FamilyTravel #Japan #Ryokan",
+      "repin_times": [],
+      "quality_score": 83,
+      "posted_at": "2026-07-09T10:46:03.800711+00:00"
     }
   ],
   "performance": {
@@ -1490,6 +1530,6 @@
   },
   "usage": {
     "month": "2026-07",
-    "llm_calls": 69
+    "llm_calls": 77
   }
 }
