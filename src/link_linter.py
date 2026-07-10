@@ -40,8 +40,15 @@ _A_FULL = re.compile(r"""<a\b([^>]*?)href=["']([^"']*)["']([^>]*)>""", re.I)
 
 
 def _pages():
-    for f in sorted(glob.glob(os.path.join(DOCS, "*.html"))):
+    for f in sorted(glob.glob(os.path.join(DOCS, "**", "*.html"), recursive=True)):
         yield f
+
+
+def _booking_unmonetised(html: str) -> bool:
+    """booking.com リンク（<a> でも JS 変数内でも）があるのに TP スクリプトが無い＝未収益化。
+    plan.html は AFF.hotels の JS 変数内に素の booking リンクを持つため、<a href> だけを
+    見る旧実装ではすり抜けた（2026-07-10 中間レビュー #1/#構造）。ページ本文全体で判定する。"""
+    return ("booking.com" in html) and (TP_MARKER not in html)
 
 
 def lint():
@@ -58,7 +65,7 @@ def lint():
         hrefs = _A_HREF.findall(html)
 
         # 1) booking.com リンクがあるのに TP スクリプトが無い＝未収益化（FAIL）
-        if any("booking.com" in h for h in hrefs) and TP_MARKER not in html:
+        if _booking_unmonetised(html):
             fails.append(name + ": booking.com link present but no Travelpayouts script "
                          "(marker " + TP_MARKER + ") -> not monetised")
 
@@ -87,6 +94,36 @@ def lint():
     return fails, warns
 
 
+def _selftest() -> int:
+    """回帰テスト: plan.html 型のすり抜け（JS変数内 booking リンク＋TPスクリプト無し）を
+    リンターが未収益化として検出できることを確認。2026-07-10 中間レビュー #1/#構造 再発防止。"""
+    plan_broken = (
+        '<head><title>Planner</title></head><body>\n'
+        '<script>var AFF={hotels:"https://www.booking.com/searchresults.html?ss=Japan"};\n'
+        '</script></body>'
+    )
+    plan_fixed = plan_broken.replace(
+        "</head>",
+        '<script>s.src="//tpembars.com/NTQ0MTkx.js?t=' + TP_MARKER + '"</script></head>')
+    cases = [
+        ("plan.html 未修正(素のbookingのみ)", plan_broken, True),
+        ("plan.html 修正後(TPスクリプト有り)", plan_fixed, False),
+    ]
+    bad = 0
+    for name, html, want_unmonetised in cases:
+        got = _booking_unmonetised(html)
+        ok = (got == want_unmonetised)
+        if not ok:
+            bad += 1
+        print("selftest[%s]: expect_unmonetised=%s got=%s -> %s" % (
+            name, want_unmonetised, got, "OK" if ok else "MISMATCH"))
+    if bad:
+        print("link_linter selftest FAILED: %d case(s)" % bad)
+        return 1
+    print("link_linter selftest: all cases pass")
+    return 0
+
+
 def main() -> int:
     fails, warns = lint()
     for w in warns:
@@ -101,4 +138,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        sys.exit(_selftest())
     sys.exit(main())
