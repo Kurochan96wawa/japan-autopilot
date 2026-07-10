@@ -56,6 +56,7 @@ footer.site .wrap{padding:18px 20px}
 <meta name="twitter:description" content="Build a free, kid-friendly Japan itinerary in seconds. Tell us your kids' ages, days and cities and our planner drafts a day-by-day family plan.">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "headline": "Free Japan-with-Kids Trip Planner (2026)", "description": "Build a free, kid-friendly Japan itinerary in seconds. Tell us your kids' ages, days and cities and our planner drafts a day-by-day family plan.", "image": [], "datePublished": "2026-06-29T14:09:09Z", "dateModified": "2026-06-29T14:09:09Z", "author": {"@type": "Organization", "name": "littletabi editors"}, "publisher": {"@type": "Organization", "name": "littletabi"}, "mainEntityOfPage": {"@type": "WebPage", "@id": "https://littletabi.com/plan.html"}, "inLanguage": "en"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://littletabi.com/"}, {"@type": "ListItem", "position": 2, "name": "Japan with kids", "item": "https://littletabi.com/"}, {"@type": "ListItem", "position": 3, "name": "Free Japan-with-Kids Trip Planner (2026)", "item": "https://littletabi.com/plan.html"}]}</script>
+<script>(function(){var s=document.createElement("script");s.async=1;s.src="//tpembars.com/NTQ0MTkx.js?t=544191";document.head.appendChild(s);})();</script>
 </head>
 <body>
 <header class="site"><div class="wrap bar"><a class="brand" href="/index.html">little<b>tabi</b></a>
@@ -108,10 +109,6 @@ var out = document.getElementById('out');
 document.getElementById('f').addEventListener('submit', async function(e){
   e.preventDefault();
   var btn = document.getElementById('go');
-  if (WORKER_URL.indexOf('REPLACE_WITH') === 0){
-    out.innerHTML = '<div class="card">The trip planner is being set up — please check back soon. In the meantime, grab our <a href="/get-the-japan-checklist.html">free checklist &amp; sample itinerary</a>.</div>';
-    return;
-  }
   var data = {
     ages: document.getElementById('ages').value,
     days: document.getElementById('days').value,
