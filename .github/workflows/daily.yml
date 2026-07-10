@@ -5,7 +5,7 @@ name: daily-post
 #       時刻厳守の用途ではないので問題なし。毎日commitするので60日無効化も回避できる。
 on:
   schedule:
-    - cron: "0 22 * * *"
+    - cron: "0 22 * * 1,4"    # Phase 3-7: 週2日(月/木 22:00 UTC)に減速。日次量産を停止(scaled content abuse回避)
   workflow_dispatch:
     inputs:
       mode:
