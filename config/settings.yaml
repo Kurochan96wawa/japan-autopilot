@@ -27,7 +27,7 @@ niche:
 
 # 投稿スケジュール（GitHub Actions の cron と合わせる）
 schedule:
-  pins_per_day: 2          # 新規記事＋新規Pin（最初は少なく。慣らし運転）
+  pins_per_day: 1          # Phase 3-7: 週2-3本へ減速。1回あたり新規記事は1本（cronは週2日）
   repins_per_day: 2        # 既存記事を“別画像”で再Pin（Fresh Pins戦略。Pinterest成長の本命）
   threads_per_day: 0       # Threadsは導線ミスマッチのため既定OFF（使うなら1に）
   instagram_per_day: 0     # Instagram補助（設定済みなら1に。視覚再利用できる）

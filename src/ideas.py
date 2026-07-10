@@ -63,11 +63,52 @@ def mine_question_keywords(max_n: int = 12) -> list:
     return out[:max_n]
 
 
+# Phase 3-7: 新規生成をカバレッジの穴に寄せる優先トピック（指示書 §3-7 の優先順）。
+# これらを topics_queue の先頭へ入れ、穴が埋まったら通常のLLM生成にフォールバックする。
+_PRIORITY_GAP_TOPICS = [
+    {"topic": "Ghibli Museum & Ghibli Park with Kids: Tickets, Timed Entry & What to Expect",
+     "primary_keyword": "Ghibli Museum with kids", "board_hint": "Tokyo with Kids"},
+    {"topic": "Flying to Japan with Kids: Narita & Haneda Airport Arrival Guide for Families",
+     "primary_keyword": "Narita Haneda airport with kids", "board_hint": "Japan with kids"},
+    {"topic": "When Your Child Gets Sick in Japan: Pharmacies, Clinics & Travel Insurance for Families",
+     "primary_keyword": "child sick in Japan pharmacy clinic insurance", "board_hint": "Japan with kids"},
+    {"topic": "Best Family Hotels in Kyoto (2026): Connecting Rooms & Kid-Friendly Stays",
+     "primary_keyword": "family hotels Kyoto connecting rooms", "board_hint": "Accommodation Japan"},
+    {"topic": "Best Family Hotels in Osaka (2026): Where to Stay with Kids",
+     "primary_keyword": "family hotels Osaka kids", "board_hint": "Accommodation Japan"},
+    {"topic": "teamLab Planets & Borderless with Kids: A Family Visitor Guide",
+     "primary_keyword": "teamLab with kids", "board_hint": "Tokyo with Kids"},
+    {"topic": "KidZania Tokyo with Kids: Is It Worth It? A Parent Guide",
+     "primary_keyword": "KidZania Tokyo with kids", "board_hint": "Tokyo with Kids"},
+    {"topic": "Ueno Zoo with Kids: Pandas, Practical Tips & Nearby Family Spots",
+     "primary_keyword": "Ueno Zoo with kids pandas", "board_hint": "Tokyo with Kids"},
+    {"topic": "Cherry Blossom Season in Japan with Kids: Family-Friendly Hanami Spots & Tips",
+     "primary_keyword": "cherry blossom Japan with kids hanami", "board_hint": "Seasonal Japan"},
+    {"topic": "Winter in Japan with Kids: Snow Play, Staying Warm & Family Activities",
+     "primary_keyword": "winter Japan with kids snow", "board_hint": "Seasonal Japan"},
+]
+
+
+def _ensure_priority_topics(state: dict, queue: list) -> None:
+    """Phase 3-7: 未投稿・未キューの穴トピックをキュー先頭へ(優先順維持)。
+    YMYL(子どもの病気/保険)は intent_validator / 週次レビューで人間確認される。"""
+    seen = ([str(p.get("article_title", "")) for p in state.get("posted", [])]
+            + [str(p.get("topic", "")) for p in state.get("posted", [])]
+            + [str(q.get("topic", "")) for q in queue])
+    for t in reversed(_PRIORITY_GAP_TOPICS):
+        title = t["topic"]
+        if any(_too_similar(title, s) for s in seen):
+            continue
+        queue.insert(0, dict(t))
+        seen.insert(0, title)
+
+
 def refill_topics(state: dict) -> dict:
     cfg = load_settings()
     niche = cfg["niche"]
     buffer = cfg["llm"]["max_topics_buffer"]
     queue = state.setdefault("topics_queue", [])
+    _ensure_priority_topics(state, queue)  # Phase 3-7: カバレッジの穴を優先
     if len(queue) >= buffer:
         log.info("topics_queue 十分 (%d件)。スキップ。", len(queue))
         return state
