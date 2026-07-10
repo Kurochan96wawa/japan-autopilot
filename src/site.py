@@ -479,6 +479,19 @@ _SAFE_BODY_QUERIES = [
 
 
 def _safe_body_query(slug: str) -> str:
+    # Phase 2-3: slug が都市を含むなら本文画像クエリに必ずその都市を入れる。
+    # 都市が入らないと images._rank_photos の場所整合(alt照合)が効かないため。
+    cities = images._cities_in(slug or "")
+    if cities:
+        city = sorted(cities)[0].title()
+        templates = [
+            "{c} Japan family with children",
+            "{c} street scene Japan family",
+            "{c} Japan park families",
+            "{c} family travel Japan",
+        ]
+        t = templates[sum(ord(ch) for ch in (slug or "x")) % len(templates)]
+        return t.format(c=city)
     return _SAFE_BODY_QUERIES[sum(ord(c) for c in (slug or "x")) % len(_SAFE_BODY_QUERIES)]
 
 
