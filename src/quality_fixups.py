@@ -58,7 +58,7 @@ _HOTELS_PICKS = (
     'privacy while kids settle. Good transport hub for day trips.</td>'
     '<td><a href="' + _bk("MIMARU Tokyo Ikebukuro") + '" ' + _SPONSORED + '>See rates</a></td></tr>'
     '<tr><td><strong>MIMARU Tokyo Station East</strong></td><td>Near Tokyo Station</td>'
-    '<td>Connecting-room options and a kitchen, steps from Tokyo Station &mdash; the easiest base for Shinkansen '
+    '<td>Connecting-room options and a kitchen, about 15 min on foot from Tokyo Station (3 min from Hatchobori Station) &mdash; the easiest base for Shinkansen '
     'day trips with kids and luggage.</td>'
     '<td><a href="' + _bk("MIMARU Tokyo Station East") + '" ' + _SPONSORED + '>See rates</a></td></tr>'
     '<tr><td><strong>Disney Ambassador Hotel</strong></td><td>Tokyo Disney Resort</td>'
@@ -160,9 +160,9 @@ _ITINERARY = """<section id="specific-picks" class="specific-picks" style="margi
 <h3>Day 4 &mdash; Tokyo: a Disney park</h3>
 <p><strong>Morning &amp; afternoon:</strong> A full day at <a href="https://www.tokyodisneyresort.jp/en/index.html" rel="nofollow noopener">Tokyo Disney Resort</a>. With young children, Tokyo Disneyland's fantasy areas tend to suit better than DisneySea's bigger rides &mdash; pick one park and take it slow. <strong>Getting around:</strong> Take the JR line to Maihama, then the resort monorail. <strong>Kid tip:</strong> Buy dated tickets ahead and plan an afternoon break back near the gate for naps. <strong>Rainy day:</strong> The parks run rain or shine and have many indoor attractions; pack light ponchos.</p>
 <h3>Day 5 &mdash; Tokyo to Kyoto (travel day)</h3>
-<p><strong>Morning:</strong> Ride the Tokaido Shinkansen from Tokyo to Kyoto (about 2 hours 20 minutes). If you are travelling with the largest suitcases, reserve an oversized-baggage seat in advance at no extra charge. <strong>Afternoon:</strong> Right by Kyoto Station, the <a href="https://www.kyotorailwaymuseum.jp/en/" rel="nofollow noopener">Kyoto Railway Museum</a> is a perfect post-train wind-down, with real locomotives and a hands-on play area. <strong>Getting around:</strong> Store bags in station lockers or send them ahead to your hotel by luggage courier. <strong>Kid tip:</strong> Book seats together early on busy travel dates. <strong>Rainy day:</strong> The museum is largely indoors.</p>
+<p><strong>Morning:</strong> Ride the Tokaido Shinkansen from Tokyo to Kyoto (about 2 hours 20 minutes). If you are travelling with the largest suitcases, reserve an oversized-baggage seat in advance at no extra charge. <strong>Afternoon:</strong> About a 20-minute walk (or short bus ride) from Kyoto Station, the <a href="https://www.kyotorailwaymuseum.jp/en/" rel="nofollow noopener">Kyoto Railway Museum</a> is a perfect post-train wind-down, with real locomotives and a hands-on play area. <strong>Getting around:</strong> Store bags in station lockers or send them ahead to your hotel by luggage courier. <strong>Kid tip:</strong> Book seats together early on busy travel dates. <strong>Rainy day:</strong> The museum is largely indoors.</p>
 <h3>Day 6 &mdash; Kyoto: Umekoji</h3>
-<p><strong>Morning:</strong> <a href="https://en.kyoto-aquarium.com/" rel="nofollow noopener">Kyoto Aquarium</a> (penguins and a big sea-life hall) sits inside Umekoji Park, so you can pair tanks with lawns and a playground. <strong>Afternoon:</strong> If energy allows, the Arashiyama bamboo area is a scenic, mostly-flat walk. <strong>Getting around:</strong> Umekoji is a short walk or bus from Kyoto Station; Arashiyama is a easy train ride west. <strong>Kid tip:</strong> Kyoto's buses get crowded &mdash; a stroller-friendly train route is calmer. <strong>Rainy day:</strong> Stay put at the indoor aquarium.</p>
+<p><strong>Morning:</strong> <a href="https://en.kyoto-aquarium.com/" rel="nofollow noopener">Kyoto Aquarium</a> (penguins and a big sea-life hall) sits inside Umekoji Park, so you can pair tanks with lawns and a playground. <strong>Afternoon:</strong> If energy allows, the Arashiyama bamboo area is a scenic, mostly-flat walk. <strong>Getting around:</strong> Umekoji is a short walk or bus from Kyoto Station; Arashiyama is an easy train ride west. <strong>Kid tip:</strong> Kyoto's buses get crowded &mdash; a stroller-friendly train route is calmer. <strong>Rainy day:</strong> Stay put at the indoor aquarium.</p>
 <h3>Day 7 &mdash; Day trip to Nara</h3>
 <p><strong>Morning:</strong> <a href="https://www.visitnara.jp/" rel="nofollow noopener">Nara Park</a>, where friendly wild deer roam and you can buy special crackers to feed them. <strong>Afternoon:</strong> The Great Buddha hall at <a href="https://www.todaiji.or.jp/en/" rel="nofollow noopener">Todaiji Temple</a>, a short walk across the park. <strong>Getting around:</strong> Nara is about 45 minutes from Kyoto by JR or Kintetsu train. <strong>Kid tip:</strong> Hold snacks tight &mdash; the deer are bold; teach little ones to keep hands flat. <strong>Rainy day:</strong> The temple halls are covered and the deer are out in any weather.</p>
 <h3>Day 8 &mdash; Osaka: the bay</h3>
@@ -854,6 +854,10 @@ def _apply_canonical_overrides() -> int:
 # 後段で除去/修正する。正しい代替が確認できたものだけ書き換え、それ以外は削除（削除がデフォルト）。
 # ============================================================
 _SCRUB = {
+    "tokyo-disneyland-vs-disneysea-young-kids": [
+        # 実在疑義: ミッキー型グローブに豚カツ の記述を削除（2026-07-10 中間レビュー #9）。
+        ("and cute Mickey-shaped gloves filled with pork cutlets ", ""),
+    ],
     "japan-esim-for-families-compared": [
         ("<li><strong>Suzuki's Fun Train:</strong> An interactive way for kids to learn about Japanese culture.</li>", ""),
         ("<li><strong>Suzuki&rsquo;s Fun Train:</strong> An interactive way for kids to learn about Japanese culture.</li>", ""),
@@ -869,6 +873,12 @@ _SCRUB = {
     ],
 }
 _SCRUB_RE = {
+    "best-family-hotels-tokyo-connecting-rooms": [
+        # 旧fillerテーブル2つ（Park/Granbell/Gracery, Citadines/Oakwood）を削除し
+        # 「Our specific picks」9軒テーブルへ一本化（2026-07-10 中間レビュー #4）。
+        (re.compile(r"<h2>Top Family Hotels with Connecting Rooms</h2>.*?</table>", re.S), ""),
+        (re.compile(r"<h2>Hotels with Kitchenettes</h2>.*?</table>\s*<p>.*?</p>", re.S), ""),
+    ],
     "japan-esim-for-families-compared": [
         (re.compile(r"<table><tr><th>eSIM Provider</th>.*?</table>", re.S), ""),
     ],
@@ -906,7 +916,10 @@ def _scrub_hallucinations() -> int:
 # 1-6 「(as of 2026 …)」の多用を抑制（1記事2回まで。超過分を除去）
 # 機械的な連発は読者体験と信頼性を損なうため、後段で冪等に上限を適用する。
 # ============================================================
-_ASOF_RE = re.compile(r"\s*\(as of 2026[^)]*\)")
+_ASOF_RE = re.compile(
+    r"\s*\(as of 2026[^)]*\)"
+    r"|,?\s*as of 2026, confirm on the official site"
+)
 
 
 def _limit_asof(max_keep: int = 2) -> int:
