@@ -854,6 +854,10 @@ def _apply_canonical_overrides() -> int:
 # 後段で除去/修正する。正しい代替が確認できたものだけ書き換え、それ以外は削除（削除がデフォルト）。
 # ============================================================
 _SCRUB = {
+    "best-family-hotels-tokyo-connecting-rooms": [
+        # 旧filler宿 Granbell の例示文（Shinjuku Gyoen 近接主張）を削除（中間レビュー #4）。
+        (" For instance, the <strong>Shinjuku Granbell Hotel</strong> not only offers connecting rooms but also has easy access to Shinjuku Gyoen, a large city park with playgrounds, making it ideal for family outings.", ""),
+    ],
     "tokyo-disneyland-vs-disneysea-young-kids": [
         # 実在疑義: ミッキー型グローブに豚カツ の記述を削除（2026-07-10 中間レビュー #9）。
         ("and cute Mickey-shaped gloves filled with pork cutlets ", ""),
@@ -878,6 +882,8 @@ _SCRUB_RE = {
         # 「Our specific picks」9軒テーブルへ一本化（2026-07-10 中間レビュー #4）。
         (re.compile(r"<h2>Top Family Hotels with Connecting Rooms</h2>.*?</table>", re.S), ""),
         (re.compile(r"<h2>Hotels with Kitchenettes</h2>.*?</table>\s*<p>.*?</p>", re.S), ""),
+        # 旧filler宿(Park/Granbell/Gracery)の解説段落を削除（中間レビュー #4）。
+        (re.compile(r"<p><strong>The Park Hotel Tokyo</strong>.*?</p>", re.S), ""),
     ],
     "japan-esim-for-families-compared": [
         (re.compile(r"<table><tr><th>eSIM Provider</th>.*?</table>", re.S), ""),
