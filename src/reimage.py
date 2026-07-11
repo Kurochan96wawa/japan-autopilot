@@ -16,6 +16,7 @@ from . import images
 TARGETS = [
     "best-family-hotels-tokyo-connecting-rooms",                     # body2=岡崎の桜(愛知) → 東京へ
     "japan-family-itinerary-tokyo-kyoto-osaka-with-young-children",  # body2=静岡駅 → Tokyo/Kyoto/Osaka へ
+    "tokyo-disneyland-vs-disneysea-young-kids",                      # body2=道頓堀(大阪) → 東京へ
 ]
 
 _IMG_RE = re.compile(r"/img/([A-Za-z0-9._-]+\.jpg)")
@@ -26,6 +27,25 @@ def _query_for(slug: str) -> str:
     if cities:
         return " ".join(sorted(c.title() for c in cities)) + " Japan family with children"
     return "Japan family travel children"
+
+
+def _alt_for(want) -> str:
+    """差し替え画像の alt を都市整合の汎用文へ。元の場所名(例: Okazaki)が残らないように。"""
+    if want:
+        place = " and ".join(sorted(c.title() for c in want))
+    else:
+        place = "Japan"
+    return "A family with young children enjoying time in " + place + ", Japan"
+
+
+def _set_img_alt(html: str, fname: str, new_alt: str) -> str:
+    """fname を参照する <img> の alt 属性だけを差し替える(本文は変えない)。"""
+    def repl(m):
+        tag = m.group(0)
+        if 'alt="' in tag:
+            return re.sub(r'alt="[^"]*"', 'alt="' + new_alt + '"', tag, count=1)
+        return tag
+    return re.sub(r'<img[^>]*' + re.escape(fname) + r'[^>]*>', repl, html, count=1)
 
 
 def reimage_slug(slug: str) -> int:
@@ -56,20 +76,22 @@ def reimage_slug(slug: str) -> int:
     img_dir.mkdir(parents=True, exist_ok=True)
     n = 0
     for i, fname in enumerate(files):
-        if i >= len(photos):
-            break
-        p = photos[i]
+        p = photos[i % len(photos)]
         try:
             src = p.get("src", {})
             url = src.get("large") or src.get("large2x") or src.get("original")
             base = images._download(url, 1200, 675)
             base.save(img_dir / fname, "JPEG", quality=86)
             n += 1
+            if "-body" in fname:
+                html = _set_img_alt(html, fname, _alt_for(want))
             # 検証用: 選んだ写真の alt をログに残す（場所違いが無いか目視できる）
             log.info("reimage %s <- alt=%r photographer=%r", fname, p.get("alt"), p.get("photographer"))
         except Exception as e:
             log.error("reimage失敗 %s/%s: %s", slug, fname, e)
     log.info("reimage: %s の画像%d枚を都市整合で差し替え(query=%s, want=%s)", slug, n, query, sorted(want))
+    if n:
+        path.write_text(html, encoding="utf-8")
     return n
 
 
