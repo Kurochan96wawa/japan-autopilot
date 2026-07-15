@@ -15,6 +15,7 @@ import os
 import re
 
 from .util import load_settings, SITE_DIR, log
+from .leadmagnet_pdf import build_pdf
 
 # 既存のお問い合わせフォームと同じ公開キー（クライアントHTMLに埋め込む前提の公開値）。
 WEB3FORMS_KEY = "e0c3512d-69a9-46e8-94a3-61bd2e94bd8b"
@@ -32,107 +33,6 @@ _POPULAR = [
 
 
 # ---------------- PDF ----------------
-def build_pdf(path) -> bool:
-    try:
-        from reportlab.lib.pagesizes import A4
-        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-        from reportlab.lib.units import mm
-        from reportlab.lib import colors
-        from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer,
-                                        ListFlowable, ListItem, HRFlowable)
-    except Exception as e:
-        log.error("reportlab未導入のためPDF生成スキップ: %s", e)
-        return False
-
-    accent = colors.HexColor("#b8005a")
-    ink = colors.HexColor("#1f2937")
-    muted = colors.HexColor("#6b7280")
-    ss = getSampleStyleSheet()
-    h1 = ParagraphStyle("h1", parent=ss["Title"], textColor=accent, fontSize=22, spaceAfter=4, leading=26)
-    sub = ParagraphStyle("sub", parent=ss["Normal"], textColor=muted, fontSize=10.5, spaceAfter=14)
-    h2 = ParagraphStyle("h2", parent=ss["Heading2"], textColor=ink, fontSize=13.5, spaceBefore=12, spaceAfter=4)
-    body = ParagraphStyle("body", parent=ss["Normal"], textColor=ink, fontSize=10.3, leading=15)
-    item = ParagraphStyle("item", parent=body, leftIndent=2)
-    foot = ParagraphStyle("foot", parent=ss["Normal"], textColor=muted, fontSize=8)
-
-    def checklist(items):
-        return ListFlowable(
-            [ListItem(Paragraph(t, item), value="☐", leftIndent=14) for t in items],
-            bulletType="bullet", start="☐", bulletColor=accent, bulletFontSize=11,
-        )
-
-    story = []
-    story.append(Paragraph("Japan With Kids", h1))
-    story.append(Paragraph("Pre-Departure Checklist &amp; a 7-Day Tokyo Itinerary &middot; a free guide from littletabi.com", sub))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#ffe0ee")))
-
-    story.append(Paragraph("Pre-departure checklist", h2))
-    story.append(Paragraph("Documents &amp; money", body))
-    story.append(checklist([
-        "Passports valid 6+ months; check if your nationality needs a visa",
-        "Print/screenshot hotel bookings, flights and any pre-booked tickets",
-        "A little cash in yen for day one (many small shops are cash-only)",
-        "Travel/health insurance that covers your kids",
-        "An IC card plan (Suica/PASMO/ICOCA) for easy train tap-and-go",
-    ]))
-    story.append(Paragraph("Health &amp; safety", body))
-    story.append(checklist([
-        "Any regular medicines (in original packaging) + a small first-aid kit",
-        "Your child's usual fever/pain medicine — brands differ in Japan",
-        "Note the nearest clinic/pharmacy to your hotel; save emergency 119",
-        "For allergies: a translated allergy card to show at restaurants",
-    ]))
-    story.append(Paragraph("Packing for kids", body))
-    story.append(checklist([
-        "A day or two of diapers/formula (then buy locally — it's everywhere)",
-        "Lightweight, foldable stroller or a carrier for crowded stations",
-        "Snacks for the plane and the inevitable 'are we there yet' moments",
-        "Refillable water bottles; a change of clothes in your day bag",
-    ]))
-    story.append(Paragraph("Tech &amp; connectivity", body))
-    story.append(checklist([
-        "An eSIM or pocket Wi-Fi sorted before you land (maps + translation)",
-        "Offline maps downloaded; Google Translate language pack saved",
-        "Power bank + the right plug (Japan is Type A, 100V)",
-    ]))
-
-    story.append(Spacer(1, 6 * mm))
-    story.append(Paragraph("A simple 7-day Tokyo itinerary (with young kids)", h2))
-    itin = [
-        ("Day 1 — Arrive &amp; settle", "Land, grab IC cards, check in, gentle stroll + konbini dinner. Early night to beat jet lag."),
-        ("Day 2 — Asakusa &amp; river", "Senso-ji, snacks on Nakamise, then an easy Sumida River boat. Stroller-friendly and visual for kids."),
-        ("Day 3 — Ueno", "Ueno Zoo + a wide park to run around. Pick one museum only; leave buffer for naps."),
-        ("Day 4 — teamLab + bay", "Book teamLab tickets ahead. Afternoon by the bay; keep it light after a big morning."),
-        ("Day 5 — Disney or DisneySea", "One park, one day. Rent a stroller at the gate, plan around a midday rest."),
-        ("Day 6 — Shibuya/Harajuku slow day", "Crossing, a themed cafe, gacha machines. Short hops; lots of snack breaks."),
-        ("Day 7 — Flex &amp; fly", "Buffer for a meltdown-free morning, last-minute shopping, head to the airport early."),
-    ]
-    for t, d in itin:
-        story.append(Paragraph("<b>%s.</b> %s" % (t, d), body))
-        story.append(Spacer(1, 2))
-
-    story.append(Spacer(1, 5 * mm))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#ffe0ee")))
-    story.append(Paragraph(
-        "Made with care by littletabi.com — honest, practical guides for families visiting Japan, "
-        "written with AI and an automated quality process. Prices, hours and rules change: please "
-        "confirm details on official sites before you travel. © 2026 littletabi.", foot))
-
-    try:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
-        SimpleDocTemplate(str(path), pagesize=A4,
-                          topMargin=18 * mm, bottomMargin=16 * mm,
-                          leftMargin=18 * mm, rightMargin=18 * mm,
-                          title="Japan With Kids — Checklist & Itinerary",
-                          author="littletabi.com").build(story)
-        log.info("リードマグネットPDF生成: %s", path)
-        return True
-    except Exception as e:
-        log.error("PDF生成失敗: %s", e)
-        return False
-
-
-# ---------------- フォーム widget（サイドバー注入用）----------------
 def _form_widget(base: str) -> str:
     """メール登録フォーム（Kit/ConvertKit フォーム 9651205 に直結）。
     ダブルオプトイン→確認後に get-the-japan-checklist へリダイレクト（Kit側設定）。
@@ -198,7 +98,7 @@ def inject_forms(base: str) -> int:
 
 # ---------------- サンクス／ダウンロードページ ----------------
 def build_thanks(base: str) -> None:
-    pdf_url = f"{base}/{PDF_REL}"
+    pdf_url = f"{base}/{PDF_REL}?v=20260716"
     pop = "".join(
         f'<li><a href="/{s}.html">{t}</a></li>' for s, t in _POPULAR
     )
