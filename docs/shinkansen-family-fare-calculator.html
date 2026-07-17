@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shinkansen Family Fare Calculator (kids' fares, 2026) | littletabi</title>
+<meta name="description" content="Estimate your family's Shinkansen fare in seconds. Applies Japan's real child-fare rules — 6–11s pay about half, under-6s often ride free — plus the oversized-baggage reservation rule.">
+<link rel="canonical" href="https://littletabi.com/shinkansen-family-fare-calculator.html">
+<meta property="og:title" content="Shinkansen Family Fare Calculator (2026)">
+<meta property="og:description" content="Estimate your family's Shinkansen fare with Japan's real kids' fare rules.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://littletabi.com/shinkansen-family-fare-calculator.html">
+<style>
+:root{--ink:#2b2b2b;--rose:#d6336c;--rose-d:#a61e4d;--pink:#fff0f5;--pink-bd:#ffd0e0;--muted:#6b7280;--bg:#fff}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px}
+header.site{border-bottom:1px solid #f0f0f0}
+header.site .wrap{padding:14px 18px}
+a.brand{font-weight:800;color:var(--ink);text-decoration:none;font-size:1.05rem}
+a.brand b{color:var(--rose)}
+h1{font-size:1.55rem;line-height:1.2;margin:.6em 0 .2em}
+.lead{color:var(--muted);margin:.2em 0 1.2em}
+.card{border:1px solid #eee;border-radius:14px;padding:18px;margin:16px 0;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+label{display:block;font-weight:600;font-size:.92rem;margin:10px 0 4px}
+.hint{font-weight:400;color:var(--muted);font-size:.82rem}
+input[type=number],select{width:100%;padding:10px 12px;border:1px solid #d8d8d8;border-radius:10px;font-size:1rem;background:#fff}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row>div{flex:1;min-width:130px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg label{display:inline-flex;align-items:center;gap:6px;font-weight:500;margin:0;border:1px solid #ddd;border-radius:999px;padding:7px 12px;cursor:pointer}
+.seg input{accent-color:var(--rose)}
+.result{background:var(--pink);border:1px solid var(--pink-bd);border-radius:14px;padding:16px 18px;margin-top:16px}
+.total{font-size:1.9rem;font-weight:800;color:var(--rose-d);margin:.1em 0}
+table.bd{width:100%;border-collapse:collapse;margin:8px 0 2px;font-size:.95rem}
+table.bd td{padding:6px 2px;border-bottom:1px solid var(--pink-bd)}
+table.bd td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.note{font-size:.82rem;color:var(--muted);margin-top:8px}
+.facts h2{font-size:1.05rem;color:var(--rose-d);margin:1.4em 0 .4em}
+.facts li{margin:.35em 0}
+.disc{font-size:.8rem;color:var(--muted);border-top:1px solid #eee;margin-top:26px;padding-top:14px}
+footer.site{border-top:1px solid #f0f0f0;margin-top:20px}
+footer.site .wrap{padding:16px 18px;color:var(--muted);font-size:.82rem}
+footer.site a{color:var(--rose-d)}
+.pill{display:inline-block;background:var(--pink);color:var(--rose-d);border:1px solid var(--pink-bd);border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:700}
+</style>
+</head>
+<body>
+<header class="site"><div class="wrap"><a class="brand" href="/index.html">little<b>tabi</b></a></div></header>
+<main class="wrap">
+<p style="margin:16px 0 0"><span class="pill">Free tool · 2026</span></p>
+<h1>Shinkansen family fare calculator</h1>
+<p class="lead">Trains in Japan don't show a simple "family price". This tool applies the real JR kids'-fare rules so you can estimate the total before you book — and flags the big-suitcase reservation that trips families up.</p>
+
+<div class="card">
+  <label>One-way adult fare for your trip <span class="hint">(basic fare + Shinkansen charge, for one adult — look it up on an official fare search)</span></label>
+  <input type="number" id="fare" min="0" step="10" inputmode="numeric" placeholder="e.g. 14000" oninput="calc()">
+
+  <div class="row">
+    <div>
+      <label>Adults <span class="hint">(12+)</span></label>
+      <input type="number" id="adults" min="0" step="1" value="2" inputmode="numeric" oninput="calc()">
+    </div>
+    <div>
+      <label>Children 6–11</label>
+      <input type="number" id="c611" min="0" step="1" value="0" inputmode="numeric" oninput="calc()">
+    </div>
+    <div>
+      <label>Children under 6</label>
+      <input type="number" id="u6" min="0" step="1" value="0" inputmode="numeric" oninput="calc()">
+    </div>
+  </div>
+
+  <label style="margin-top:14px">Trip</label>
+  <div class="seg" id="trip" onchange="calc()">
+    <label><input type="radio" name="trip" value="1" checked> One-way</label>
+    <label><input type="radio" name="trip" value="2"> Round-trip</label>
+  </div>
+
+  <label style="margin-top:14px">Do the under-6s need their own seat?</label>
+  <div class="seg" id="u6seat" onchange="calc()">
+    <label><input type="radio" name="u6seat" value="lap" checked> No — on a lap / non-reserved</label>
+    <label><input type="radio" name="u6seat" value="own"> Yes — their own reserved seat</label>
+  </div>
+  <p class="hint" style="margin-top:8px">Under-6s ride free on a lap in non-reserved cars, up to two per fare-paying adult. A reserved seat of their own (or a third+ infant) needs a child ticket.</p>
+
+  <div class="result" id="result" hidden>
+    <div>Estimated total <span id="tripLabel" class="hint"></span></div>
+    <div class="total" id="total">¥0</div>
+    <table class="bd" id="breakdown"></table>
+    <div class="note" id="freeNote"></div>
+  </div>
+</div>
+
+<div class="facts">
+  <h2>The rules this uses (2026)</h2>
+  <ul>
+    <li><b>Children 6–11</b> pay about <b>half</b> the adult fare (each part is halved and rounded down to the nearest ¥10; Green-car and sleeper tickets are full price). The exact amount is shown at purchase.</li>
+    <li><b>Children under 6</b> ride <b>free</b> — up to <b>two per fare-paying adult</b> — when they don't occupy a reserved seat. Their own reserved seat, or a third infant, needs a child ticket. <span class="hint">Source: JR-Central. Confirm on the official site.</span></li>
+    <li><b>Big suitcases:</b> on the Tokaido / Sanyo / Kyushu Shinkansen, baggage of <b>160–250&nbsp;cm</b> total (length + width + height) needs a <b>free advance reservation</b> for an "oversized baggage" seat. Over 250&nbsp;cm isn't allowed. Reserve it when you book your seats.</li>
+  </ul>
+  <p class="note">Fares change and vary by route, season and seat type — this is an estimate based on the adult fare you enter. Always confirm the exact price on an official channel before you buy.</p>
+</div>
+
+<p style="margin-top:22px"><b>Planning the rest of the trip?</b> Try our <a href="/plan.html" style="color:var(--rose-d)">free trip planner</a>, or grab the <a href="/get-the-japan-checklist.html" style="color:var(--rose-d)">Japan-with-kids checklist</a>.</p>
+
+<p class="disc">This tool uses AI-assisted, human-checked information and applies published JR fare rules. It never invents prices — you provide the adult fare. It can still make mistakes: always confirm times, availability and prices on official sites before you travel. Some links are affiliate links; if you book through them we may earn a small commission at no extra cost to you.</p>
+</main>
+<footer class="site"><div class="wrap">Independent, research-based guides for families visiting Japan, written with AI and an automated quality process. &copy; 2026 littletabi. &middot; <a href="/disclosure.html">Affiliate disclosure</a></div></footer>
+
+<script>
+function floor10(n){return Math.floor(n/10)*10;}
+function yen(n){return '¥'+Math.round(n).toLocaleString('en-US');}
+function val(id){return Math.max(0, parseInt(document.getElementById(id).value||'0',10)||0);}
+function radio(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:null;}
+function calc(){
+  var fare=parseInt(document.getElementById('fare').value||'0',10)||0;
+  var adults=val('adults'), c611=val('c611'), u6=val('u6');
+  var mult=parseInt(radio('trip'),10)||1;
+  var u6mode=radio('u6seat');
+  var res=document.getElementById('result');
+  if(fare<=0||(adults+c611+u6)<=0){res.hidden=true;return;}
+  res.hidden=false;
+  var childFare=floor10(fare/2);
+  var freeU6=0, paidU6=u6;
+  if(u6mode==='lap'){ freeU6=Math.min(u6, 2*adults); paidU6=u6-freeU6; }
+  var adultsTotal=fare*adults*mult;
+  var c611Total=childFare*c611*mult;
+  var u6Total=childFare*paidU6*mult;
+  var total=adultsTotal+c611Total+u6Total;
+  document.getElementById('total').textContent=yen(total);
+  document.getElementById('tripLabel').textContent = mult===2 ? '(round-trip)' : '(one-way)';
+  var rows=[];
+  if(adults>0) rows.push(['Adults × '+adults+' @ '+yen(fare)+(mult===2?' ×2':''), yen(adultsTotal)]);
+  if(c611>0) rows.push(['Children 6–11 × '+c611+' @ ~'+yen(childFare)+(mult===2?' ×2':''), yen(c611Total)]);
+  if(paidU6>0) rows.push(['Under-6 needing a ticket × '+paidU6+' @ ~'+yen(childFare)+(mult===2?' ×2':''), yen(u6Total)]);
+  document.getElementById('breakdown').innerHTML = rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>';}).join('');
+  var fn=document.getElementById('freeNote');
+  if(freeU6>0){ fn.textContent = freeU6+' under-6 '+(freeU6===1?'child rides':'children ride')+' free (lap / non-reserved).'; }
+  else if(u6>0 && u6mode==='own'){ fn.textContent = 'Under-6s with their own reserved seat pay the child fare.'; }
+  else { fn.textContent=''; }
+}
+calc();
+</script>
+</body>
+</html>
