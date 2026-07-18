@@ -48,7 +48,42 @@ def _set_img_alt(html: str, fname: str, new_alt: str) -> str:
     return re.sub(r'<img[^>]*' + re.escape(fname) + r'[^>]*>', repl, html, count=1)
 
 
-def reimage_slug(slug: str) -> int:
+def _set_img_credit(html: str, fname: str, photographer: str, url: str) -> str:
+    """fname を含む <figure> の <figcaption> を、実際に採用した写真のクレジットへ更新する。
+
+    画像だけ差し替えてクレジットを放置すると誤帰属になるため、alt と必ずセットで更新する。
+    撮影者が取れない場合は名前を出さず「Photo from Pexels」に落とす（虚偽表示より無表示）。
+    """
+    if photographer and url:
+        cap = ('<figcaption>Photo by <a href="' + url +
+               '" rel="nofollow noopener">' + photographer + '</a> on Pexels</figcaption>')
+    else:
+        cap = "<figcaption>Photo from Pexels</figcaption>"
+
+    pat = re.compile(r"<figure[^>]*>.*?" + re.escape(fname) + r".*?</figure>", re.S)
+
+    def repl(m):
+        fig = m.group(0)
+        if "<figcaption" in fig:
+            return re.sub(r"<figcaption>.*?</figcaption>", cap, fig, count=1, flags=re.S)
+        return fig.replace("</figure>", cap + "</figure>")
+
+    return pat.sub(repl, html, count=1)
+
+
+def _take_photo(photos: list, used_ids: set):
+    """サイト内でまだ使っていない写真を1枚取り出す（同一写真の使い回しを防ぐ）。"""
+    for p in photos:
+        pid = p.get("id") or p.get("url")
+        if pid in used_ids:
+            continue
+        used_ids.add(pid)
+        return p
+    return None
+
+
+def reimage_slug(slug: str, used_ids: set | None = None) -> int:
+    used_ids = used_ids if used_ids is not None else set()
     path = SITE_DIR / (slug + ".html")
     if not path.exists():
         log.info("reimage: skip (no html) %s", slug)
@@ -66,7 +101,7 @@ def reimage_slug(slug: str) -> int:
 
     want = images._cities_in(slug)
     query = images._ensure_japan(_query_for(slug))
-    photos = images._pexels_photos(query, len(files) + 8, orientation="landscape")
+    photos = images._pexels_photos(query, len(files) + 16, orientation="landscape")
     photos = images._rank_photos(photos, want)
     if not photos:
         log.error("reimage: pexels empty %s (q=%s)", slug, query)
@@ -75,8 +110,11 @@ def reimage_slug(slug: str) -> int:
     img_dir = SITE_DIR / "img"
     img_dir.mkdir(parents=True, exist_ok=True)
     n = 0
-    for i, fname in enumerate(files):
-        p = photos[i % len(photos)]
+    for fname in files:
+        p = _take_photo(photos, used_ids)
+        if p is None:
+            log.error("reimage: 未使用の写真が尽きた %s/%s (重複を避けるためスキップ)", slug, fname)
+            continue
         try:
             src = p.get("src", {})
             url = src.get("large") or src.get("large2x") or src.get("original")
@@ -85,6 +123,7 @@ def reimage_slug(slug: str) -> int:
             n += 1
             if "-body" in fname:
                 html = _set_img_alt(html, fname, _alt_for(want))
+            html = _set_img_credit(html, fname, p.get("photographer") or "", p.get("url") or "")
             # 検証用: 選んだ写真の alt をログに残す（場所違いが無いか目視できる）
             log.info("reimage %s <- alt=%r photographer=%r", fname, p.get("alt"), p.get("photographer"))
         except Exception as e:
@@ -97,8 +136,9 @@ def reimage_slug(slug: str) -> int:
 
 def run() -> int:
     total = 0
+    used_ids: set = set()
     for slug in TARGETS:
-        total += reimage_slug(slug)
+        total += reimage_slug(slug, used_ids)
     log.info("reimage完了: 計%d枚", total)
     return total
 
