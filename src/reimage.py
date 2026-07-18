@@ -60,7 +60,9 @@ def _set_img_credit(html: str, fname: str, photographer: str, url: str) -> str:
     else:
         cap = "<figcaption>Photo from Pexels</figcaption>"
 
-    pat = re.compile(r"<figure[^>]*>.*?" + re.escape(fname) + r".*?</figure>", re.S)
+    # 貪欲マッチが隣の <figure> を巻き込むと別画像のクレジットを壊すため、</figure> を跨がせない。
+    inner = r"(?:(?!</figure>).)*?"
+    pat = re.compile(r"<figure[^>]*>" + inner + re.escape(fname) + inner + r"</figure>", re.S)
 
     def repl(m):
         fig = m.group(0)
