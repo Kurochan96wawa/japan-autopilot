@@ -302,6 +302,7 @@ def _allergy_tool_html() -> str:
         '<meta name="description" content="Free printable allergy card in Japanese for children travelling in Japan. '
         'Fill in your child&rsquo;s allergens on screen, add key phrases, then print or save.">'
         '<link rel="canonical" href="https://littletabi.com/' + ALLERGY_TOOL_REL + '">'
+        '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Printable Japanese allergy card for kids","url":"https://littletabi.com/tools/allergy-card.html","applicationCategory":"TravelApplication","operatingSystem":"Any (web browser)","description":"A free printable card that states a child food allergy in Japanese, asks for cross-contamination to be avoided, and warns about dashi stock. Fill it in on screen and print or save as PDF.","inLanguage":["en","ja"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"publisher":{"@type":"Organization","name":"littletabi","url":"https://littletabi.com/"}}</script>'
         '<style>'
         ':root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--soft:#fff0f6;--line:#ececf1}'
         'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;'
@@ -366,6 +367,7 @@ def _allergy_tool_html() -> str:
         'changes &mdash; confirm the current list on the Consumer Affairs Agency site and always confirm with staff. '
         'From <a href="/' + ALLERGY_SLUG + '.html">littletabi.com</a>.</p>'
         '<p class="noprint"><a href="/' + ALLERGY_SLUG + '.html">&larr; Back to the food-allergy guide</a></p>'
+        '<div class="card"><p style="margin:0"><b><a href="/eating-out-in-japan-with-food-allergies.html">How families actually manage food allergies in Japanese restaurants &rarr;</a></b></p></div><div class="widget" id="lead-form-widget" style="background:#fff0f6;border-color:#ffe0ee"><h4>Free: Japan-with-kids checklist</h4><p style="color:#6b7280;font-size:.9rem;margin:.2em 0 .7em">A pre-departure checklist + a 7-day Tokyo itinerary (PDF). No spam — unsubscribe anytime.</p><form action="https://app.kit.com/forms/9651205/subscriptions" method="post" class="seva-form formkit-form" data-sv-form="9651205" data-uid="f5350a8d30" data-format="inline" data-version="5" style="display:flex;flex-direction:column;gap:8px"><input type="email" name="email_address" required="" placeholder="Your email" style="width:100%;border:1px solid #ececf1;border-radius:10px;padding:9px 11px;font:inherit;margin:0"><button type="submit" data-element="submit" style="background:#b8005a;color:#fff;border:0;border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer">Send me the checklist</button></form></div><script async="" src="https://f.convertkit.com/ckjs/ck.5.js"></script>'
         '</div></body></html>'
     )
 
