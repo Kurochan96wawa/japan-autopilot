@@ -864,6 +864,8 @@ _SCRUB = {
     "best-family-hotels-tokyo-connecting-rooms": [
         # 旧filler宿 Granbell の例示文（Shinjuku Gyoen 近接主張）を削除（中間レビュー #4）。
         (" For instance, the <strong>Shinjuku Granbell Hotel</strong> not only offers connecting rooms but also has easy access to Shinjuku Gyoen, a large city park with playgrounds, making it ideal for family outings.", ""),
+        # 参照先テーブルを削除済みなのに残った導入文（2026-07-19 レビュー #4）。
+        ("The table above compares <em>types</em> of stay. ", ""),
     ],
     "tokyo-disneyland-vs-disneysea-young-kids": [
         # 実在疑義: ミッキー型グローブに豚カツ の記述を削除（2026-07-10 中間レビュー #9）。
