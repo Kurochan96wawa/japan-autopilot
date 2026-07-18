@@ -17,7 +17,12 @@ _CANONICAL_OVERRIDES = {
 }
 
 # ── ③ sitemapに必ず載せたい静的ページ（site.pyの投稿追跡に乗らない手動ページ）──
-_SITEMAP_ENSURE = ["plan.html"]
+_SITEMAP_ENSURE = [
+    "plan.html",
+    "shinkansen-family-fare-calculator.html",
+    "shinkansen-cost-for-families.html",
+    "eating-out-in-japan-with-food-allergies.html",
+]
 
 # ── ② ハブ加筆：transportハブに入れるピラー本文（事実ベース・価格は書かない）──
 _TRANSPORT_PILLAR = (
@@ -163,12 +168,46 @@ def _fix_sitemap() -> int:
     return changed
 
 
+# 記事→ツールの内部リンクを冪等注入（発見性向上。ツールは自然リンクの持ち駒）。
+# 各要素: (対象slug, 目印文字列, リンクの有無判定キー, 挿入するHTML)
+_TOOL_LINKS = [
+    (
+        "japan-family-itinerary-tokyo-kyoto-osaka-with-young-children",
+        "<strong>Rainy day:</strong> The museum is largely indoors.</p>",
+        "shinkansen-family-fare-calculator",
+        '\n<p><strong>Working out the fare?</strong> Kids 6\u201311 are about half price and under-6s often ride free '
+        '\u2014 our <a href="/shinkansen-family-fare-calculator.html">Shinkansen family fare calculator</a> does the maths, '
+        'and <a href="/shinkansen-cost-for-families.html">how much the Shinkansen costs for a family</a> explains the rules.</p>',
+    ),
+]
+
+
+def _inject_tool_links() -> int:
+    done = 0
+    for slug, marker, present_key, html in _TOOL_LINKS:
+        path = SITE_DIR / (slug + ".html")
+        if not path.exists():
+            continue
+        page = path.read_text(encoding="utf-8")
+        if present_key in page:          # 既にリンク済みなら触らない（冪等）
+            continue
+        if marker not in page:           # 目印が本文から消えていたら安全側でスキップ
+            log.info("seo_fixups: tool-link marker not found in %s", slug)
+            continue
+        page = page.replace(marker, marker + html, 1)
+        path.write_text(page, encoding="utf-8")
+        done += 1
+        log.info("seo_fixups: ツール内部リンク注入 %s", slug)
+    return done
+
+
 def run() -> dict:
     c = _consolidate_canonicals()
     h = _enrich_hubs()
     s = _fix_sitemap()
+    t = _inject_tool_links()
     log.info("seo_fixups完了: canonical統合=%d, ハブ加筆=%d, sitemap修正=%d", c, h, s)
-    return {"canonicals": c, "hubs": h, "sitemap": s}
+    return {"canonicals": c, "hubs": h, "sitemap": s, "tool_links": t}
 
 
 def main() -> None:
