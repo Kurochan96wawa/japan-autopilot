@@ -7,6 +7,7 @@
 実行: `python -m src.ci_assert`（daily.yml / weekly-improve.yml の最終ステップ）
 """
 from __future__ import annotations
+import pathlib
 import re
 import sys
 
@@ -105,6 +106,37 @@ def run() -> list:
     nf = _read("404.html")
     if nf and "noindex" not in nf:
         fails.append("404.html に noindex が無い（誤ってインデックスされる）")
+
+    # ⑨ クラスタ設定の健全性（内部リンクがマネーページに流れなくなる事故の再発防止）
+    #    2026-08-22 実測: clusters.yaml が統合前(301済み)のslugを pillar/member に持ったままで、
+    #    related() がそれを除外していたため、統合先の本物のマネーページには内部リンクが
+    #    1本も張られていなかった（ホテル1本・ディズニー0本・eSIM 0本）。
+    #    実在41本のうち17本が未分類でもあった。設定と実体のズレをビルド失敗にする。
+    try:
+        import yaml
+        cl = yaml.safe_load((pathlib.Path(__file__).resolve().parent.parent
+                             / "config" / "clusters.yaml").read_text(encoding="utf-8")) or {}
+    except Exception as e:
+        fails.append("clusters.yaml を読めない: %s" % e)
+        cl = {}
+    assigned = set()
+    for name, c in (cl or {}).items():
+        entries = [c.get("pillar")] + list(c.get("members") or [])
+        for slug in [e for e in entries if e]:
+            assigned.add(slug)
+            if slug in linker.REDIRECT_MAP:
+                fails.append("clusters.yaml が301統合済みslugを指している（内部リンクが統合先に流れない）: "
+                             "%s → %s" % (name, slug))
+            elif not (SITE_DIR / (slug + ".html")).exists():
+                fails.append("clusters.yaml が存在しないページを指している: %s → %s" % (name, slug))
+    skip = {"404", "index", "about", "contact", "privacy", "disclosure",
+            "how-we-make-guides", "plan", "get-the-japan-checklist"}
+    for path in sorted(SITE_DIR.glob("*.html")):
+        stem = path.stem
+        if stem in skip or stem.startswith("japan-with-kids-") or stem in linker.REDIRECT_MAP:
+            continue
+        if stem not in assigned:
+            fails.append("clusters.yaml に未分類の記事がある（関連リンクが張られない）: " + stem)
 
     return fails
 

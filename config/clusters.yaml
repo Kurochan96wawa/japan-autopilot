@@ -1,15 +1,26 @@
-# 28記事を6つのトピッククラスタに分類。pillar=各クラスタの中心(ハブ)記事。
+# 実在する41記事を6つのトピッククラスタに分類。pillar=各クラスタの中心(ハブ)記事。
 # linker.py が本文末に「関連ガイド」を自動挿入し、孤立ページを解消する。
-# 新スラッグはここに足すだけ（未分類は near-fallback で practical 扱い）。
+#
+# 2026-08-22 全面更新: 従来の設定は統合前(301済み)のslugを指したままで、
+# accommodation の pillar と attractions/baby の member が転送されるページだった。
+# related() が301済みslugを除外する実装だったため、そのクラスタは実質空になり、
+# **統合先である本物のマネーページには内部リンクが1本も張られていなかった**
+# （実測: ホテル1本 / ディズニー0本 / eSIM 0本）。また実在41本中17本が未分類で、
+# 計算機・コンパニオン記事・医療とパッキングの統合先も孤立していた。
+# ここを実在slugで組み直し、収益ページを各クラスタのpillar/memberに正しく置く。
 transport:
   pillar: japan-public-transport-with-kids-fares-strollers-facilities
   members:
     - japan-rail-pass-with-kids-is-it-worth-it-for-families
+    - shinkansen-family-fare-calculator
+    - shinkansen-cost-for-families
+    - shinkansen-oversized-baggage-rules-for-families-in-2026
     - stroller-friendly-tokyo-navigating-the-city-with-kids
     - kyoto-with-a-stroller-accessible-routes-kid-friendly-spots
     - renting-a-car-in-japan-with-car-seats-family-travel-guide
-    - family-day-trips-from-tokyo-kid-friendly-escapes
-    - japan-family-itinerary-tokyo-kyoto-osaka-with-young-children
+    - japan-public-transport-with-kids-ic-cards-strollers-2026
+    - hands-free-travel-in-japan-with-kids-2026
+    - keeping-kids-happy-on-long-japan-journeys-flights-trains-202
 food:
   pillar: kid-friendly-japanese-meals-navigating-picky-eaters
   members:
@@ -18,27 +29,37 @@ food:
     - budget-family-meals-in-japan-where-to-eat-with-kids
     - japan-konbini-snacks-for-picky-eaters-kid-approved
     - navigating-food-allergies-in-japan-with-kids-a-guide
+    - eating-out-in-japan-with-food-allergies
     - tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes
 baby:
   pillar: diapers-formula-baby-gear-in-japan-what-to-pack-buy
   members:
-    - diapers-formula-in-japan-brands-sizes-where-to-buy
     - baby-carriers-in-japan-your-essential-guide-for-family-trave
     - beat-jet-lag-with-kids-in-japan-proven-travel-strategies
+    - japan-packing-list-for-families-2026-kids-travel-essentials
+# accommodation の pillar はホテル比較（収益ページ）。宿泊系の検索意図の中心であり、
+# 旅館・温泉の記事からここへ集約するのが読者の導線としても自然。
 accommodation:
-  pillar: tokyo-family-hotels-connecting-rooms-kitchenettes
+  pillar: best-family-hotels-tokyo-connecting-rooms
   members:
-    - staying-in-a-ryokan-with-kids-family-friendly-japan-tips
+    - ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026
     - family-onsen-japan-private-baths-kid-friendly-guide
 attractions:
   pillar: japan-family-itinerary-tokyo-kyoto-osaka-with-young-children
   members:
-    - tokyo-disney-vs-disneysea-for-kids
+    - tokyo-disneyland-vs-disneysea-young-kids
     - universal-studios-japan-with-kids-maximizing-family-fun
     - nara-deer-park-with-kids-safety-fun-tips-for-families
     - gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play
     - beat-the-heat-japan-summer-with-kids-safety-guide
+    - osaka-with-a-toddler-kid-friendly-sights-practical-tips-2026
+    - visiting-japan-temples-with-kids-respectfully-2026-guide
+    - engaging-kids-in-japanese-culture-temple-craft-etiquette-tip
+    - family-day-trips-from-tokyo-kid-friendly-escapes
 practical:
   pillar: japan-money-guide-for-families-cash-cards-budgeting
   members:
     - japanese-phrases-for-families-essential-travel-guide
+    - japan-esim-for-families-compared
+    - staying-connected-in-japan-with-kids-esims-wifi-2026
+    - japan-healthcare-for-kids-clinics-pharmacies-emergencies-202

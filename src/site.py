@@ -5,6 +5,8 @@ SEO: 全ページにOG/Twitterカード、記事にJSON-LD(Article/FAQPage/Bread
      ビルド毎に sitemap.xml と robots.txt を自動生成。既存記事には _upgrade_seo で後付け。
 """
 from __future__ import annotations
+import hashlib
+import pathlib
 import re
 import json
 from datetime import datetime, timezone
@@ -195,12 +197,50 @@ def _jsonld_block(*objs) -> str:
     return ("\n".join(out) + "\n") if out else ""
 
 
-def _article_jsonld(title, desc, url, image, date_iso, category, body_html, base) -> str:
+# ============================================================
+# 静的ページの公開日を安定させる（毎runのノイズ差分を止める）
+# ============================================================
+# 2026-08-22 実測: ハブ6本と how-we-make-guides が毎runで datePublished/dateModified を
+# 現在時刻（秒単位）で書き直していた。_static_page がページを作り直してJSON-LDを消し、
+# 直後のバックフィルが now() で入れ直す、というループになっていたため。
+# 中身が変わっていないのに毎回「今公開しました」とGoogleに伝えることになり、
+# 無意味なコミットも毎run生まれる。初出日を保存し、更新日は本文が変わったときだけ動かす。
+_PAGE_DATES_PATH = pathlib.Path(__file__).resolve().parent.parent / "data" / "page_dates.json"
+
+
+def _stable_dates(key: str, body_html: str) -> tuple:
+    """(datePublished, dateModified) を返す。本文が変わらない限り同じ値を返す。"""
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    digest = hashlib.sha256((body_html or "").encode("utf-8")).hexdigest()[:16]
+    try:
+        store = json.loads(_PAGE_DATES_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        store = {}
+    rec = store.get(key)
+    if isinstance(rec, dict) and rec.get("published"):
+        published = rec["published"]
+        modified = rec.get("modified") or published
+        if rec.get("hash") != digest:          # 本文が変わったときだけ更新日を進める
+            modified = now
+    else:
+        published = modified = now
+    store[key] = {"published": published, "modified": modified, "hash": digest}
+    try:
+        _PAGE_DATES_PATH.parent.mkdir(parents=True, exist_ok=True)
+        _PAGE_DATES_PATH.write_text(json.dumps(store, ensure_ascii=False, sort_keys=True,
+                                               indent=0), encoding="utf-8")
+    except Exception as e:
+        log.error("page_dates保存失敗: %s", e)
+    return published, modified
+
+
+def _article_jsonld(title, desc, url, image, date_iso, category, body_html, base,
+                    modified_iso: str | None = None) -> str:
     article = {
         "@context": "https://schema.org", "@type": "Article",
         "headline": (title or "")[:110], "description": desc or "",
         "image": [image] if image else [],
-        "datePublished": date_iso, "dateModified": date_iso,
+        "datePublished": date_iso, "dateModified": modified_iso or date_iso,
         "author": {"@type": "Organization", "name": "littletabi editors"},
         "publisher": {"@type": "Organization", "name": "littletabi"},
         "mainEntityOfPage": {"@type": "WebPage", "@id": url},
@@ -295,9 +335,9 @@ def _upgrade_seo(cfg) -> None:
         add = ""
         if "twitter:card" not in txt:
             add += _social_tags(title, desc, url, image, "article")
-        add += _article_jsonld(title, desc, url, image,
-                               datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                               "Japan with kids", body_html, base)
+        _pub, _mod = _stable_dates(path.name, body_html)
+        add += _article_jsonld(title, desc, url, image, _pub,
+                               "Japan with kids", body_html, base, modified_iso=_mod)
         if add and "</head>" in txt:
             txt = txt.replace("</head>", add + "</head>", 1)
             path.write_text(txt, encoding="utf-8")
@@ -337,22 +377,45 @@ def _upgrade_eeat_links(cfg) -> None:
             continue
         slug = path.stem
         changed = False
-        # Phase 2-2: 301統合した旧slugへの関連リンク<li>を既存HTMLからも除去（内部リンク掃除）
-        for _r in linker.REDIRECTED_SLUGS:
-            _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_r) + r'\.html"[^>]*>.*?</a>\s*</li>', re.S)
-            if _pat.search(txt):
-                txt = _pat.sub("", txt)
+        # Phase 2-2 / 2026-08-22改: 301統合した旧slugへの内部リンクは「削除」ではなく
+        # 「統合先へ張り替え」る。以前は <li> ごと消していたため、統合で集約されるはずの
+        # 内部リンク資産をそのまま捨てていた（統合先の被リンクが0本になっていた）。
+        for _old, _new in linker.REDIRECT_MAP.items():
+            if _new == slug:                       # 自分自身へのリンクは作らない
+                _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_old) + r'\.html"[^>]*>.*?</a>\s*</li>', re.S)
+                if _pat.search(txt):
+                    txt = _pat.sub("", txt); changed = True
+                continue
+            _href = re.compile(r'(href=")/' + re.escape(_old) + r'(\.html")')
+            if _href.search(txt):
+                txt = _href.sub(r"\1/" + _new + r"\2", txt)
+                changed = True
+        # 張り替えで同じ統合先への<li>が重複しうるので、2本目以降を落とす
+        for _new in set(linker.REDIRECT_MAP.values()):
+            _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_new) + r'\.html"[^>]*>.*?</a>\s*</li>', re.S)
+            _hits = list(_pat.finditer(txt))
+            if len(_hits) > 1:
+                for m in reversed(_hits[1:]):
+                    txt = txt[:m.start()] + txt[m.end():]
                 changed = True
 
         # ① 内部リンク（関連ガイド）を bottom 開示の直前に挿入
-        if 'class="related"' not in txt:
-            links = linker.related(slug, clusters)
-            if links:
-                items = "".join(
-                    f"<li><a href=\"/{s}.html\">{titles.get(s, s.replace('-', ' '))}</a></li>"
-                    for s in links)
-                block = ("<section class=\"related\"><h2>Related guides</h2>"
-                         f"<ul>{items}</ul></section>")
+        # 2026-08-22: 以前は「関連ブロックが無いときだけ挿入」だったため、clusters.yaml を
+        # 直しても既存ページは古いリンクを持ち続け、新設定が新規ページにしか効かなかった
+        # （トラストストリップと同型の skip-if-present 問題）。中身が変わったら差し替える。
+        links = linker.related(slug, clusters)
+        if links:
+            items = "".join(
+                f"<li><a href=\"/{s}.html\">{titles.get(s, s.replace('-', ' '))}</a></li>"
+                for s in links)
+            block = ("<section class=\"related\"><h2>Related guides</h2>"
+                     f"<ul>{items}</ul></section>")
+            _rel = re.compile(r'<section class="related">.*?</section>', re.S)
+            if _rel.search(txt):
+                if _rel.search(txt).group(0) != block:      # 同一なら書かない（無駄な差分を出さない）
+                    txt = _rel.sub(lambda _m: block, txt, count=1)
+                    changed = True
+            else:
                 if '<div class="disc bottom"' in txt:
                     txt = txt.replace('<div class="disc bottom"', block + '<div class="disc bottom"', 1)
                 else:

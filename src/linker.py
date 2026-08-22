@@ -45,6 +45,17 @@ REDIRECT_MAP = {
 REDIRECTED_SLUGS = set(REDIRECT_MAP)
 
 
+def resolve(slug: str) -> str:
+    """301統合済みのslugなら統合先を返す。それ以外はそのまま。
+
+    2026-08-22: related() が REDIRECTED_SLUGS を単に「除外」していたため、統合した
+    クラスタ（accommodation の pillar など）が実質空になり、統合先である本物の
+    マネーページには内部リンクが1本も張られていなかった（実測: ホテル1本・ディズニー0本・
+    eSIM 0本）。301は「捨てる」ではなく「寄せる」ものなので、張り替えに変更する。
+    """
+    return REDIRECT_MAP.get(slug, slug)
+
+
 def load_clusters(path: str = "config/clusters.yaml") -> dict:
     if not yaml or not os.path.exists(path):
         return {}
@@ -78,8 +89,13 @@ def related(slug: str, clusters: dict, n: int = 3) -> list:
         c = clusters.get("practical")
         if not c:
             return []
-        out = [s for s in ([c.get("pillar")] + list(c.get("members", []) or [])) if s and s != slug]
-        return [s for s in out if s not in REDIRECTED_SLUGS][:n + 1]
+        out = [resolve(s) for s in ([c.get("pillar")] + list(c.get("members", []) or [])) if s]
+        out = [s for s in out if s != slug]
+        seen, dedup = set(), []
+        for s2 in out:
+            if s2 not in seen:
+                seen.add(s2); dedup.append(s2)
+        return dedup[:n + 1]
     sibs = [s for s in (c.get("members", []) or []) if s != slug]
     out = sibs[:n]
     if c.get("pillar") and c["pillar"] != slug:
@@ -87,10 +103,11 @@ def related(slug: str, clusters: dict, n: int = 3) -> list:
     # 重複除去・順序維持
     seen, dedup = set(), []
     for s in out:
-        if s not in seen:
+        s = resolve(s)                     # 301済みは統合先へ寄せる（捨てない）
+        if s and s != slug and s not in seen:
             seen.add(s)
             dedup.append(s)
-    return [s for s in dedup if s not in REDIRECTED_SLUGS]
+    return dedup
 
 
 def load_titles(state_path: str = "data/state.json") -> dict:
