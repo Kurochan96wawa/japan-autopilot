@@ -204,6 +204,18 @@ Return ONLY JSON:
     html = re.sub(r'(<meta property="og:description" content=")[^"]*(">)', rf"\1{em}\2", html, count=1)
     html = re.sub(r'(<meta name="twitter:title" content=")[^"]*(">)', rf"\1{et}\2", html, count=1)
     html = re.sub(r'(<meta name="twitter:description" content=")[^"]*(">)', rf"\1{em}\2", html, count=1)
+
+    # 2026-08-22: <title> だけ書き換えて <h1> と JSON-LD headline を放置すると、
+    # 「タイトルの約束」と「ページの見出し」が食い違う。Googleはこの乖離を検知すると
+    # title を h1 側に書き戻すことがあり、せっかくのクエリ最適化が検索結果に反映されない。
+    # 見出しと構造化データも新しいタイトルに揃える。
+    html = re.sub(r"(<h1[^>]*>).*?(</h1>)", lambda m: m.group(1) + et + m.group(2),
+                  html, count=1, flags=re.S)
+    # JSON-LD の中はHTMLエスケープではなくJSONエスケープを使う（&amp; を入れてはいけない）
+    jt = json.dumps(new_title)[1:-1]
+    html = re.sub(r'("headline":\s*")(?:[^"\\]|\\.)*(")', lambda m: m.group(1) + jt + m.group(2),
+                  html, count=1)
+
     path.write_text(html, encoding="utf-8")
     log.info("SEO: タイトル/メタ改善 %s → %s", slug, new_title)
     return {"title": new_title, "meta": new_meta}

@@ -20,6 +20,7 @@ MUST_EXIST = (
     "plan.html",
     "sitemap.xml",
     "_redirects",
+    "404.html",
     "tools/allergy-card.html",
     "shinkansen-family-fare-calculator.html",
     "shinkansen-cost-for-families.html",
@@ -97,6 +98,13 @@ def run() -> list:
             fails.append("description と og:description が食い違っている（検索スニペットが古いまま）: " + path.name)
         if d and not d.group(1).strip():
             fails.append("meta description が空: " + path.name)
+
+    # ⑧ 404ページ（soft-404の再発防止）
+    #    404.html が無いと Cloudflare Pages は未一致URLにトップページを 200 で返し、
+    #    存在しないURLの数だけ重複コンテンツが生える（2026-08-22 に実測）。
+    nf = _read("404.html")
+    if nf and "noindex" not in nf:
+        fails.append("404.html に noindex が無い（誤ってインデックスされる）")
 
     return fails
 

@@ -1022,6 +1022,61 @@ def _build_static_pages() -> int:
     return n
 
 
+# ============================================================
+# 404ページ（soft-404の解消）
+# ============================================================
+# 2026-08-22 実測: docs/404.html が存在せず、存在しないURLがすべて HTTP 200 で
+# トップページを返していた（/this-page-does-not-exist も /404.html も 200）。
+# つまりタイプミスや古いURLの数だけ「トップページの複製」が200で生成される状態で、
+# 重複コンテンツ・クロール予算の浪費・削除済みURLが消えない、の三重に効く。
+# 7月には存在したファイルが履歴の差し替えで消え、site.py は生成しないため復活しなかった。
+# Cloudflare Pages は出力直下に 404.html があれば未一致URLにそれを 404 で返す。
+def _404_html() -> str:
+    from . import site as _site
+    head = (
+        '<meta name="robots" content="noindex,follow">\n'
+        '<meta name="description" content="This page was not found. Browse our Japan-with-kids guides instead.">\n'
+        '<meta property="og:description" content="This page was not found. Browse our Japan-with-kids guides instead.">\n'
+    )
+    body = (
+        '<main class="wrap">'
+        '<h1>This page doesn&rsquo;t exist</h1>'
+        '<p class="lead">The link may be out of date, or the address may have a typo. '
+        'Here is where most families go next.</p>'
+        '<ul>'
+        '<li><a href="/">All Japan-with-kids guides</a></li>'
+        '<li><a href="/plan.html">Free trip planner</a> &mdash; a day-by-day family plan in seconds</li>'
+        '<li><a href="/shinkansen-family-fare-calculator.html">Shinkansen family fare calculator</a> '
+        '&mdash; estimate the total with kids&rsquo; fare rules</li>'
+        '<li><a href="/tools/allergy-card.html">Printable Japanese allergy card</a></li>'
+        '<li><a href="/get-the-japan-checklist.html">Free pre-departure checklist (PDF)</a></li>'
+        '</ul>'
+        '<p><a href="/japan-with-kids-transport.html">Transport</a> &middot; '
+        '<a href="/japan-with-kids-accommodation.html">Accommodation</a> &middot; '
+        '<a href="/japan-with-kids-food.html">Food</a> &middot; '
+        '<a href="/japan-with-kids-attractions.html">Attractions</a> &middot; '
+        '<a href="/japan-with-kids-baby.html">Babies &amp; toddlers</a> &middot; '
+        '<a href="/japan-with-kids-practical.html">Practical</a></p>'
+        '</main>'
+    )
+    cfg = load_settings()
+    return _site._document("en", "Page not found | " + cfg["site"]["site_name"], head, body)
+
+
+def _build_404() -> int:
+    path = SITE_DIR / "404.html"
+    try:
+        html = _404_html()
+        if path.exists() and path.read_text(encoding="utf-8") == html:
+            return 0
+        path.write_text(html, encoding="utf-8")
+        log.info("quality_fixups: 404ページ生成")
+        return 1
+    except Exception as e:
+        log.error("quality_fixups: 404ページ生成失敗: %s", e)
+        return 0
+
+
 def run() -> dict:
     sp = _build_static_pages()
     m = _inject_money_picks()
@@ -1036,11 +1091,12 @@ def run() -> dict:
     g = _inject_age_bands()
     e = _build_embeds()
     q = _limit_asof()
-    log.info("quality_fixups完了: 静的ページ=%d, 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d",
-             sp, m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e)
+    nf = _build_404()   # 他のfixupに触られないよう最後に生成する
+    log.info("quality_fixups完了: 静的ページ=%d, 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d, 404=%d",
+             sp, m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e, nf)
     return {"static_pages": sp, "money_picks": m, "scrub": hx, "canonical_dedup": c, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
             "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"],
-            "shinkansen_steps": k, "age_bands": g, "embeds": e, "asof": q}
+            "shinkansen_steps": k, "age_bands": g, "embeds": e, "asof": q, "notfound": nf}
 
 
 

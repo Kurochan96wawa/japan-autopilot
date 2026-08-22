@@ -11,6 +11,7 @@ import re
 
 from .util import SITE_DIR, log
 from . import images
+from . import linker
 
 # 場所違いが確認された閲覧可能ページ（301で隠れる旧slugは対象外）。
 TARGETS = [
@@ -136,14 +137,62 @@ def reimage_slug(slug: str, used_ids: set | None = None) -> int:
     return n
 
 
-def run() -> int:
+def duplicate_slugs() -> list:
+    """docs/img でバイト単位に同一の写真を使っている記事slugを洗い出す。
+
+    2026-08-22 実測で20グループ（最大5記事が同じ1枚）を検出。各グループの先頭1本だけを
+    残し、残りを差し替え対象として返す（全部差し替えると無駄にAPIを叩くため）。
+    """
+    import collections
+    import hashlib
+    img_dir = SITE_DIR / "img"
+    if not img_dir.exists():
+        return []
+    by_hash = collections.defaultdict(list)
+    for f in sorted(img_dir.glob("*.jpg")):
+        try:
+            by_hash[hashlib.sha256(f.read_bytes()).hexdigest()].append(f.name)
+        except Exception:
+            continue
+    slugs: list = []
+    for names in by_hash.values():
+        if len(names) < 2:
+            continue
+        for name in names[1:]:                       # 先頭は据え置き
+            slug = re.sub(r"-(body\d+|v\d+)?\.jpg$", "", name)
+            slug = re.sub(r"\.jpg$", "", slug)
+            if slug in slugs:
+                continue
+            if slug in linker.REDIRECTED_SLUGS:      # 301で隠れるページに枠を使わない
+                continue
+            if (SITE_DIR / f"{slug}.html").exists():
+                slugs.append(slug)
+    return slugs
+
+
+def run(mode: str = "targets") -> int:
+    """mode=targets: 都市不整合が確認済みのページを差し替え（従来）。
+       mode=dupes  : サイト内で写真が重複している記事を差し替え。"""
     total = 0
-    used_ids: set = set()
-    for slug in TARGETS:
+    used_ids: set = set(images.load_used_photo_ids())   # run跨ぎの重複も防ぐ
+    slugs = duplicate_slugs() if mode == "dupes" else TARGETS
+    if mode == "dupes":
+        # Pexels APIのレート制限に配慮して1runの上限を設ける。打ち切った分は必ずログに出す
+        # （黙って切ると「全部直った」と誤解されるため）。残りは次runで拾われる。
+        limit = 25
+        if len(slugs) > limit:
+            log.info("reimage(dupes): 重複記事 %d本のうち %d本を今回処理（残り %d本は次runで処理）",
+                     len(slugs), limit, len(slugs) - limit)
+            slugs = slugs[:limit]
+        else:
+            log.info("reimage(dupes): 重複している記事 %d本を差し替え対象にした", len(slugs))
+    for slug in slugs:
         total += reimage_slug(slug, used_ids)
-    log.info("reimage完了: 計%d枚", total)
+    images.save_used_photo_ids(sorted(used_ids))
+    log.info("reimage完了(%s): 計%d枚", mode, total)
     return total
 
 
 if __name__ == "__main__":
-    run()
+    import sys
+    run("dupes" if "dupes" in sys.argv else "targets")

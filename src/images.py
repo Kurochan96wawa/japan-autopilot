@@ -11,7 +11,9 @@ Pinterest推奨の縦長(2:3)に仕上げる。Pexelsキーが無ければ単色
   ヒーロー画像と被らないよう skip 枚目以降から選ぶ。
 """
 from __future__ import annotations
+import json
 import os
+import pathlib
 import io
 import textwrap
 import requests
@@ -43,6 +45,43 @@ _CITY_ALIASES = {
     "asakusa": "tokyo", "arashiyama": "kyoto", "hachioji": "tokyo",
     "kawasaki": "tokyo", "yokohama": "tokyo",
 }
+
+
+# ============================================================
+# 使用済み写真の永続記録（run跨ぎの重複防止）
+# ============================================================
+# 2026-08-22 実測: docs/img に バイト単位で同一の写真が20グループ（最大5記事で同じ1枚）。
+# 原因は fetch_body_images に重複回避が無く、Pexelsの検索結果から機械的に
+# photos[skip:skip+n] を取っていたこと。近いクエリの記事同士で同じ写真が当たる。
+# reimage 側の _take_photo は1run内でしか効かないため、日次生成の積み重ねは防げなかった。
+# 使用済みIDをファイルに残し、run を跨いでも同じ写真を選ばないようにする。
+_USED_PHOTOS_PATH = pathlib.Path(__file__).resolve().parent.parent / "data" / "used_photos.json"
+_USED_MAX = 4000          # 際限なく増えないよう古いものから捨てる
+
+
+def load_used_photo_ids() -> list:
+    try:
+        data = json.loads(_USED_PHOTOS_PATH.read_text(encoding="utf-8"))
+        ids = data.get("ids", [])
+        return [int(i) for i in ids if str(i).isdigit()]
+    except Exception:
+        return []          # 壊れていても止めない（fail open: 重複するだけで害は小さい）
+
+
+def save_used_photo_ids(ids) -> None:
+    try:
+        seq = [int(i) for i in ids][-_USED_MAX:]
+        _USED_PHOTOS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        _USED_PHOTOS_PATH.write_text(
+            json.dumps({"ids": seq}, ensure_ascii=False), encoding="utf-8")
+    except Exception as e:
+        log.error("used_photos保存失敗: %s", e)
+
+
+def _drop_used(photos: list, used: set) -> list:
+    """既に使った写真を候補から除く。全部使用済みなら元のまま返す（画像ゼロを避ける）。"""
+    fresh = [p for p in photos if p.get("id") not in used]
+    return fresh if fresh else photos
 
 
 def _cities_in(text: str) -> set:
@@ -182,6 +221,9 @@ def fetch_body_images(query: str, slug: str, n: int = 2, skip: int = 1) -> list[
     if not photos:
         return []
     photos = _rank_photos(photos, _cities_in(query + " " + slug))
+    used_seq = load_used_photo_ids()
+    used = set(used_seq)
+    photos = _drop_used(photos, used)          # run跨ぎで同じ写真を選ばない
     img_dir = SITE_DIR / "img"
     img_dir.mkdir(parents=True, exist_ok=True)
     out: list[dict] = []
@@ -192,6 +234,8 @@ def fetch_body_images(query: str, slug: str, n: int = 2, skip: int = 1) -> list[
             base = _download(url, 1200, 675)  # 16:9
             fname = f"{slug}-body{idx + 1}.jpg"
             base.save(img_dir / fname, "JPEG", quality=86)
+            if p.get("id") is not None:
+                used_seq.append(p["id"])
             out.append({
                 "rel": f"img/{fname}",
                 "photographer": p.get("photographer", ""),
@@ -200,5 +244,6 @@ def fetch_body_images(query: str, slug: str, n: int = 2, skip: int = 1) -> list[
             })
         except Exception as e:
             log.error("本文画像DL失敗: %s", e)
-    log.info("本文画像 %d枚生成: %s", len(out), slug)
+    save_used_photo_ids(used_seq)
+    log.info("本文画像 %d枚生成: %s（使用済み写真 %d件を記録）", len(out), slug, len(used_seq))
     return out
