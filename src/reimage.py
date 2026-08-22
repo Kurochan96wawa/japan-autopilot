@@ -23,11 +23,31 @@ TARGETS = [
 _IMG_RE = re.compile(r"/img/([A-Za-z0-9._-]+\.jpg)")
 
 
+# slugから話題語を拾うときに落とす汎用語（どの記事にも出るので識別力が無い）。
+_Q_STOP = {
+    "japan", "japanese", "with", "kids", "kid", "child", "children", "for", "family",
+    "families", "a", "an", "the", "in", "to", "and", "of", "your", "you", "guide",
+    "guides", "tips", "best", "what", "how", "is", "are", "do", "does", "need",
+    "know", "parent", "parents", "practical", "essential", "ultimate", "complete",
+    "travel", "traveling", "travelling", "trip", "2026", "2025", "s", "it", "worth",
+    "on", "at", "from", "when", "where", "why", "who", "get", "gets", "our", "we",
+}
+
+
 def _query_for(slug: str) -> str:
+    """記事ごとに異なる検索語を作る。
+
+    2026-08-22: 以前は都市名が無いと一律 "Japan family travel children" を返しており、
+    重複対象27本のうち24本が同じ検索語＝同じ写真プールを引いていた。使用済みを除外すると
+    即座に枯れ、reimage が「未使用の写真が尽きた」でスキップして重複が解消しなかった。
+    slug から話題語を拾って検索語を分散させる（記事内容との一致という点でも良くなる）。
+    """
     cities = images._cities_in(slug)
-    if cities:
-        return " ".join(sorted(c.title() for c in cities)) + " Japan family with children"
-    return "Japan family travel children"
+    topic = [w for w in slug.split("-") if w and w not in _Q_STOP and not w.isdigit()][:3]
+    place = " ".join(sorted(c.title() for c in cities)) if cities else "Japan"
+    if topic:
+        return " ".join(topic) + " " + place + " family children"
+    return place + " family with children"
 
 
 def _alt_for(want) -> str:
@@ -104,7 +124,8 @@ def reimage_slug(slug: str, used_ids: set | None = None) -> int:
 
     want = images._cities_in(slug)
     query = images._ensure_japan(_query_for(slug))
-    photos = images._pexels_photos(query, len(files) + 16, orientation="landscape")
+    # プールが狭いと使用済み除外で枯れるため広めに取る（Pexelsの per_page 上限は80）
+    photos = images._pexels_photos(query, min(80, len(files) + 40), orientation="landscape")
     photos = images._rank_photos(photos, want)
     if not photos:
         log.error("reimage: pexels empty %s (q=%s)", slug, query)

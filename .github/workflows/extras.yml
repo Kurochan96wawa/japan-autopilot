@@ -38,6 +38,17 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run ${{ github.event.inputs.task }}
         run: python -m src.${{ github.event.inputs.task }}
+      # 復旧スプリントC C-5 の漏れ補完: extras も同じ fail-closed ガードを通す
+      # （reimage/moneypages が docs を書き換えるため）
+      - name: Link linter (revenue links, fail-closed)
+        run: python -m src.link_linter
+
+      - name: Topic dedupe guard selftest (fail-closed)
+        run: python -m src.ideas --selftest
+
+      - name: Assert revenue + tool assets survived the build (fail-closed)
+        run: python -m src.ci_assert
+
       - name: Commit results
         run: |
           git config user.name  "autopilot-bot"
