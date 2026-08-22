@@ -175,16 +175,23 @@ def duplicate_slugs() -> list:
             by_hash[hashlib.sha256(f.read_bytes()).hexdigest()].append(f.name)
         except Exception:
             continue
+    def _slug_of(name: str) -> str:
+        x = re.sub(r"-(body\d+|v\d+)?\.jpg$", "", name)
+        return re.sub(r"\.jpg$", "", x)
+
     slugs: list = []
     for names in by_hash.values():
         if len(names) < 2:
             continue
-        for name in names[1:]:                       # 先頭は据え置き
-            slug = re.sub(r"-(body\d+|v\d+)?\.jpg$", "", name)
-            slug = re.sub(r"\.jpg$", "", slug)
+        # 301で隠れるページとの一致は「読者に見える重複」ではないので数えない。
+        # これを入れないと、生きたページ1枚+旧ページ の組を毎回差し替え対象として報告し、
+        # 解消しようのない差し替えでPexels APIを浪費し続ける（2026-08-22の実測で判明）。
+        live = [n for n in names if _slug_of(n) not in linker.REDIRECTED_SLUGS]
+        if len(live) < 2:
+            continue
+        for name in live[1:]:                        # 先頭は据え置き
+            slug = _slug_of(name)
             if slug in slugs:
-                continue
-            if slug in linker.REDIRECTED_SLUGS:      # 301で隠れるページに枠を使わない
                 continue
             if (SITE_DIR / f"{slug}.html").exists():
                 slugs.append(slug)
