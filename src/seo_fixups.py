@@ -227,14 +227,94 @@ def _inject_tool_links() -> int:
     return done
 
 
+# ============================================================
+# 文脈内部リンク（収益ページ・ツールへの導線）
+# ============================================================
+# 2026-08-22: 内部リンクの実測で、ホテル比較(収益ページ)の被リンクが4本と最も弱く、
+# しかも GSC で実需要のあるクエリ（"tokyo hotel with kitchenette" 系）を持つ唯一のページ
+# だった。宿泊クラスタの記事が2本しかないため related ブロックだけでは増やせない。
+# そこで話題が実際に隣接する記事から、本文の文脈として1本ずつ張る。
+#
+# 上の _TOOL_LINKS は本文中の固定文言を目印にしており、本文が再生成されると目印が消えて
+# スキップされる（実際に "marker not found" が出ていた）。こちらは related ブロック /
+# 末尾開示 / </article> という**構造的な位置**を使うので、本文が変わっても効き続ける。
+_CONTEXT_LINKS = [
+    ("ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
+     "best-family-hotels-tokyo-connecting-rooms",
+     '<p><strong>Mixing a ryokan with a city stay?</strong> Most families pair one or two ryokan nights '
+     'with a Tokyo base &mdash; see our pick of '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Tokyo family hotels with connecting rooms '
+     'and kitchenettes</a>.</p>'),
+    ("family-onsen-japan-private-baths-kid-friendly-guide",
+     "best-family-hotels-tokyo-connecting-rooms",
+     '<p><strong>Where to stay either side of the onsen trip?</strong> '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Tokyo family hotels with connecting rooms</a> '
+     'covers the city nights, including rooms with a kitchenette.</p>'),
+    ("family-day-trips-from-tokyo-kid-friendly-escapes",
+     "best-family-hotels-tokyo-connecting-rooms",
+     '<p><strong>Day trips work best from a fixed base.</strong> If you have not booked yet, see '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">family hotels in Tokyo with connecting rooms</a>.</p>'),
+    ("stroller-friendly-tokyo-navigating-the-city-with-kids",
+     "best-family-hotels-tokyo-connecting-rooms",
+     '<p><strong>Stroller-friendly starts with the hotel.</strong> Lifts, room size and a place to park the buggy '
+     'matter more than the neighbourhood &mdash; see '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Tokyo family hotels with connecting rooms</a>.</p>'),
+    ("tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
+     "best-family-hotels-tokyo-connecting-rooms",
+     '<p><strong>Staying central helps.</strong> Most of these cafes are an easy hop from the areas covered in '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">our Tokyo family hotel picks</a>.</p>'),
+    ("japan-family-itinerary-tokyo-kyoto-osaka-with-young-children",
+     "best-family-hotels-tokyo-connecting-rooms",
+     '<p><strong>Booking the Tokyo nights?</strong> '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Family hotels with connecting rooms and kitchenettes</a> '
+     'covers the options that actually fit four people.</p>'),
+    ("navigating-food-allergies-in-japan-with-kids-a-guide",
+     "eating-out-in-japan-with-food-allergies",
+     '<p><strong>What this looks like in practice:</strong> '
+     '<a href="/eating-out-in-japan-with-food-allergies.html">how families actually manage food allergies in '
+     'Japanese restaurants</a> walks through ordering, chains and the dashi problem.</p>'),
+    ("kid-friendly-japanese-meals-navigating-picky-eaters",
+     "eating-out-in-japan-with-food-allergies",
+     '<p><strong>Allergies as well as picky eating?</strong> See '
+     '<a href="/eating-out-in-japan-with-food-allergies.html">eating out in Japan with food allergies</a>.</p>'),
+]
+
+
+def _inject_context_links() -> int:
+    """収益ページ/コンパニオン記事への文脈リンクを冪等に注入する。
+
+    既にそのページへリンクしていれば触らない。挿入位置は related ブロックの直前
+    （無ければ末尾開示、それも無ければ </article> の直前）。
+    """
+    done = 0
+    for src, target, html in _CONTEXT_LINKS:
+        path = SITE_DIR / (src + ".html")
+        if not path.exists() or not (SITE_DIR / (target + ".html")).exists():
+            continue
+        page = path.read_text(encoding="utf-8")
+        if f'href="/{target}.html"' in page:      # 既にリンク済み（冪等）
+            continue
+        for anchor in ('<section class="related">', '<div class="disc bottom"', "</article>"):
+            if anchor in page:
+                page = page.replace(anchor, html + anchor, 1)
+                path.write_text(page, encoding="utf-8")
+                done += 1
+                log.info("seo_fixups: 文脈リンク注入 %s → %s", src, target)
+                break
+        else:
+            log.info("seo_fixups: 挿入位置が見つからない %s", src)
+    return done
+
+
 def run() -> dict:
     r = _build_redirects()
     c = _consolidate_canonicals()
     h = _enrich_hubs()
     s = _fix_sitemap()
     t = _inject_tool_links()
-    log.info("seo_fixups完了: _redirects=%d, canonical統合=%d, ハブ加筆=%d, sitemap修正=%d", r, c, h, s)
-    return {"redirects": r, "canonicals": c, "hubs": h, "sitemap": s, "tool_links": t}
+    x = _inject_context_links()
+    log.info("seo_fixups完了: _redirects=%d, canonical統合=%d, ハブ加筆=%d, sitemap修正=%d, 文脈リンク=%d", r, c, h, s, x)
+    return {"redirects": r, "canonicals": c, "hubs": h, "sitemap": s, "tool_links": t, "context_links": x}
 
 
 def main() -> None:
