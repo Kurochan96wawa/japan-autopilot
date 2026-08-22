@@ -708,12 +708,18 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
     return canonical
 
 
-def _static_page(slug: str, lang: str, title_tag: str, inner: str) -> None:
+def _static_page(slug: str, lang: str, title_tag: str, inner: str, desc: str | None = None) -> None:
+    """静的ページを書き出す。
+
+    2026-08-22: desc を受け取れるようにした。従来は全ページ TAGLINE 固定だったため、
+    **カテゴリハブ6本を含む12ページが同一の meta description を共有**していた。
+    ハブはカテゴリ系クエリで拾うべきページなのに説明文が全部同じ、という状態だった。
+    """
     cfg = load_settings()
     base = cfg["site"]["base_url"].rstrip("/")
     url = f"{base}/{slug}.html"
     title = title_tag.split("|")[0].strip()
-    desc = TAGLINE
+    desc = (desc or TAGLINE).strip()[:155]
     head_extra = (
         f'<meta name="description" content="{_esc_attr(desc)}">\n'
         f'<link rel="canonical" href="{url}">\n'
@@ -932,7 +938,7 @@ def _build_hubs(clusters: dict, slug_to_post: dict, lang: str, site_name: str) -
         )
         inner = (f"<h1>{title_h}</h1><p>{intro}</p>"
                  f'<div class="grid">{cards}</div>')
-        _static_page(_hub_slug(name), lang, f"{title_h} | {site_name}", inner)
+        _static_page(_hub_slug(name), lang, f"{title_h} | {site_name}", inner, desc=intro)
         hubs.append((_hub_slug(name), title_h))
     return hubs
 
@@ -1005,12 +1011,17 @@ def rebuild_index(state: dict) -> None:
     html = _document(lang, f"{site_name}", head_extra, body_inner)
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     (SITE_DIR / "index.html").write_text(html, encoding="utf-8")
-    _static_page("about", lang, f"About | {site_name}", _about_inner())
-    _static_page("disclosure", lang, f"Affiliate Disclosure | {site_name}", _disclosure_inner())
-    _static_page("privacy", lang, f"Privacy Policy | {site_name}", _privacy_inner())
-    _static_page("contact", lang, f"Contact | {site_name}", _contact_inner())
+    _static_page("about", lang, f"About | {site_name}", _about_inner(),
+                 desc="Who writes littletabi, how the guides are made, and why we publish what we can verify.")
+    _static_page("disclosure", lang, f"Affiliate Disclosure | {site_name}", _disclosure_inner(),
+                 desc="How littletabi makes money: which links are affiliate links, and what that does and does not change.")
+    _static_page("privacy", lang, f"Privacy Policy | {site_name}", _privacy_inner(),
+                 desc="What littletabi collects, what it does not, and how analytics and the email list are handled.")
+    _static_page("contact", lang, f"Contact | {site_name}", _contact_inner(),
+                 desc="Corrections, questions and partnership enquiries for littletabi.")
     # 透明性ページ（AI生成であることを正面から説明＝E-E-A-Tと安心を両立）
-    _static_page("how-we-make-guides", lang, f"How We Make These Guides | {site_name}", eeat.HOW_WE_MAKE)
+    _static_page("how-we-make-guides", lang, f"How We Make These Guides | {site_name}", eeat.HOW_WE_MAKE,
+                 desc="Our process: AI-assisted drafting, automated checks, and what we verify against official sources before publishing.")
     _write_cname(cfg)
     _migrate_legacy(cfg, popular)
     _upgrade_seo(cfg)          # 既存記事にOG/Twitter/JSON-LDを後付け（冪等）

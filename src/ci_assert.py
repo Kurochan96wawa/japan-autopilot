@@ -138,6 +138,28 @@ def run() -> list:
         if stem not in assigned:
             fails.append("clusters.yaml に未分類の記事がある（関連リンクが張られない）: " + stem)
 
+    # ⑩ meta description の重複（カテゴリハブが同じ説明文を共有する事故の再発防止）
+    #    2026-08-22 実測: _static_page が全ページ TAGLINE 固定だったため、カテゴリハブ6本を
+    #    含む12ページが同一の meta description を持っていた。カテゴリ系クエリで拾うべき
+    #    ページの説明文が全部同じ、という状態。noindex のページは対象外。
+    seen_desc = {}
+    for path in sorted(SITE_DIR.glob("*.html")):
+        html = _read(path.name)
+        rb = re.search(r'<meta name="robots" content="([^"]*)"', html)
+        if rb and "noindex" in rb.group(1):
+            continue
+        if path.stem in linker.REDIRECT_MAP:
+            continue
+        dm = re.search(r'<meta name="description" content="([^"]*)"', html)
+        if not dm or not dm.group(1).strip():
+            fails.append("meta description が無い: " + path.name)
+            continue
+        key = dm.group(1).strip()
+        if key in seen_desc:
+            fails.append("meta description が %s と重複している: %s" % (seen_desc[key], path.name))
+        else:
+            seen_desc[key] = path.name
+
     return fails
 
 
