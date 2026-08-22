@@ -1,0 +1,35 @@
+# ============================================================
+# 信頼できる日本語ソース登録簿（英語では入手しにくい一次情報の供給源）
+# jp_research.py がトピックに合わせて参照する。英語版を持つ大手翻訳メディアは入れない。
+# match: そのカテゴリを選ぶキーワード（topic/keyword に含まれれば採用）
+# ============================================================
+categories:
+  - name: baby_essentials
+    match: ["diaper", "formula", "baby", "nursing", "stroller", "milk", "toddler", "pack"]
+    sources:
+      - name: "Akachan Honpo（アカチャンホンポ）公式"
+        url: "https://www.akachan.jp/"
+      - name: "Nishimatsuya（西松屋）公式"
+        url: "https://www.24028.jp/"
+  - name: transport
+    match: ["train", "transport", "subway", "pass", "rail", "shinkansen", "getting around", "itinerary"]
+    sources:
+      - name: "JR東日本 公式（日本語）"
+        url: "https://www.jreast.co.jp/"
+      - name: "東京メトロ 公式"
+        url: "https://www.tokyometro.jp/"
+  - name: attractions
+    match: ["teamlab", "disney", "ghibli", "aquarium", "zoo", "theme park", "museum", "things to do"]
+    sources:
+      - name: "いこーよ（子連れおでかけ情報）"
+        url: "https://iko-yo.net/"
+  - name: food_allergy
+    match: ["allergy", "food", "restaurant", "eat", "dining", "meal"]
+    sources:
+      - name: "消費者庁 食物アレルギー表示"
+        url: "https://www.caa.go.jp/policies/policy/food_labeling/food_sanitation/allergy/"
+  - name: health_safety
+    match: ["safety", "hospital", "sick", "emergency", "medical", "pharmacy", "health"]
+    sources:
+      - name: "東京都保健医療局（子供の医療）"
+        url: "https://www.hokeniryo.metro.tokyo.lg.jp/"

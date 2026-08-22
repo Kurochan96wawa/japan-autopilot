@@ -1,0 +1,72 @@
+# ============================================================
+# アフィリエイト・リンク登録簿（子連れ日本旅行ニッチ向け）
+# ここに自分のアフィリリンクを入れる。記事生成時に文脈に合うものが自動挿入される。
+# どの記事も最低1つはCTAが入るよう、content.py が experiences をデフォルトCTAに使う。
+#
+# 収益化の二段構え:
+#  ・Klook系（experiences/regional_pass/esim/gear）… 直接アフィリ（aid=125283）。
+#  ・hotels … 普通の Booking.com 検索リンク。Travelpayouts Drive がページ上で
+#    自動的にアフィリ化（marker 544191）するので、素のURLでも収益化される。
+# ============================================================
+
+programs:
+  - id: experiences
+    name: "Klook experiences (teamLab, kimono, Fuji day trip, theme parks, food tours)"
+    url: "https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fdestination%2Fco1012-japan%2F"
+    keywords: ["tour", "experience", "ticket", "things to do", "teamlab", "theme park",
+               "disney", "disneysea", "universal", "usj", "ghibli", "day trip", "activity",
+               "aquarium", "zoo", "nara", "onsen", "cafe", "food", "sushi", "ramen",
+               "kimono", "fun", "attraction", "kids", "family"]
+    cta: "Book skip-the-line family tickets & experiences on Klook"
+
+  - id: regional_pass
+    name: "Regional rail passes (Kansai/Hakone/Tokyo subway) via Klook"
+    # ※全国版JR Passではなく“地域パス”。子連れは移動を絞るので地域パスの方が合う
+    url: "https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314338&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fjapan-rail%2F"
+    keywords: ["train", "transport", "subway", "pass", "kansai", "hakone", "getting around",
+               "itinerary", "between cities", "rail", "jr pass", "metro", "ic card", "suica"]
+    cta: "Get the regional pass that fits your route (skip the pricey nationwide JR Pass)"
+
+  - id: hotels
+    name: "Family-friendly hotels in Japan (Booking.com — auto-monetised by Travelpayouts Drive)"
+    url: "https://www.booking.com/searchresults.html?ss=Japan&nflt=ht_id%3D204"
+    keywords: ["hotel", "stay", "accommodation", "ryokan", "where to stay",
+               "family room", "connecting rooms", "apartment", "lodging", "book a room"]
+    cta: "Find family rooms & kid-friendly stays in Japan"
+
+  - id: esim
+    # ※Airalo(Impact)が却下→ eSIM枠は Klook eSIM(20%) に振替（2026-06-26）。Klook aid=125283。
+    name: "Klook eSIM (Japan) — Softbank 5G / DOCOMO 4G LTE"
+    url: "https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Factivity%2F109393-japan-esim-high-speed-internet-qr-code-voucher%2F"
+    keywords: ["sim", "esim", "internet", "data", "connectivity", "phone", "wifi", "pocket wifi",
+               "maps", "navigation", "stay connected"]
+    cta: "Stay connected & navigate easily — get a Japan eSIM"
+
+  - id: gear
+    # ベビー用品は「現地レンタル」が子連れ旅行の本命需要。Amazon(承認待ち)ではなく
+    # 稼働中のKlookで、ベビーカー/チャイルドシート/空港送迎のレンタル枠を訴求する。
+    name: "Baby gear rental in Japan via Klook (stroller, car seat, airport transfer)"
+    url: "https://affiliate.klook.com/redirect?aid=125283&aff_adid=1314337&k_site=https%3A%2F%2Fwww.klook.com%2Fen-US%2Fsearch%2Fresult%2F%3Fquery%3DJapan%2520baby%2520stroller%2520car%2520seat%2520rental"
+    keywords: ["packing", "stroller", "carrier", "gear", "luggage", "adapter", "what to pack",
+               "what to bring", "essentials", "baby", "toddler", "diapers", "formula",
+               "car seat", "rental", "rent", "airport transfer", "buggy"]
+    cta: "Rent a stroller, car seat & baby gear in Japan (no lugging it from home)"
+
+# アフィリ表記（各記事フッターに自動挿入される開示文）
+# ★Amazon を使う場合は "As an Amazon Associate I earn from qualifying purchases." を
+#   必ず含めること（Amazon規約上ほぼ必須）。下の文に含めてある。
+disclosure: >
+  This guide may contain affiliate links. If you book or buy through them,
+  we may earn a small commission at no extra cost to you. As an Amazon Associate
+  we earn from qualifying purchases. We only recommend things we believe genuinely
+  help your family's trip.
+
+# Pin説明文に自動付与する開示ハッシュタグ（アフィリ含む記事へ誘導するPinに付ける）
+# Pinterest 2026 のルール & FTC 開示要件への対応（未開示はFTC罰金リスク）
+affiliate_hashtags: "#ad #affiliate"
+
+# ★Amazonアソシエイトの落とし穴メモ（重要）:
+# - 申請から180日以内に「3件の適格販売」が無いと自動的に垢閉鎖→再申請不可級。
+# - だから流入がゼロの初月にAmazonへ申請しない。まずKlook/Booking等で回し、
+#   サイトに実流入が出てからAmazonに申請するのが安全（gear は当面Klookレンタルで代替）。
+# - 上記 disclosure と #ad は付与済み。

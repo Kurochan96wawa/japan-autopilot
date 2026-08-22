@@ -1,0 +1,37 @@
+# ============================================================
+# 週次PDCAのしきい値（④）。ここを編集すれば改善ロジックの基準を変えられる（コード変更不要）。
+# GA4(ページ閲覧) と Pinterest(露出/外部クリック) を突き合わせ、
+# 各記事を Winner / Fixable / Loser / データ不足 に分類する。
+# ============================================================
+
+ga4:
+  enabled: true
+  lookback_days: 28          # GA4・Pinterestともに直近この日数を集計
+  # ※数値の「プロパティID」を GA4_PROPERTY_ID(Secret/変数) に入れる。
+  #   Measurement ID(G-GD1XLKR8S3)とは別物。GA管理 > プロパティ設定 で確認できる数字。
+
+# 記事を分類するしきい値（lookback_days間の値で判定）
+classify:
+  min_impressions_to_judge: 30   # Pinterest露出がこれ未満かつPVも乏しい記事は「データ不足」(新しすぎ)で判定保留
+  winner:
+    min_pageviews: 50            # GA4: 期間中このPV以上なら勝ち筋
+    min_outbound_ctr: 0.02       # または Pinterest: outbound_click / impression がこれ以上
+  loser:
+    max_pageviews: 5             # GA4: これ以下
+    max_outbound_ctr: 0.003      # かつ Pinterest CTR がこれ以下なら低調
+  # 上のどれにも当てはまらない（露出はあるが伸び切らない）→ Fixable
+
+# Fixable/Loser への自動アクション
+fix:
+  enabled: true
+  max_fixes_per_week: 3          # 1回の週次で手を入れる記事の上限（コスト/レート保護）
+  flag_for_repin: true           # Fixableに needs_refresh フラグを立て、日次の再Pinで優先的に新角度を当てる
+  rewrite_article: false         # 本文の作り直し（コスト高・LLM消費大）。既定OFF。trueで上位Fixableを再生成
+  avoid_loser_keywords: true     # Loserのキーワードを strategy.avoid_keywords に寄せる
+  boost_winner_keywords: true    # Winnerのキーワードを strategy.boost_keywords に寄せる
+
+# 週次レポート
+report:
+  write_markdown: true
+  path: "data/weekly_report.md"  # 毎週ここに上書き。Actionsがcommitするのでリポジトリで履歴も追える
+  keep_history_weeks: 12         # state に残す週次サマリの数

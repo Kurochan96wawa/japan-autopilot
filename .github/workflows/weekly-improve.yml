@@ -1,0 +1,53 @@
+name: weekly-improve
+
+# 毎週月曜 21:00 UTC（火 6:00 JST）に成果分析→戦略更新→GSC連動SEO改善
+on:
+  schedule:
+    - cron: "0 21 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  models: read             # GitHub Models(無料LLM)を GITHUB_TOKEN で呼ぶため
+
+jobs:
+  improve:
+    runs-on: ubuntu-latest
+    # 全ステップ共通の環境変数。GA4_SERVICE_ACCOUNT_JSON はGA4(PDCA)とGSC(SEOエンジン)両方が使う。
+    env:
+      GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+      GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
+      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Run improve (weekly PDCA + strategy)
+        run: python -m src.main improve
+      - name: Run GSC-driven SEO engine (title/meta rewrite, striking-distance, content-gap topics)
+        run: python -m src.seo
+      # 復旧スプリントC C-5: weekly側も同じ検査を通す（improve/seoがdocsを書き換えるため）
+      - name: Link linter (revenue links, fail-closed)
+        run: python -m src.link_linter
+
+      - name: Topic dedupe guard selftest (fail-closed)
+        run: python -m src.ideas --selftest
+
+      - name: Assert revenue + tool assets survived the build (fail-closed)
+        run: python -m src.ci_assert
+
+      - name: Commit strategy + SEO updates
+        run: |
+          git config user.name  "autopilot-bot"
+          git config user.email "actions@github.com"
+          git add data/ docs/ || true
+          git commit -m "chore: weekly improve + SEO $(date -u +%F)" || echo "no changes"
+          git push || echo "push skipped"

@@ -1,0 +1,44 @@
+# 28記事を6つのトピッククラスタに分類。pillar=各クラスタの中心(ハブ)記事。
+# linker.py が本文末に「関連ガイド」を自動挿入し、孤立ページを解消する。
+# 新スラッグはここに足すだけ（未分類は near-fallback で practical 扱い）。
+transport:
+  pillar: japan-public-transport-with-kids-fares-strollers-facilities
+  members:
+    - japan-rail-pass-with-kids-is-it-worth-it-for-families
+    - stroller-friendly-tokyo-navigating-the-city-with-kids
+    - kyoto-with-a-stroller-accessible-routes-kid-friendly-spots
+    - renting-a-car-in-japan-with-car-seats-family-travel-guide
+    - family-day-trips-from-tokyo-kid-friendly-escapes
+    - japan-family-itinerary-tokyo-kyoto-osaka-with-young-children
+food:
+  pillar: kid-friendly-japanese-meals-navigating-picky-eaters
+  members:
+    - child-friendly-ramen-in-japan-broth-types-spots
+    - kid-friendly-sushi-in-japan-a-guide-for-young-palates
+    - budget-family-meals-in-japan-where-to-eat-with-kids
+    - japan-konbini-snacks-for-picky-eaters-kid-approved
+    - navigating-food-allergies-in-japan-with-kids-a-guide
+    - tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes
+baby:
+  pillar: diapers-formula-baby-gear-in-japan-what-to-pack-buy
+  members:
+    - diapers-formula-in-japan-brands-sizes-where-to-buy
+    - baby-carriers-in-japan-your-essential-guide-for-family-trave
+    - beat-jet-lag-with-kids-in-japan-proven-travel-strategies
+accommodation:
+  pillar: tokyo-family-hotels-connecting-rooms-kitchenettes
+  members:
+    - staying-in-a-ryokan-with-kids-family-friendly-japan-tips
+    - family-onsen-japan-private-baths-kid-friendly-guide
+attractions:
+  pillar: japan-family-itinerary-tokyo-kyoto-osaka-with-young-children
+  members:
+    - tokyo-disney-vs-disneysea-for-kids
+    - universal-studios-japan-with-kids-maximizing-family-fun
+    - nara-deer-park-with-kids-safety-fun-tips-for-families
+    - gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play
+    - beat-the-heat-japan-summer-with-kids-safety-guide
+practical:
+  pillar: japan-money-guide-for-families-cash-cards-budgeting
+  members:
+    - japanese-phrases-for-families-essential-travel-guide

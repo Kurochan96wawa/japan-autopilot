@@ -1,0 +1,47 @@
+name: extras
+
+# “攻め”ジェネレータの手動実行ハブ。task で何を生成するか選ぶ。
+#   moneypages … 比較・ベスト◯◯のマネーページ（高CV）
+#   dataviz    … 記事への独自データ可視化（後日追加）
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "Generator to run: moneypages / dataviz"
+        required: true
+        default: "moneypages"
+
+permissions:
+  contents: write
+  models: read
+
+concurrency:
+  group: autopilot        # daily/regen と衝突させない
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: Run ${{ github.event.inputs.task }}
+        run: python -m src.${{ github.event.inputs.task }}
+      - name: Commit results
+        run: |
+          git config user.name  "autopilot-bot"
+          git config user.email "actions@github.com"
+          git add data/ docs/ || true
+          git commit -m "feat(${{ github.event.inputs.task }}): generate $(date -u +%F)" || echo "no changes"
+          git push || echo "push skipped"

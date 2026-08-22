@@ -1,0 +1,14 @@
+# littletabi — AI-assisted, regularly updated family-travel guides for Japan
+
+> Honest, practical guides for families visiting Japan with kids.
+> Written with AI and edited for clarity. Each guide shows a last-updated date.
+> Prices and opening hours change — we ask readers to confirm on official sites.
+
+## Principles
+- We do not fake first-hand experience. We are upfront that guides are AI-assisted.
+- Topics: transport, food & allergies, baby gear, itineraries, hotels, eSIM.
+
+## Key resources
+- Guides index: https://littletabi.com/sitemap.xml
+- How we make guides: https://littletabi.com/how-we-make-guides.html
+- Affiliate disclosure: https://littletabi.com/disclosure.html

@@ -1,0 +1,96 @@
+name: daily-post
+
+# 毎日 自動実行（UTC基準。例: 22:00 UTC = 翌7:00 JST）
+# 注意: GitHubのcronは±1時間ずれる/混雑時はスキップされることがある（公式仕様）。
+#       時刻厳守の用途ではないので問題なし。毎日commitするので60日無効化も回避できる。
+on:
+  schedule:
+    - cron: "0 22 * * 1,4"    # Phase 3-7: 週2日(月/木 22:00 UTC)に減速。日次量産を停止(scaled content abuse回避)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Run mode: daily / dry / regen / rebuild / improve"
+        required: false
+        default: "daily"
+
+permissions:
+  contents: write          # state.json と site/ をリポジトリにcommitするため
+  issues: write            # 失敗時に通知Issueを立てる
+  models: read             # GitHub Models(無料LLM)を GITHUB_TOKEN で呼ぶため
+
+concurrency:
+  group: autopilot
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Run autopilot
+        env:
+          # GitHub Models（無料・ユーザー鍵不要）を1次プロバイダに。models:read 権限でGITHUB_TOKENが使える
+          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+        run: python -m src.main ${{ github.event.inputs.mode || 'daily' }}
+
+      - name: Refresh lead-magnet (PDF + signup forms, idempotent)
+        run: python -m src.leadmagnet
+
+      - name: SEO fixups (canonical consolidation + hub enrichment, idempotent)
+        run: python -m src.seo_fixups
+
+      - name: Quality fixups (named money-page picks + allergy card, idempotent)
+        run: python -m src.quality_fixups
+
+      - name: Facts fixups (cross-article consistency, idempotent)
+        run: python -m src.facts_fixups
+
+      - name: Web Stories (AMP, idempotent)
+        run: python -m src.webstory || echo "webstory skipped"
+
+      - name: Link linter (revenue links, fail-closed)
+        run: python -m src.link_linter
+
+      # 復旧スプリントC C-5: サイレント・リグレッション検出（2026-08の再発防止）
+      # ビルドが成功しても資産が消えていることがあるため、commitの前に必ず検査する。
+      # ここで落とせば壊れた docs は main に入らず、Pages にもデプロイされない。
+      - name: Topic dedupe guard selftest (fail-closed)
+        run: python -m src.ideas --selftest
+
+      - name: Assert revenue + tool assets survived the build (fail-closed)
+        run: python -m src.ci_assert
+
+      - name: Commit results (state + site)
+        run: |
+          git config user.name  "autopilot-bot"
+          git config user.email "actions@github.com"
+          git add data/state.json docs/ || true
+          git commit -m "chore: daily run $(date -u +%F)" || echo "no changes"
+          git push || echo "push skipped"
+
+      # サイレント故障防止：失敗したら通知Issueを立てる
+      - name: Notify on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "daily-post failed $(date -u +%F)" --body "The daily automation failed. Check the Actions log (common causes are expired tokens, missing secrets, or API rate limits)." || true
