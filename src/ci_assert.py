@@ -11,6 +11,7 @@ import re
 import sys
 
 from . import linker
+from .quality_fixups import STATIC_PAGES
 from .util import SITE_DIR
 
 MONEY_PAGE = "best-family-hotels-tokyo-connecting-rooms.html"
@@ -79,6 +80,23 @@ def run() -> list:
             fails.append("301統合済みslugがトップページに再露出: " + slug)
         if (slug + ".html") in sm_urls or ("stories/" + slug + ".html") in sm_urls:
             fails.append("301統合済みslugがsitemapに再露出: " + slug)
+
+    # ⑦ 検索スニペットの整合（2026-08の実バグの再発防止）
+    #    seo.py の正規表現ミスで <meta name="description"> だけが更新されず、
+    #    og:description との食い違いが約2ヶ月放置された。Googleがスニペットに使うのは
+    #    前者なので、SEO改善が丸ごと無効化されていた。以後は食い違いをビルド失敗にする。
+    #    手組みページ（plan / assets/pages 由来）は文面を別管理しているため対象外。
+    snippet_exempt = set(STATIC_PAGES) | {"plan.html"}
+    for path in sorted(SITE_DIR.glob("*.html")):
+        if path.name in snippet_exempt:
+            continue
+        html = path.read_text(encoding="utf-8", errors="ignore")
+        d = re.search(r'<meta name="description" content="([^"]*)"', html)
+        o = re.search(r'<meta property="og:description" content="([^"]*)"', html)
+        if d and o and d.group(1) != o.group(1):
+            fails.append("description と og:description が食い違っている（検索スニペットが古いまま）: " + path.name)
+        if d and not d.group(1).strip():
+            fails.append("meta description が空: " + path.name)
 
     return fails
 

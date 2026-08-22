@@ -195,7 +195,11 @@ Return ONLY JSON:
         return None
     et, em = esc(new_title), esc(new_meta)
     html = re.sub(r"<title>.*?</title>", f"<title>{et} | {esc(site_name)}</title>", html, count=1, flags=re.S)
-    html = re.sub(r'(<meta name="description" content=")[^"]*("">)', rf"\1{em}\2", html, count=1)
+    # 注意: 以前ここが ("">) （ダブルクォート2つ）になっており、実在のHTML content="...">
+    # に一度もマッチしていなかった。結果、title と og/twitter は改善されるのに
+    # Googleがスニペットに使う <meta name="description"> だけが旧文面のまま残り続けていた
+    # （2026-06-29のseo.py導入以降ずっと）。2026-08-22 修正。
+    html = re.sub(r'(<meta name="description" content=")[^"]*(">)', rf"\1{em}\2", html, count=1)
     html = re.sub(r'(<meta property="og:title" content=")[^"]*(">)', rf"\1{et}\2", html, count=1)
     html = re.sub(r'(<meta property="og:description" content=")[^"]*(">)', rf"\1{em}\2", html, count=1)
     html = re.sub(r'(<meta name="twitter:title" content=")[^"]*(">)', rf"\1{et}\2", html, count=1)
