@@ -2,6 +2,46 @@
   "version": 1,
   "topics_queue": [
     {
+      "topic": "Ghibli Museum & Ghibli Park with Kids: Tickets, Timed Entry & What to Expect",
+      "primary_keyword": "Ghibli Museum with kids",
+      "board_hint": "Tokyo with Kids"
+    },
+    {
+      "topic": "Flying to Japan with Kids: Narita & Haneda Airport Arrival Guide for Families",
+      "primary_keyword": "Narita Haneda airport with kids",
+      "board_hint": "Japan with kids"
+    },
+    {
+      "topic": "Best Family Hotels in Osaka (2026): Where to Stay with Kids",
+      "primary_keyword": "family hotels Osaka kids",
+      "board_hint": "Accommodation Japan"
+    },
+    {
+      "topic": "teamLab Planets & Borderless with Kids: A Family Visitor Guide",
+      "primary_keyword": "teamLab with kids",
+      "board_hint": "Tokyo with Kids"
+    },
+    {
+      "topic": "KidZania Tokyo with Kids: Is It Worth It? A Parent Guide",
+      "primary_keyword": "KidZania Tokyo with kids",
+      "board_hint": "Tokyo with Kids"
+    },
+    {
+      "topic": "Ueno Zoo with Kids: Pandas, Practical Tips & Nearby Family Spots",
+      "primary_keyword": "Ueno Zoo with kids pandas",
+      "board_hint": "Tokyo with Kids"
+    },
+    {
+      "topic": "Cherry Blossom Season in Japan with Kids: Family-Friendly Hanami Spots & Tips",
+      "primary_keyword": "cherry blossom Japan with kids hanami",
+      "board_hint": "Seasonal Japan"
+    },
+    {
+      "topic": "Winter in Japan with Kids: Snow Play, Staying Warm & Family Activities",
+      "primary_keyword": "winter Japan with kids snow",
+      "board_hint": "Seasonal Japan"
+    },
+    {
       "topic": "Tokyo's Best Indoor Play Spaces and Interactive Museums for Families with Young Children",
       "search_intent": "Parents traveling to Tokyo with toddlers or young children are looking for specific, engaging indoor activities suitable for different ages, especially for days with inclement weather or when a break from outdoor sightseeing is desired.",
       "primary_keyword": "tokyo with a toddler",
@@ -1502,45 +1542,49 @@
           "total": 43
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-08-24T21:23:48.397416+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 50,
+          "total": 50
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-08-10T21:36:29.524382+00:00",
+      "at": "2026-08-24T21:23:48.397416+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
         "fixable": 0,
         "loser": 0,
-        "insufficient": 43,
-        "total": 43
+        "insufficient": 50,
+        "total": 50
       },
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-08-10T21:37:38.229497+00:00",
-      "rewritten": [
-        "renting-a-car-in-japan-with-car-seats-family-travel-guide",
-        "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
-        "japan-public-transport-with-kids-fares-strollers-facilities"
-      ],
-      "striking": [
-        "renting-a-car-in-japan-with-car-seats-family-travel-guide",
-        "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
-        "diapers-formula-in-japan-brands-sizes-where-to-buy"
-      ],
+      "at": "2026-08-24T21:23:50.017101+00:00",
+      "rewritten": [],
+      "striking": [],
       "new_topics": []
     }
   },
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-08-10T21:36:29.405416+00:00"
+    "last_updated": "2026-08-24T21:23:48.397004+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-08",
-    "llm_calls": 156
+    "llm_calls": 158
   }
 }
