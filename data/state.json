@@ -1554,10 +1554,22 @@
           "total": 50
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-09-01T00:20:00.522835+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 50,
+          "total": 50
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-08-24T21:23:48.397416+00:00",
+      "at": "2026-09-01T00:20:00.522835+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
@@ -1569,7 +1581,7 @@
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-08-24T21:23:50.017101+00:00",
+      "at": "2026-09-01T00:20:02.764997+00:00",
       "rewritten": [],
       "striking": [],
       "new_topics": []
@@ -1578,13 +1590,13 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-08-24T21:23:48.397004+00:00"
+    "last_updated": "2026-09-01T00:20:00.522300+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
-    "month": "2026-08",
-    "llm_calls": 158
+    "month": "2026-09",
+    "llm_calls": 2
   }
 }
