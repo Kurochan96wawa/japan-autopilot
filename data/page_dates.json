@@ -1,12 +1,17 @@
 {
 "404.html": {
-"hash": "8139100cc8c6a027",
-"modified": "2026-08-22T05:48:48Z",
+"hash": "ddd80de6dc5bc461",
+"modified": "2026-09-05T14:05:30Z",
 "published": "2026-08-22T05:48:48Z"
 },
+"best-family-hotels-tokyo-connecting-rooms.html": {
+"hash": "6360ce30a95b598c",
+"modified": "2026-09-05T14:05:49Z",
+"published": "2026-09-05T14:05:30Z"
+},
 "eating-out-in-japan-with-food-allergies.html": {
-"hash": "250553febef68798",
-"modified": "2026-08-22T05:48:48Z",
+"hash": "7f089d0a7eaa473b",
+"modified": "2026-09-05T14:05:30Z",
 "published": "2026-08-22T05:48:48Z"
 },
 "get-the-japan-checklist.html": {
@@ -49,14 +54,19 @@
 "modified": "2026-08-22T05:48:48Z",
 "published": "2026-08-22T05:48:48Z"
 },
+"kyoto-osaka-family-hotels-with-kitchens.html": {
+"hash": "a84a4406c9c2fd0f",
+"modified": "2026-09-05T14:05:49Z",
+"published": "2026-09-05T14:05:49Z"
+},
 "shinkansen-cost-for-families.html": {
-"hash": "1d6c5b5fe6ecc5e8",
-"modified": "2026-08-22T05:48:48Z",
+"hash": "1b2781bdb54661a6",
+"modified": "2026-09-05T14:05:30Z",
 "published": "2026-08-22T05:48:48Z"
 },
 "shinkansen-family-fare-calculator.html": {
-"hash": "ca33c7828e966d38",
-"modified": "2026-08-22T05:48:48Z",
+"hash": "96a1f23a8096e359",
+"modified": "2026-09-05T14:05:30Z",
 "published": "2026-08-22T05:48:48Z"
 }
 }

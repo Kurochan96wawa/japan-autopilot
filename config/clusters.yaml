@@ -42,6 +42,8 @@ baby:
 accommodation:
   pillar: best-family-hotels-tokyo-connecting-rooms
   members:
+    # 2026-09-05 追加: 京都・大阪版の手組みマネーページ（東京版と対になる宿泊クラスタの2本目）。
+    - kyoto-osaka-family-hotels-with-kitchens
     - ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026
     - family-onsen-japan-private-baths-kid-friendly-guide
 attractions:

@@ -976,6 +976,8 @@ STATIC_PAGES = (
     # 2026-09-05: ホテル比較ページを手組み（公式サイト確認済み15軒）に置換。
     # GSC実測で唯一検索需要のあるページ（"tokyo hotel with kitchenette" 群）のため本文ごと作り直した。
     "best-family-hotels-tokyo-connecting-rooms.html",
+    # 2026-09-05: 京阪神のキッチン付きファミリーホテル比較（東京版と同じ手法・公式サイト確認済み14軒）。
+    "kyoto-osaka-family-hotels-with-kitchens.html",
 )
 
 
