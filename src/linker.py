@@ -4,6 +4,7 @@
 from __future__ import annotations
 import json
 import os
+import re
 
 try:
     import yaml
@@ -61,9 +62,137 @@ def load_clusters(path: str = "config/clusters.yaml") -> dict:
         return {}
     try:
         with open(path, encoding="utf-8") as f:
-            return yaml.safe_load(f) or {}
+            clusters = yaml.safe_load(f) or {}
     except Exception:
         return {}
+    # 2026-09-05: 新記事は定義上 clusters.yaml に無いため、ci_assert ⑨（未分類ゼロ）が
+    # 「新記事を書くたびに必ず失敗」していた（daily-post #89〜#92 が4連続で exit 1、
+    # 生成した記事はコミットされず毎回捨てられた）。ここで未分類slugを自動分類して
+    # yaml に追記し、ハブ掲載・関連リンク・ci_assert がすべて同じ設定を見るようにする。
+    try:
+        clusters = auto_assign(clusters, path=path)
+    except Exception:
+        pass
+    return clusters
+
+
+# ---- 未分類記事の自動クラスタ分類 -----------------------------------------
+# slug のトークン（"-"区切り）で決める決定的ルール。上から順に最初に当たったクラスタ。
+# 例: best-family-hotels-tokyo → accommodation（tokyo で attractions に落ちる前に hotel が当たる）
+_AUTO_ORDER = ["accommodation", "food", "baby", "transport", "practical", "attractions"]
+_AUTO_TOKENS = {
+    "accommodation": {"hotel", "hotels", "ryokan", "ryokans", "onsen", "onsens", "stay", "stays",
+                      "accommodation", "accommodations", "airbnb", "hostel", "hostels",
+                      "minshuku", "lodging", "inn", "inns", "resort", "resorts"},
+    "food": {"food", "foods", "eat", "eating", "meal", "meals", "ramen", "sushi", "snack", "snacks",
+             "cafe", "cafes", "restaurant", "restaurants", "konbini", "breakfast", "dining", "picky",
+             "eaters", "allergy", "allergies", "allergic", "vegetarian", "vegan", "halal", "izakaya",
+             "bento", "dessert", "desserts", "drinks"},
+    "baby": {"baby", "babies", "diaper", "diapers", "formula", "carrier", "carriers", "infant",
+             "infants", "newborn", "newborns", "nursing", "breastfeeding", "jet", "lag", "packing",
+             "pack", "crib", "cribs", "potty", "sleep", "naps", "nap"},
+    "transport": {"shinkansen", "train", "trains", "rail", "railway", "transport", "transit",
+                  "stroller", "strollers", "car", "cars", "rental", "renting", "airport", "airports",
+                  "flight", "flights", "flying", "fly", "narita", "haneda", "luggage", "baggage",
+                  "hands", "taxi", "taxis", "bus", "buses", "journey", "journeys", "subway", "metro",
+                  "pass", "passes", "driving", "ferry", "ferries", "forwarding", "suitcase", "suitcases"},
+    # practical は「強い語」だけ先に見る（tokyo-esim-guide が attractions に落ちないように）。
+    # 当たらなければ最後の既定値としても practical に落ちる。
+    "practical": {"esim", "esims", "sim", "wifi", "money", "cash", "currency", "yen", "phrases",
+                  "phrase", "health", "healthcare", "medical", "sick", "illness", "emergency",
+                  "emergencies", "insurance", "pharmacy", "pharmacies", "doctor", "doctors",
+                  "hospital", "hospitals", "tax", "visa", "earthquake", "typhoon",
+                  "checklist", "budget", "budgeting", "apps", "app", "translation", "connected"},
+    "attractions": {"disney", "disneyland", "disneysea", "universal", "usj", "museum", "museums",
+                    "park", "parks", "ghibli", "temple", "temples", "shrine", "shrines", "nara",
+                    "trip", "trips", "osaka", "kyoto", "tokyo", "hakone", "hiroshima", "okinawa",
+                    "sapporo", "hokkaido", "nikko", "kamakura", "fuji", "itinerary", "itineraries",
+                    "gacha", "summer", "winter", "spring", "autumn", "culture", "cultural",
+                    "aquarium", "aquariums", "zoo", "zoos", "playground", "playgrounds",
+                    "sightseeing", "activities", "activity", "attractions", "things", "festival",
+                    "festivals", "heat", "beach", "beaches", "ski", "skiing", "snow", "teamlab",
+                    "pokemon", "sanrio", "puroland", "legoland", "kidzania", "onsen"},
+}
+_AUTO_SKIP_PREFIX = ("japan-with-kids-",)          # カテゴリハブ
+_AUTO_SKIP = {"404", "index", "about", "contact", "privacy", "disclosure", "how-we-make-guides",
+              "plan", "get-the-japan-checklist", "thanks", "thank-you"}
+
+
+def classify_slug(slug: str) -> str:
+    """slug からクラスタ名を決める。どれにも当たらなければ practical。"""
+    toks = set(t for t in slug.lower().split("-") if t)
+    for name in _AUTO_ORDER:
+        if toks & _AUTO_TOKENS[name]:
+            return name
+    return "practical"
+
+
+def _candidate_slugs(state_path: str = "data/state.json", docs_dir: str = "docs") -> list:
+    """分類対象＝公開済み記事（state.posted）＋ docs 直下の記事HTML。静的ページ・ハブ・301済みは除外。"""
+    out = []
+    try:
+        with open(state_path, encoding="utf-8") as f:
+            st = json.load(f)
+        out += [p["slug"] for p in st.get("posted", []) if p.get("slug")]
+    except Exception:
+        pass
+    try:
+        out += [fn[:-5] for fn in os.listdir(docs_dir) if fn.endswith(".html")]
+    except Exception:
+        pass
+    seen, res = set(), []
+    for s in out:
+        if (not s or s in seen or s in _AUTO_SKIP or s in REDIRECT_MAP
+                or s.startswith(_AUTO_SKIP_PREFIX)):
+            continue
+        seen.add(s); res.append(s)
+    return res
+
+
+def _append_member_text(text: str, name: str, slug: str, note: str) -> str:
+    """clusters.yaml のテキストに、クラスタ name の members 末尾へ slug を追記する。
+    yaml.dump で書き戻すとコメント（設計意図の記録）が全部消えるので、テキストで扱う。"""
+    lines = text.splitlines()
+    start = next((i for i, l in enumerate(lines) if re.match(r"^%s:\s*$" % re.escape(name), l)), None)
+    if start is None:                      # クラスタ自体が無ければ末尾に新設
+        lines += ["%s:" % name, "  members:", "    - %s%s" % (slug, note)]
+        return "\n".join(lines) + "\n"
+    end = next((i for i in range(start + 1, len(lines)) if re.match(r"^\S", lines[i])), len(lines))
+    mem = next((i for i in range(start + 1, end) if re.match(r"^  members:\s*$", lines[i])), None)
+    if mem is None:
+        lines[end:end] = ["  members:", "    - %s%s" % (slug, note)]
+        return "\n".join(lines) + "\n"
+    last = mem
+    for i in range(mem + 1, end):
+        if re.match(r"^    - ", lines[i]):
+            last = i
+    lines.insert(last + 1, "    - %s%s" % (slug, note))
+    return "\n".join(lines) + "\n"
+
+
+def auto_assign(clusters: dict, path: str = "config/clusters.yaml",
+                state_path: str = "data/state.json", docs_dir: str = "docs", write: bool = True) -> dict:
+    """未分類の記事slugをクラスタへ自動追加し、変更があれば yaml へ追記して返す（冪等）。"""
+    assigned = set(_index(clusters))
+    added = []
+    for slug in _candidate_slugs(state_path, docs_dir):
+        if slug in assigned:
+            continue
+        name = classify_slug(slug)
+        clusters.setdefault(name, {}).setdefault("members", [])
+        if clusters[name]["members"] is None:
+            clusters[name]["members"] = []
+        clusters[name]["members"].append(slug)
+        assigned.add(slug); added.append((name, slug))
+    if added and write and os.path.exists(path):
+        import datetime
+        note = "   # auto-assigned %s" % datetime.date.today().isoformat()
+        text = open(path, encoding="utf-8").read()
+        for name, slug in added:
+            text = _append_member_text(text, name, slug, note)
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(text)
+    return clusters
 
 
 def _index(clusters: dict) -> dict:
@@ -140,3 +269,47 @@ def inject_links(body_html: str, slug: str, clusters: dict, titles: dict) -> str
     if "class=\"related\"" in body_html:
         return body_html
     return body_html + block
+
+
+def _selftest() -> int:
+    """既存の手動分類との一致率と、追記の冪等性を検査する。0=OK / 1=NG"""
+    import tempfile, shutil
+    cl = load_clusters()
+    idx = _index(cl)
+    manual = {s: n for s, n in idx.items()}
+    agree = sum(1 for s, n in manual.items() if classify_slug(s) == n)
+    rate = agree / max(1, len(manual))
+    print("classify_slug agreement with manual clusters: %d/%d = %.0f%%" % (agree, len(manual), rate * 100))
+    for s, n in sorted(manual.items()):
+        if classify_slug(s) != n:
+            print("  differs: %s  manual=%s auto=%s" % (s, n, classify_slug(s)))
+    ok = rate >= 0.85
+    # 追記の冪等性: 仮slugを1回追記→2回目は変化なし
+    tmp = tempfile.mkdtemp()
+    try:
+        shutil.copy("config/clusters.yaml", os.path.join(tmp, "c.yaml"))
+        st = os.path.join(tmp, "state.json")
+        with open(st, "w", encoding="utf-8") as f:
+            json.dump({"posted": [{"slug": "ghibli-museum-park-2026-with-kids-tickets-what-to-expect"},
+                                  {"slug": "flying-to-japan-with-kids-narita-haneda-airport-arrival-guide"}]}, f)
+        p = os.path.join(tmp, "c.yaml")
+        c1 = auto_assign(yaml.safe_load(open(p, encoding="utf-8")), path=p, state_path=st, docs_dir=tmp)
+        t1 = open(p, encoding="utf-8").read()
+        c2 = auto_assign(yaml.safe_load(open(p, encoding="utf-8")), path=p, state_path=st, docs_dir=tmp)
+        t2 = open(p, encoding="utf-8").read()
+        i1 = _index(c1)
+        print("auto: ghibli ->", i1.get("ghibli-museum-park-2026-with-kids-tickets-what-to-expect"),
+              "/ narita ->", i1.get("flying-to-japan-with-kids-narita-haneda-airport-arrival-guide"))
+        ok &= (i1.get("ghibli-museum-park-2026-with-kids-tickets-what-to-expect") == "attractions")
+        ok &= (i1.get("flying-to-japan-with-kids-narita-haneda-airport-arrival-guide") == "transport")
+        ok &= (t1 == t2) and (yaml.safe_load(t2) == c2)
+        print("idempotent:", t1 == t2, "/ yaml parses:", yaml.safe_load(t2) is not None)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    print("linker selftest:", "OK" if ok else "FAIL")
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(_selftest() if "--selftest" in sys.argv else 0)
