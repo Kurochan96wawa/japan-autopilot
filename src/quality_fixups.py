@@ -1026,6 +1026,69 @@ def _build_static_pages() -> int:
 
 
 # ============================================================
+# Pinterest 用「Pin this guide」図の注入（2026-09-05）
+# ============================================================
+# Pinterest の「URLから保存」はページ内の縦長(2:3〜1:1)画像しか拾わない。記事画像は全て横長なので、
+# docs/img/pins/pin-<slug>.jpg（1000×1500）が存在するページにだけ、関連ガイドの手前へ
+# 保存ボタン付きの図を冪等に差し込む。画像が無いページには何もしない。
+PINS_DIR = SITE_DIR / "img" / "pins"
+_PIN_FIG_RE = re.compile(r'<figure class="pin-this".*?</figure>', re.S)
+
+
+def _pin_figure_html(slug: str, img_name: str, title: str) -> str:
+    from urllib.parse import quote
+    base = _base_url()
+    url = f"{base}/{slug}.html"
+    media = f"{base}/img/pins/{img_name}"
+    share = ("https://www.pinterest.com/pin/create/button/?url=" + quote(url, safe="")
+             + "&media=" + quote(media, safe="") + "&description=" + quote(title, safe=""))
+    return (
+        '<figure class="pin-this" style="margin:1.6em auto;max-width:360px;text-align:center">'
+        f'<a href="{share}" rel="nofollow noopener" target="_blank">'
+        f'<img src="/img/pins/{img_name}" alt="Pin: {title}" width="1000" height="1500" loading="lazy" '
+        'style="width:100%;height:auto;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)"></a>'
+        '<figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px">Save this guide on Pinterest</figcaption>'
+        '</figure>'
+    )
+
+
+def _inject_pin_figures() -> int:
+    n = 0
+    if not PINS_DIR.exists():
+        return 0
+    for img in sorted(PINS_DIR.glob("pin-*.jpg")):
+        slug = img.stem[4:]
+        path = SITE_DIR / f"{slug}.html"
+        if not path.exists():
+            continue
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        m = re.search(r"<title>(.*?)</title>", html, re.S)
+        title = re.sub(r"\s*\|.*$", "", (m.group(1) if m else slug)).strip()
+        title = title.replace("&amp;", "&")
+        block = _pin_figure_html(slug, img.name, title)
+        if 'class="pin-this"' in html:
+            new = _PIN_FIG_RE.sub(lambda _m: block, html, count=1)
+        else:
+            # 関連ガイド（手組みページは <h2 class="rel">、生成記事は <section class="related">）の直前。
+            # どちらも無ければ </main> の直前。
+            for marker in ('<h2 class="rel">', '<section class="related">', '</main>'):
+                at = html.find(marker)
+                if at >= 0:
+                    new = html[:at] + block + "\n" + html[at:]
+                    break
+            else:
+                continue
+        if new != html:
+            path.write_text(new, encoding="utf-8")
+            n += 1
+            log.info("quality_fixups: Pin図注入 %s", slug)
+    return n
+
+
+# ============================================================
 # 404ページ（soft-404の解消）
 # ============================================================
 # 2026-08-22 実測: docs/404.html が存在せず、存在しないURLがすべて HTTP 200 で
@@ -1083,6 +1146,7 @@ def _build_404() -> int:
 def run() -> dict:
     sp = _build_static_pages()
     m = _inject_money_picks()
+    pins = _inject_pin_figures()
     hx = _scrub_hallucinations()
     c = _apply_canonical_overrides()
     t = _build_allergy_tool()

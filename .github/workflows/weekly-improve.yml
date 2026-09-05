@@ -34,12 +34,18 @@ jobs:
         run: python -m src.main improve
       - name: Run GSC-driven SEO engine (title/meta rewrite, striking-distance, content-gap topics)
         run: python -m src.seo
+
+      - name: Quality fixups (static pages + money picks, idempotent)
+        run: python -m src.quality_fixups
       # 復旧スプリントC C-5: weekly側も同じ検査を通す（improve/seoがdocsを書き換えるため）
       - name: Link linter (revenue links, fail-closed)
         run: python -m src.link_linter
 
       - name: Topic dedupe guard selftest (fail-closed)
         run: python -m src.ideas --selftest
+
+      - name: Cluster auto-assign selftest (new articles must land in a cluster, fail-closed)
+        run: python -m src.linker --selftest
 
       - name: Assert revenue + tool assets survived the build (fail-closed)
         run: python -m src.ci_assert
@@ -48,6 +54,6 @@ jobs:
         run: |
           git config user.name  "autopilot-bot"
           git config user.email "actions@github.com"
-          git add data/ docs/ || true
+          git add data/ docs/ config/clusters.yaml || true
           git commit -m "chore: weekly improve + SEO $(date -u +%F)" || echo "no changes"
           git push || echo "push skipped"

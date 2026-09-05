@@ -76,6 +76,9 @@ jobs:
       - name: Topic dedupe guard selftest (fail-closed)
         run: python -m src.ideas --selftest
 
+      - name: Cluster auto-assign selftest (new articles must land in a cluster, fail-closed)
+        run: python -m src.linker --selftest
+
       - name: Assert revenue + tool assets survived the build (fail-closed)
         run: python -m src.ci_assert
 
@@ -83,7 +86,7 @@ jobs:
         run: |
           git config user.name  "autopilot-bot"
           git config user.email "actions@github.com"
-          git add data/state.json docs/ || true
+          git add data/state.json docs/ config/clusters.yaml || true
           git commit -m "chore: daily run $(date -u +%F)" || echo "no changes"
           git push || echo "push skipped"
 
