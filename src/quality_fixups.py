@@ -978,6 +978,8 @@ STATIC_PAGES = (
     "best-family-hotels-tokyo-connecting-rooms.html",
     # 2026-09-05: 京阪神のキッチン付きファミリーホテル比較（東京版と同じ手法・公式サイト確認済み14軒）。
     "kyoto-osaka-family-hotels-with-kitchens.html",
+    # 2026-09-06: 東京ディズニーリゾート提携ホテル16軒（ディズニー6・オフィシャル6・パートナー4）。
+    "tokyo-disney-resort-hotels-for-families.html",
 )
 
 
