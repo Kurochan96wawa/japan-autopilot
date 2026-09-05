@@ -2,11 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Ghibli Museum & Ghibli Park with Kids: Tickets, Timed Entry & What to Expect",
-      "primary_keyword": "Ghibli Museum with kids",
-      "board_hint": "Tokyo with Kids"
-    },
-    {
       "topic": "Flying to Japan with Kids: Narita & Haneda Airport Arrival Guide for Families",
       "primary_keyword": "Narita Haneda airport with kids",
       "board_hint": "Japan with kids"
@@ -347,6 +342,7 @@
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
+        "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg"
       ],
       "img_hashes": [
@@ -360,7 +356,8 @@
         "00047fffe7c7e766",
         "6efff2be3fff0000",
         "ffffa59999000000",
-        "00047fffe7c7666e"
+        "00047fffe7c7666e",
+        "7e3e3f3f27263000"
       ],
       "last_pin_desc": "Traveling with kids in Japan? Find out where to buy diapers and baby formula, including trusted brands and store options for a smooth trip.",
       "repin_times": [],
@@ -410,6 +407,7 @@
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
+        "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg"
       ],
       "img_hashes": [
@@ -421,7 +419,8 @@
         "fffffffb00000000",
         "c28082c0fbff0000",
         "e1f0f0c0e7821c18",
-        "838109be9e8e3c18"
+        "838109be9e8e3c18",
+        "feffbf3ffc000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn which Disney park is best for young kids in 2026. Explore attractions, food, and tips for a magical experience! #TokyoDisney #FamilyTravel #JapanWithKids",
       "repin_times": [],
@@ -1597,6 +1596,6 @@
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 2
+    "llm_calls": 9
   }
 }
