@@ -162,6 +162,11 @@ def _rewrite_title_meta(slug: str, queries: list, current_title: str, site_name:
     """実際に流入しているクエリに合わせて <title> と meta description を作り直し、
     docs/<slug>.html を直接書き換える。成功時 {title, meta} を返す。"""
     path = SITE_DIR / f"{slug}.html"
+    # 2026-09-05: assets/pages/ 由来の手組みページ（ホテル比較・計算機・コンパニオン記事）は
+    # 文面を別管理しているので、LLMによるタイトル/メタ書き換えの対象外にする
+    if (SITE_DIR.parent / "assets" / "pages" / f"{slug}.html").exists():
+        log.info("SEO: 手組みページのためスキップ %s", slug)
+        return None
     if not path.exists():
         return None
     qlist = ", ".join(q["query"] for q in queries[:8]) or "(none)"

@@ -184,7 +184,7 @@ _ITINERARY = """<section id="specific-picks" class="specific-picks" style="margi
 
 
 _MONEY_INJECT = {
-    "best-family-hotels-tokyo-connecting-rooms": _HOTELS_PICKS,
+    # "best-family-hotels-tokyo-connecting-rooms": 2026-09-05 から assets/pages の手組みページに置換（_HOTELS_PICKS は不要）
     "japan-esim-for-families-compared": _ESIM_PICKS,
     "tokyo-disneyland-vs-disneysea-young-kids": _DISNEY_PICKS,
     "japan-family-itinerary-tokyo-kyoto-osaka-with-young-children": _ITINERARY,
@@ -973,6 +973,9 @@ STATIC_PAGES = (
     "shinkansen-family-fare-calculator.html",   # PR #32/#33（Kitフォーム9651205・±10円注記）+ #35（WebApplication）
     "shinkansen-cost-for-families.html",        # PR #35（FAQ構造化データ付きコンパニオン記事）
     "eating-out-in-japan-with-food-allergies.html",  # PR #35（同上）
+    # 2026-09-05: ホテル比較ページを手組み（公式サイト確認済み15軒）に置換。
+    # GSC実測で唯一検索需要のあるページ（"tokyo hotel with kitchenette" 群）のため本文ごと作り直した。
+    "best-family-hotels-tokyo-connecting-rooms.html",
 )
 
 

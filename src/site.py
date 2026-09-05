@@ -365,6 +365,12 @@ def _upgrade_eeat_links(cfg) -> None:
     base = cfg["site"]["base_url"].rstrip("/")
     skip = {"index.html", "about.html", "disclosure.html", "privacy.html",
             "contact.html", "how-we-make-guides.html"}
+    # 2026-09-05: assets/pages/ 由来の手組みページ（計算機・コンパニオン記事・ホテル比較）は
+    # 文面もリンクも別管理なので、バックフィルで書き換えない（計算機のUIが消えた事故の再発防止）
+    try:
+        skip |= {p.name for p in (SITE_DIR.parent / "assets" / "pages").glob("*.html")}
+    except Exception:
+        pass
     clusters = linker.load_clusters()
     titles = linker.load_titles()
     note = eeat.trust_note()

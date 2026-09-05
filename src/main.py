@@ -334,6 +334,9 @@ def _rewrite_fixable(state, cfg, slugs) -> int:
         slug = rec.get("slug")
         if slug not in target:
             continue
+        if (site.SITE_DIR.parent / "assets" / "pages" / f"{slug}.html").exists():
+            log.info("Fixable再生成: 手組みページのためスキップ %s", slug)   # 2026-09-05
+            continue
         topic_item = {
             "topic": rec.get("topic") or rec.get("article_title", ""),
             "primary_keyword": rec.get("primary_keyword", ""),
