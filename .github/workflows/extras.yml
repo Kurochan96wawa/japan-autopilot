@@ -38,6 +38,11 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run ${{ github.event.inputs.task }}
         run: python -m src.${{ github.event.inputs.task }}
+
+      # 手書きページ(assets/pages)とピン図の再配置。ci_assert がこれらを数えるため、
+      # ガードより前に必ず通す。
+      - name: Static pages + quality fixups
+        run: python -m src.quality_fixups
       # 復旧スプリントC C-5 の漏れ補完: extras も同じ fail-closed ガードを通す
       # （reimage/moneypages が docs を書き換えるため）
       - name: Link linter (revenue links, fail-closed)
@@ -45,6 +50,9 @@ jobs:
 
       - name: Topic dedupe guard selftest (fail-closed)
         run: python -m src.ideas --selftest
+
+      - name: Cluster/redirect selftest (fail-closed)
+        run: python -m src.linker --selftest
 
       - name: Assert revenue + tool assets survived the build (fail-closed)
         run: python -m src.ci_assert

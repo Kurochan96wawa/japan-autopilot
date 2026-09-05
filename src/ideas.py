@@ -245,6 +245,27 @@ def pop_topic(state: dict):
     return queue.pop(0)
 
 
+# 品質ゲートで破棄されたトピックは pop 済みなので、そのままだと永久に失われる。
+# failed_attempts を数えつつ queue の先頭へ戻し、MAX_TOPIC_ATTEMPTS 回失敗した
+# ものだけを捨てる（作り直しの無限ループとネタ切れの両方を防ぐ）。
+MAX_TOPIC_ATTEMPTS = 2
+
+
+def requeue_topic(state: dict, topic, max_attempts: int = MAX_TOPIC_ATTEMPTS) -> bool:
+    """破棄されたトピックを queue の先頭へ戻す。戻したら True、見切って捨てたら False。"""
+    if not isinstance(topic, dict) or not topic.get("topic"):
+        return False
+    t = dict(topic)
+    n = int(t.get("failed_attempts") or 0) + 1
+    t["failed_attempts"] = n
+    if n >= max_attempts:
+        log.error("トピックが%d回失敗 → 再キューせず破棄: %s", n, t.get("topic"))
+        return False
+    state.setdefault("topics_queue", []).insert(0, t)
+    log.warning("トピックを再キュー（失敗%d/%d回）: %s", n, max_attempts, t.get("topic"))
+    return True
+
+
 # ── 重複ガードの回帰テスト（外部依存なし。`python -m src.ideas --selftest`） ──
 # 素材はすべて実在のタイトル。DUP_GROUPS は 2026年8月に実際に量産されてしまった
 # 近接重複（＝旧ガードが1本も弾けなかったもの）、DISTINCT は統合後も併存させたい記事。
@@ -292,8 +313,35 @@ _SELFTEST_DISTINCT = [
 ]
 
 
+def _selftest_requeue(fails: list) -> None:
+    """破棄トピックの再キュー: 1回目は先頭へ戻り、2回目で捨てられること。"""
+    st = {"topics_queue": [{"topic": "B"}]}
+    t = {"topic": "A", "primary_keyword": "a"}
+
+    if not requeue_topic(st, t):
+        fails.append("1回目の失敗で再キューされなかった")
+    q = st["topics_queue"]
+    if not q or q[0].get("topic") != "A":
+        fails.append("再キューしたトピックが先頭に入っていない")
+    elif q[0].get("failed_attempts") != 1:
+        fails.append("failed_attempts が 1 になっていない")
+    if len(q) != 2 or q[-1].get("topic") != "B":
+        fails.append("既存キューが壊れた")
+    if t.get("failed_attempts") is not None:
+        fails.append("元の dict を破壊的に書き換えている")
+
+    again = pop_topic(st)
+    if requeue_topic(st, again):
+        fails.append("2回目の失敗でも再キューされてしまった")
+    if any(x.get("topic") == "A" for x in st["topics_queue"]):
+        fails.append("2回失敗したトピックが queue に残っている")
+    if requeue_topic(st, None) or requeue_topic(st, {"topic": ""}):
+        fails.append("不正なトピックを再キューしてしまった")
+
+
 def _selftest() -> int:
     fails = []
+    _selftest_requeue(fails)
     for group in _SELFTEST_DUP_GROUPS:
         kept = []
         for title in group:
@@ -311,7 +359,7 @@ def _selftest() -> int:
     if fails:
         print("ideas selftest: %d 件失敗" % len(fails))
         return 1
-    print("ideas selftest: 重複%d群を全て検出 / 別トピック%d本で誤検出ゼロ"
+    print("ideas selftest: 重複%d群を全て検出 / 別トピック%d本で誤検出ゼロ / 再キュー OK"
           % (len(_SELFTEST_DUP_GROUPS), len(_SELFTEST_DISTINCT)))
     return 0
 

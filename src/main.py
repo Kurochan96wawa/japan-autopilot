@@ -114,6 +114,9 @@ def _new_articles(state, cfg, aff, board_cache, base_url, dry, cap):
     interval = cfg["schedule"]["min_post_interval_min"]
     recent_imgs = _recent_image_hashes(state)
     made = 0
+    # 品質ゲートで破棄されたトピックは pop 済みで失われていた。この run の終了後に
+    # queue の先頭へ戻す（同じ run で即再挑戦して予算を溶かさないよう後回しにする）。
+    discarded = []
     for i in range(cap):
         if not guards.budget_ok(state, cfg):
             break
@@ -123,6 +126,7 @@ def _new_articles(state, cfg, aff, board_cache, base_url, dry, cap):
             break
         c = _build_quality_content(topic, cfg, state)
         if not c:
+            discarded.append(topic)
             continue
         slug = site.slugify(c["article_title"])
         img = images.make_pin_image(slug, c.get("overlay_text", ""),
@@ -174,6 +178,9 @@ def _new_articles(state, cfg, aff, board_cache, base_url, dry, cap):
         record_post(state, rec); made += 1
         if i < cap - 1:
             guards.jitter_sleep(interval, jitter)
+
+    for topic in reversed(discarded):   # 元の順序で先頭に戻す
+        ideas.requeue_topic(state, topic)
     return made
 
 
