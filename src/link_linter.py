@@ -25,6 +25,8 @@ DOCS = "docs"
 TP_MARKER = "544191"            # Travelpayouts marker（site._tpdrive_snippet が全ページに出力）
 KLOOK_HOST = "affiliate.klook.com"
 KLOOK_AID = "aid=125283"
+TRIP_HOST = "www.trip.com"          # 2026-09-05にTrip.comアフィリエイト有効化
+TRIP_ALLIANCE = "Allianceid=10447753"
 
 # 301統合済みで内部リンクを禁止したい旧slug（現状は canonical のみ。301化後に追記）。
 REDIRECTED_SLUGS = {
@@ -73,6 +75,12 @@ def lint():
         for h in hrefs:
             if KLOOK_HOST in h and KLOOK_AID not in h:
                 fails.append(name + ": Klook affiliate link missing " + KLOOK_AID + ": " + h[:80])
+
+        # 2b) Trip.com のホテルリンクに Allianceid が無い＝未収益（FAIL）
+        #     素のtrip.comリンクを1本混ぜてしまっても誰も気づけないので、ここで落とす。
+        for h in hrefs:
+            if TRIP_HOST in h and TRIP_ALLIANCE not in h:
+                fails.append(name + ": Trip.com link missing " + TRIP_ALLIANCE + ": " + h[:80])
 
         # 3) アフィリリンクに rel="sponsored nofollow" が不足（WARN）
         for m in _A_FULL.finditer(html):

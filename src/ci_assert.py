@@ -51,13 +51,21 @@ def run() -> list:
         if "function calc(" not in calc:
             fails.append("計算機ページの計算スクリプト（function calc）が失われている")
 
-    # ③ マネーページの収益CTAが生きていること（Bookingは未承認＝収益ゼロなので数えない）
+    # ③ マネーページの収益CTAが生きていること
+    #    2026-09-06: Trip.comアフィリエイトが有効化され、ホテルの「See rates」が
+    #    未収益のBooking検索URLからTrip.comのdeep linkに替わった。ホテルリンクも
+    #    fail-closedの対象に含める（Allianceidが落ちたら収益ゼロで気づけないため）。
     money = _read(MONEY_PAGE)
     if money:
+        trip = re.findall(r"https://www\.trip\.com/hotels/[^\"\s]*", money)
+        trip_ok = [u for u in trip if "Allianceid=" in u]
         n = len(re.findall(r"https://tp\.media/r\?", money)) + \
-            len(re.findall(r"https://affiliate\.klook\.com/", money))
+            len(re.findall(r"https://affiliate\.klook\.com/", money)) + len(trip_ok)
         if n < 3:
             fails.append("マネーページの稼働CTAが%d本しかない（3本以上必要）: %s" % (n, MONEY_PAGE))
+        if trip and len(trip_ok) != len(trip):
+            fails.append("マネーページのTrip.comリンク%d本のうち%d本にAllianceidが無い（未収益）: %s"
+                         % (len(trip), len(trip) - len(trip_ok), MONEY_PAGE))
 
     # ④ plan.html のTravelpayouts埋め込み（これが無いとbookingリンクが無収益になる）
     plan = _read("plan.html")
