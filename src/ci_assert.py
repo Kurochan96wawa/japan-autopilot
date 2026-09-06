@@ -180,7 +180,7 @@ def run() -> list:
     bad_links, bad_canon = [], []
     for path in sorted(SITE_DIR.rglob("*.html")):
         html = path.read_text(encoding="utf-8", errors="ignore")
-        if re.search(r'href="/[A-Za-z0-9\-_./]+\.html[""#?]', html):
+        if re.search(r'(?:href|src)="/[A-Za-z0-9\-_./]+\.html[""#?]', html):
             bad_links.append(path.name)
         if re.search(r'<link rel="canonical"[^>]*littletabi\.com/[^"]*\.html"', html):
             bad_canon.append(path.name)
@@ -194,6 +194,21 @@ def run() -> list:
         fails.append("canonical/og:url に .html が残っている（正規URLがリダイレクト先を指す）: %s%s"
                      % (", ".join(sorted(set(bad_canon))[:5]),
                         " ほか%dページ" % (len(set(bad_canon)) - 5) if len(set(bad_canon)) > 5 else ""))
+
+    # 外部サービスへ渡すURL（Pinterest共有リンク等）に .html が混ざっていないこと。
+    # これは canonical と一致しないと保存されたピンが毎回308を踏む。
+    bad_share = []
+    for path in sorted(SITE_DIR.rglob("*.html")):
+        html = path.read_text(encoding="utf-8", errors="ignore")
+        if re.search(r"pinterest\.com/pin/create/button/\?url=[^\"']*\.html", html):
+            bad_share.append(path.name)
+        # JSON-LD が指す自サイトURL（contentUrl / url / mainEntityOfPage）も canonical と揃える
+        for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
+            if re.search(r'https://littletabi\.com/[A-Za-z0-9\-_./]+\.html', m.group(1)):
+                bad_share.append(path.name)
+    if bad_share:
+        fails.append("Pinterest共有URLに .html が残っている（canonicalと不一致）: %s"
+                     % ", ".join(sorted(set(bad_share))[:5]))
 
     # sitemap の loc も拡張子なしであること
     sm_html = re.findall(r"<loc>[^<]*\.html</loc>", sm)
