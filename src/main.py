@@ -13,6 +13,7 @@ import time
 from .util import load_settings, load_affiliates, ensure_dirs, log
 from .state import load_state, save_state, record_post, now_iso
 from . import ideas, content as content_mod, images, site, guards, rubric, critic
+from . import linker
 from . import indexnow
 from . import publish_pinterest as pin
 from . import publish_threads as threads
@@ -246,7 +247,8 @@ def _ping_indexnow(state, cfg, all_urls: bool = False) -> None:
         base = cfg["site"]["base_url"].rstrip("/")
         posts = [p for p in state.get("posted", []) if p.get("slug")]
         sel = posts if all_urls else posts[-3:]
-        urls = [f"{base}/{p['slug']}.html" for p in sel] + [base + "/"]
+        # 2026-09-06: 通知するURLも canonical と同じ拡張子なしにする
+        urls = [linker.page_url(base, p["slug"]) for p in sel] + [base + "/"]
         indexnow.ping(urls)
     except Exception as e:
         log.error("IndexNow通知に失敗(続行): %s", e)

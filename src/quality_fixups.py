@@ -718,7 +718,7 @@ def _embed_card_html(base: str) -> str:
 
 
 def _embeds_page_html(base: str) -> str:
-    iframe_src = base + "/" + EMBED_CARD_REL
+    iframe_src = _linker.page_url(base, EMBED_CARD_REL)   # 2026-09-06: 拡張子なし
     snippet = (
         '&lt;iframe src="' + iframe_src + '" width="100%" height="430" loading="lazy" '
         'style="border:1px solid #eee;border-radius:12px" title="Japanese allergy card for kids"&gt;&lt;/iframe&gt;\n'
@@ -734,7 +734,7 @@ def _embeds_page_html(base: str) -> str:
         '"url":"' + _linker.page_url(base, EMBEDS_PAGE_REL) + '",'
         '"isAccessibleForFree":true,'
         '"distribution":[{"@type":"DataDownload","encodingFormat":"text/html",'
-        '"contentUrl":"' + base + '/' + EMBED_CARD_REL + '"}]}'
+        '"contentUrl":"' + _linker.page_url(base, EMBED_CARD_REL) + '"}]}'
     )
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
@@ -1049,7 +1049,8 @@ _PIN_FIG_RE = re.compile(r'<figure class="pin-this".*?</figure>', re.S)
 def _pin_figure_html(slug: str, img_name: str, title: str) -> str:
     from urllib.parse import quote
     base = _base_url()
-    url = f"{base}/{slug}.html"
+    # 2026-09-06: Pinterestに保存されるURLは canonical と一致させる（.html だと308を挟む）
+    url = _linker.page_url(base, slug)
     media = f"{base}/img/pins/{img_name}"
     share = ("https://www.pinterest.com/pin/create/button/?url=" + quote(url, safe="")
              + "&media=" + quote(media, safe="") + "&description=" + quote(title, safe=""))

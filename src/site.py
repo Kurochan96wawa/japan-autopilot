@@ -331,7 +331,7 @@ def _upgrade_seo(cfg) -> None:
         dm = re.search(r'<meta name="description" content="([^"]*)"', txt)
         desc = dm.group(1) if dm else TAGLINE
         cm = re.search(r'<link rel="canonical" href="([^"]*)"', txt)
-        url = cm.group(1) if cm else f"{base}/{path.name}"
+        url = cm.group(1) if cm else linker.page_url(base, path.name)
         im = re.search(r'<meta property="og:image" content="([^"]*)"', txt)
         image = im.group(1) if im else ""
         am = re.search(r'<article class="post">(.*?)</article>', txt, re.S)
