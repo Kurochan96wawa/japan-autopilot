@@ -980,6 +980,8 @@ STATIC_PAGES = (
     "kyoto-osaka-family-hotels-with-kitchens.html",
     # 2026-09-06: 東京ディズニーリゾート提携ホテル16軒（ディズニー6・オフィシャル6・パートナー4）。
     "tokyo-disney-resort-hotels-for-families.html",
+    # 2026-09-06: 東京で「6人以上が1部屋に入る」部屋タイプだけを集めた大家族向けページ。
+    "tokyo-apartments-for-families-of-6-or-more.html",
 )
 
 
