@@ -125,7 +125,7 @@ header.site .bar{flex-wrap:wrap}
 }
 """
 
-NAV_LINKS = [("/index.html", "Home"), ("/about.html", "About"), ("/contact.html", "Contact")]
+NAV_LINKS = [("/", "Home"), ("/about", "About"), ("/contact", "Contact")]
 NAV_JS = "<script>function tmenu(){var n=document.getElementById('nav');n.classList.toggle('open');}</script>"
 
 
@@ -266,7 +266,11 @@ def _write_seo_files(cfg) -> None:
         name = path.name
         if name.endswith(".html") and name[:-5] in linker.REDIRECTED_SLUGS:
             continue  # Phase 2-2: 301統合先へ寄せる旧slugはサイトマップから除外
-        loc = base + "/" if name == "index.html" else f"{base}/{name}"
+        if name == "404.html":
+            continue  # noindex のページをsitemapに載せない（2026-09-06に混入を発見）
+        # 2026-09-06: Cloudflare Pages が /x.html を /x へ308するので、loc も拡張子なしにする。
+        # （以前は sitemap 全URLが「リダイレクトされるURL」だった）
+        loc = linker.page_url(base, name)
         if name == "index.html":
             pr = "1.0"
         elif name in ("about.html", "disclosure.html", "privacy.html", "contact.html"):
@@ -296,8 +300,8 @@ def _write_seo_files(cfg) -> None:
         "- Topics: transport, food & allergies, baby gear, itineraries, hotels, eSIM.\n\n"
         "## Key resources\n"
         f"- Guides index: {base}/sitemap.xml\n"
-        f"- How we make guides: {base}/how-we-make-guides.html\n"
-        f"- Affiliate disclosure: {base}/disclosure.html\n"
+        f"- How we make guides: {base}/how-we-make-guides\n"
+        f"- Affiliate disclosure: {base}/disclosure\n"
     )
     (SITE_DIR / "llms.txt").write_text(llms_txt, encoding="utf-8")
     # IndexNow 所有確認キーを毎回出力（Bing等への即時通知に使用）
@@ -388,17 +392,17 @@ def _upgrade_eeat_links(cfg) -> None:
         # 内部リンク資産をそのまま捨てていた（統合先の被リンクが0本になっていた）。
         for _old, _new in linker.REDIRECT_MAP.items():
             if _new == slug:                       # 自分自身へのリンクは作らない
-                _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_old) + r'\.html"[^>]*>.*?</a>\s*</li>', re.S)
+                _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_old) + r'(?:\.html)?"[^>]*>.*?</a>\s*</li>', re.S)
                 if _pat.search(txt):
                     txt = _pat.sub("", txt); changed = True
                 continue
-            _href = re.compile(r'(href=")/' + re.escape(_old) + r'(\.html")')
+            _href = re.compile(r'(href=")/' + re.escape(_old) + r'(?:\.html)?(")')
             if _href.search(txt):
                 txt = _href.sub(r"\1/" + _new + r"\2", txt)
                 changed = True
         # 張り替えで同じ統合先への<li>が重複しうるので、2本目以降を落とす
         for _new in set(linker.REDIRECT_MAP.values()):
-            _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_new) + r'\.html"[^>]*>.*?</a>\s*</li>', re.S)
+            _pat = re.compile(r'<li>\s*<a[^>]*href="/' + re.escape(_new) + r'(?:\.html)?"[^>]*>.*?</a>\s*</li>', re.S)
             _hits = list(_pat.finditer(txt))
             if len(_hits) > 1:
                 for m in reversed(_hits[1:]):
@@ -462,7 +466,7 @@ def _header() -> str:
     links = "".join(f'<a href="{u}">{t}</a>' for u, t in NAV_LINKS)
     return (
         '<header class="site"><div class="wrap bar">'
-        '<a class="brand" href="/index.html">little<b>tabi</b></a>'
+        '<a class="brand" href="/">little<b>tabi</b></a>'
         '<button class="navtoggle" onclick="tmenu()" aria-label="Menu">☰</button>'
         f'<nav class="main" id="nav">{links}</nav>'
         '</div></header>'
@@ -478,13 +482,13 @@ def _footer() -> str:
         '<p>Independent, research-based guides for families visiting Japan, written with AI and an automated '
         'quality process. We are not affiliated with any tourism board or the companies we mention.</p></div>'
         '<div><h5>Explore</h5><ul>'
-        '<li><a href="/index.html">Home</a></li>'
-        '<li><a href="/about.html">About</a></li>'
-        '<li><a href="/how-we-make-guides.html">How we make our guides</a></li>'
-        '<li><a href="/contact.html">Contact</a></li></ul></div>'
+        '<li><a href="/">Home</a></li>'
+        '<li><a href="/about">About</a></li>'
+        '<li><a href="/how-we-make-guides">How we make our guides</a></li>'
+        '<li><a href="/contact">Contact</a></li></ul></div>'
         '<div><h5>Legal</h5><ul>'
-        '<li><a href="/disclosure.html">Affiliate Disclosure</a></li>'
-        '<li><a href="/privacy.html">Privacy Policy</a></li></ul></div>'
+        '<li><a href="/disclosure">Affiliate Disclosure</a></li>'
+        '<li><a href="/privacy">Privacy Policy</a></li></ul></div>'
         '</div>'
         f'<div class="legal">Some links are affiliate links; if you book or buy through them we may '
         f'earn a small commission at no extra cost to you. As an Amazon Associate we earn from qualifying '
@@ -607,19 +611,19 @@ def _thumb(p: dict) -> str:
 def _sidebar(popular: list) -> str:
     pop_html = ""
     if popular:
-        items = "".join(f'<li><a href="/{s}.html">{t}</a></li>' for s, t in popular)
+        items = "".join(f'<li><a href="/{s}">{t}</a></li>' for s, t in popular)
         pop_html = f'<div class="widget"><h4>Popular guides</h4><ul>{items}</ul></div>'
     return (
         '<aside class="side">'
         '<div class="widget about"><h4>About littletabi</h4>'
         '<p>We write honest, practical guides for parents exploring Japan with kids — '
         'transport, food, what to pack and where to go. '
-        '<a href="/about.html">More about us →</a></p></div>'
+        '<a href="/about">More about us →</a></p></div>'
         f"{pop_html}"
         '<div class="widget"><h4>Start here</h4><ul>'
-        '<li><a href="/index.html">All guides</a></li>'
-        '<li><a href="/about.html">How we create our guides</a></li>'
-        '<li><a href="/disclosure.html">Affiliate disclosure</a></li>'
+        '<li><a href="/">All guides</a></li>'
+        '<li><a href="/about">How we create our guides</a></li>'
+        '<li><a href="/disclosure">Affiliate disclosure</a></li>'
         '</ul></div>'
         '<div class="widget note">Some links are affiliate links. If you book or buy through them, '
         'we may earn a small commission at no extra cost to you.</div>'
@@ -661,7 +665,7 @@ def render_article(content: dict, image_rel: str, credit: dict, slug: str) -> st
     site_name = cfg["site"]["site_name"]
     title = content["article_title"]
     meta = content.get("meta_description", "")
-    canonical = f"{base}/{slug}.html"
+    canonical = linker.page_url(base, slug)
     og_img = f"{base}/{image_rel}"
     date_str = datetime.now(timezone.utc).strftime("%B %-d, %Y")
     date_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -723,7 +727,7 @@ def _static_page(slug: str, lang: str, title_tag: str, inner: str, desc: str | N
     """
     cfg = load_settings()
     base = cfg["site"]["base_url"].rstrip("/")
-    url = f"{base}/{slug}.html"
+    url = linker.page_url(base, slug)
     title = title_tag.split("|")[0].strip()
     desc = (desc or TAGLINE).strip()[:155]
     head_extra = (
@@ -753,8 +757,8 @@ def _about_inner() -> str:
         "<h2>Independence &amp; funding</h2>"
         "<p>littletabi is not affiliated with any government tourism organisation or the businesses we "
         'mention. Some of our links are affiliate links, which help keep the site free &mdash; see our '
-        '<a href="/disclosure.html">Affiliate Disclosure</a>. Questions or corrections? '
-        '<a href="/contact.html">Get in touch</a>.</p>'
+        '<a href="/disclosure">Affiliate Disclosure</a>. Questions or corrections? '
+        '<a href="/contact">Get in touch</a>.</p>'
     )
 
 
@@ -796,7 +800,7 @@ def _privacy_inner() -> str:
         "message) are processed by our third-party form provider solely to deliver your message to us. "
         "We use them only to respond to you.</p>"
         "<h2>Affiliate links &amp; third parties</h2>"
-        "<p>We use affiliate links (see our <a href='/disclosure.html'>Affiliate Disclosure</a>). When "
+        "<p>We use affiliate links (see our <a href='/disclosure'>Affiliate Disclosure</a>). When "
         "you click an external or affiliate link, the destination site's own privacy policy applies. "
         "We are not responsible for the content or practices of third-party sites.</p>"
         "<h2>Children's privacy</h2>"
@@ -808,7 +812,7 @@ def _privacy_inner() -> str:
         "deletion.</p>"
         "<h2>Changes</h2>"
         "<p>We may update this policy from time to time; the date above reflects the latest version.</p>"
-        "<p>Questions? <a href='/contact.html'>Contact us</a>.</p>"
+        "<p>Questions? <a href='/contact'>Contact us</a>.</p>"
     )
 
 
@@ -936,9 +940,9 @@ def _build_hubs(clusters: dict, slug_to_post: dict, lang: str, site_name: str) -
             continue
         cards = "".join(
             '<article class="card">'
-            f'<a class="ph" href="/{p["slug"]}.html"><img src="{_thumb(p)}" alt="{p["article_title"]}"></a>'
+            f'<a class="ph" href="/{p["slug"]}"><img src="{_thumb(p)}" alt="{p["article_title"]}"></a>'
             '<div class="body">'
-            f'<h3><a href="/{p["slug"]}.html">{p["article_title"]}</a></h3>'
+            f'<h3><a href="/{p["slug"]}">{p["article_title"]}</a></h3>'
             f'<p>{_excerpt(p)}</p></div></article>'
             for p in members
         )
@@ -953,7 +957,7 @@ def _topics_block(hubs: list) -> str:
     """ホームページ用の『トピックで探す』導線（ハブへのリンク群）。"""
     if not hubs:
         return ""
-    items = "".join(f'<li><a href="/{s}.html">{t}</a></li>' for s, t in hubs)
+    items = "".join(f'<li><a href="/{s}">{t}</a></li>' for s, t in hubs)
     return ('<div class="wrap"><h2 class="sec-title">Browse by topic</h2>'
             f'<div class="widget"><ul class="topics">{items}</ul></div></div>')
 
@@ -974,21 +978,21 @@ def rebuild_index(state: dict) -> None:
         f = posts[0]
         feat = (
             '<section class="hero-feat">'
-            f'<div class="ph"><a href="/{f["slug"]}.html"><img src="{_thumb(f)}" alt="{f["article_title"]}"></a></div>'
+            f'<div class="ph"><a href="/{f["slug"]}"><img src="{_thumb(f)}" alt="{f["article_title"]}"></a></div>'
             '<div class="tx"><span class="eyebrow">Featured guide</span>'
-            f'<h1><a href="/{f["slug"]}.html">{f["article_title"]}</a></h1>'
+            f'<h1><a href="/{f["slug"]}">{f["article_title"]}</a></h1>'
             f'<p>{_excerpt(f)}</p>'
             f'<p class="meta">{BYLINE}</p>'
-            f'<a class="readmore" href="/{f["slug"]}.html">Read the guide →</a></div>'
+            f'<a class="readmore" href="/{f["slug"]}">Read the guide →</a></div>'
             '</section>'
         )
         cards = []
         for p in posts[1:]:
             cards.append(
                 '<article class="card">'
-                f'<a class="ph" href="/{p["slug"]}.html"><img src="{_thumb(p)}" alt="{p["article_title"]}"></a>'
+                f'<a class="ph" href="/{p["slug"]}"><img src="{_thumb(p)}" alt="{p["article_title"]}"></a>'
                 '<div class="body">'
-                f'<h3><a href="/{p["slug"]}.html">{p["article_title"]}</a></h3>'
+                f'<h3><a href="/{p["slug"]}">{p["article_title"]}</a></h3>'
                 f'<p>{_excerpt(p)}</p>'
                 f'<p class="meta">{BYLINE}</p>'
                 '</div></article>'

@@ -12,6 +12,7 @@ from __future__ import annotations
 import html as _html
 import re
 
+from . import linker as _linker
 from .util import SITE_DIR, load_settings, log
 
 STORIES_DIR = "stories"
@@ -124,7 +125,7 @@ def _page(pid: str, img: str, inner: str, cta: str = "") -> str:
 
 
 def _story_html(base: str, slug: str, title: str, img: str, desc: str, pts) -> str:
-    canonical = f"{base}/{slug}.html"
+    canonical = _linker.page_url(base, slug)   # 2026-09-06: 拡張子なしURLに統一
     logo = f"{base}/{LOGO_REL}"
     pages = [_page("cover", img,
                    f'<h1>{_esc(title)}</h1>' + (f'<p class="lead">{_esc(desc)}</p>' if desc else ""))]
@@ -201,7 +202,7 @@ def _prune_redirected_stories() -> int:
             except Exception as e:
                 log.error("webstory: Web Story削除失敗 %s: %s", slug, e)
         loc = f"{base}/{STORIES_DIR}/{slug}.html"
-        text = re.sub(r"\s*<url>\s*<loc>" + re.escape(loc) + r"</loc>.*?</url>", "", text, flags=re.S)
+        text = re.sub(r"\s*<url>\s*<loc>" + re.escape(loc) + r"(?:\.html)?</loc>.*?</url>", "", text, flags=re.S)
     if text and sm.exists() and text != sm.read_text(encoding="utf-8"):
         sm.write_text(text, encoding="utf-8")
         log.info("webstory: sitemapから301統合済みstoriesを除去")
@@ -232,11 +233,11 @@ def run() -> dict:
         try:
             dest.parent.mkdir(parents=True, exist_ok=True)
             if dest.exists() and dest.read_text(encoding="utf-8") == story:  # 冪等
-                out_locs.append(f"{base}/{STORIES_DIR}/{slug}.html")
+                out_locs.append(_linker.page_url(base, f"{STORIES_DIR}/{slug}"))
                 continue
             dest.write_text(story, encoding="utf-8")
             made += 1
-            out_locs.append(f"{base}/{STORIES_DIR}/{slug}.html")
+            out_locs.append(_linker.page_url(base, f"{STORIES_DIR}/{slug}"))
             log.info("webstory: Web Story生成 %s", slug)
         except Exception as e:
             log.error("webstory: 生成失敗 %s: %s", slug, e)

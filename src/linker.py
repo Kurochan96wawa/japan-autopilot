@@ -46,6 +46,57 @@ REDIRECT_MAP = {
 REDIRECTED_SLUGS = set(REDIRECT_MAP)
 
 
+# ============================================================
+# URLの単一の正: 拡張子なし（2026-09-06）
+# ============================================================
+# Cloudflare Pages は /x.html を /x へ 308 で正規化する。にもかかわらず canonical・
+# sitemap・内部リンクが .html のままだったため、Googleに渡していた正規URLが
+# 「リダイレクトされるURL」であり、内部リンクは1本ごとに無駄な1ホップを踏んでいた。
+# 以後、**ファイルパスは .html / 公開URLは拡張子なし** を徹底する。
+# 生成側（site.py 等）とチェック側（ci_assert / link_linter）が同じ関数を見ることで、
+# 片方だけ直して不整合、という事故を防ぐ。
+_INDEX_NAMES = {"index", "index.html", ""}
+
+
+def page_path(slug_or_file: str) -> str:
+    """公開URLのパスを返す。'x' / 'x.html' / 'tools/x.html' -> '/x' / '/tools/x'。
+
+    index はサイトルート '/'。ディレクトリ配下（tools/ や stories/）も扱う。
+    """
+    s = (slug_or_file or "").strip().lstrip("/")
+    if s.endswith(".html"):
+        s = s[:-5]
+    if s in _INDEX_NAMES:
+        return "/"
+    return "/" + s
+
+
+def page_url(base: str, slug_or_file: str) -> str:
+    """絶対URL（canonical / og:url / sitemap の loc 用）。"""
+    path = page_path(slug_or_file)
+    return base.rstrip("/") + path
+
+
+# 既存の生成物に残った .html リンクを拡張子なしへ寄せるための正規表現。
+# 対象は自サイトの相対リンクと littletabi.com の絶対URLのみ（外部リンクは触らない）。
+_HTML_HREF_RE = re.compile(r'((?:href|content)=")(/(?:[A-Za-z0-9\-_./]+?))\.html(["#?])')
+_HTML_ABS_RE = re.compile(r'(https://littletabi\.com/(?:[A-Za-z0-9\-_./]+?))\.html(["#?<])')
+
+
+def normalize_urls(html: str) -> str:
+    """1ページ分のHTML内の自サイトURLを拡張子なしに正規化する（冪等）。
+
+    canonical / og:url / twitter:image 以外のmeta / JSON-LD / 内部リンクをまとめて拾う。
+    /index.html はサイトルート '/' にする。
+    """
+    html = _HTML_HREF_RE.sub(lambda m: m.group(1) + m.group(2) + m.group(3), html)
+    html = _HTML_ABS_RE.sub(lambda m: m.group(1) + m.group(2), html)
+    html = html.replace('href="/index"', 'href="/"')
+    html = html.replace('content="/index"', 'content="/"')
+    html = html.replace("https://littletabi.com/index", "https://littletabi.com/")
+    return html
+
+
 def resolve(slug: str) -> str:
     """301統合済みのslugなら統合先を返す。それ以外はそのまま。
 
@@ -271,6 +322,44 @@ def inject_links(body_html: str, slug: str, clusters: dict, titles: dict) -> str
     return body_html + block
 
 
+def _selftest_urls() -> list:
+    """拡張子なしURL移行の回帰テスト（2026-09-06）。外部依存なし。"""
+    fails = []
+    cases = [("x", "/x"), ("x.html", "/x"), ("/x.html", "/x"),
+             ("tools/allergy-card.html", "/tools/allergy-card"),
+             ("stories/x.html", "/stories/x"),
+             ("index.html", "/"), ("index", "/"), ("/", "/")]
+    for src, want in cases:
+        got = page_path(src)
+        if got != want:
+            fails.append("page_path(%r) = %r, want %r" % (src, got, want))
+    if page_url("https://littletabi.com/", "x.html") != "https://littletabi.com/x":
+        fails.append("page_url が拡張子なし絶対URLを作れていない")
+
+    html_cases = [
+        ('<a href="/foo.html">x</a>', '<a href="/foo">x</a>'),
+        ('<a href="/index.html">Home</a>', '<a href="/">Home</a>'),
+        ('<a href="/tools/allergy-card.html">t</a>', '<a href="/tools/allergy-card">t</a>'),
+        ('<a href="/foo.html#faq">x</a>', '<a href="/foo#faq">x</a>'),
+        ('<link rel="canonical" href="https://littletabi.com/foo.html">',
+         '<link rel="canonical" href="https://littletabi.com/foo">'),
+        ('<meta property="og:url" content="https://littletabi.com/foo.html">',
+         '<meta property="og:url" content="https://littletabi.com/foo">'),
+        ('"mainEntityOfPage": "https://littletabi.com/foo.html"',
+         '"mainEntityOfPage": "https://littletabi.com/foo"'),
+        # 外部サイトの .html は絶対に触らない
+        ('<a href="https://example.com/page.html">ext</a>',
+         '<a href="https://example.com/page.html">ext</a>'),
+    ]
+    for src, want in html_cases:
+        got = normalize_urls(src)
+        if got != want:
+            fails.append("normalize_urls(%r) = %r, want %r" % (src, got, want))
+        elif normalize_urls(got) != got:
+            fails.append("normalize_urls が冪等でない: %r" % got)
+    return fails
+
+
 def _selftest() -> int:
     """既存の手動分類との一致率と、追記の冪等性を検査する。0=OK / 1=NG"""
     import tempfile, shutil
@@ -284,6 +373,10 @@ def _selftest() -> int:
         if classify_slug(s) != n:
             print("  differs: %s  manual=%s auto=%s" % (s, n, classify_slug(s)))
     ok = rate >= 0.85
+    url_fails = _selftest_urls()
+    for line in url_fails:
+        print("  url selftest FAIL:", line)
+    ok = ok and not url_fails
     # 追記の冪等性: 仮slugを1回追記→2回目は変化なし
     tmp = tempfile.mkdtemp()
     try:

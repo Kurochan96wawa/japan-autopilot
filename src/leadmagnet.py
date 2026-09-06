@@ -100,7 +100,7 @@ def inject_forms(base: str) -> int:
 def build_thanks(base: str) -> None:
     pdf_url = f"{base}/{PDF_REL}?v=20260716"
     pop = "".join(
-        f'<li><a href="/{s}.html">{t}</a></li>' for s, t in _POPULAR
+        f'<li><a href="/{s}">{t}</a></li>' for s, t in _POPULAR
     )
     inner = (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
@@ -116,7 +116,7 @@ def build_thanks(base: str) -> None:
         '.card{background:#fff;border:1px solid #ececf1;border-radius:16px;padding:22px 24px;margin:18px 0}'
         '.byline{font-size:.84rem;color:#6b7280}</style></head><body>'
         '<div class="wrap">'
-        '<p><a class="brand" href="/index.html">little<b>tabi</b></a></p>'
+        '<p><a class="brand" href="/">little<b>tabi</b></a></p>'
         '<article class="post">'
         '<h1>Thank you — here is your checklist!</h1>'
         '<p class="byline">By the littletabi editors</p>'
@@ -128,7 +128,7 @@ def build_thanks(base: str) -> None:
         f'<a href="{pdf_url}">click here</a>.</p>'
         '</div>'
         '<h2>Read next</h2><ul>' + pop + '</ul>'
-        '<p><a href="/index.html">&larr; Back to all guides</a></p>'
+        '<p><a href="/">&larr; Back to all guides</a></p>'
         '</article></div></body></html>'
     )
     (SITE_DIR / f"{THANKS_SLUG}.html").write_text(inner, encoding="utf-8")
