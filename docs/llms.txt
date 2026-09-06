@@ -10,5 +10,5 @@
 
 ## Key resources
 - Guides index: https://littletabi.com/sitemap.xml
-- How we make guides: https://littletabi.com/how-we-make-guides.html
-- Affiliate disclosure: https://littletabi.com/disclosure.html
+- How we make guides: https://littletabi.com/how-we-make-guides
+- Affiliate disclosure: https://littletabi.com/disclosure

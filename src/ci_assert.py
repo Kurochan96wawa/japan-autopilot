@@ -74,21 +74,25 @@ def run() -> list:
 
     # ⑤ sitemap に主要ツールが載っていること
     sm = _read("sitemap.xml")
-    for rel in ("shinkansen-family-fare-calculator.html", "tools/allergy-card.html"):
-        if rel not in sm:
+    for rel in ("shinkansen-family-fare-calculator", "tools/allergy-card"):
+        # 2026-09-06: sitemapのlocは拡張子なし。`<loc>...</loc>` で完全一致を見る
+        # （部分一致だと別slugの前方一致を拾って素通りする）
+        if ("/" + rel + "</loc>") not in sm:
             fails.append("sitemapに載っていない: " + rel)
 
     # ⑥ 301統合の整合（_redirects が全slugを網羅し、統合済みslugが再露出していないこと）
     red = _read("_redirects")
     idx = _read("index.html")
-    idx_links = set(re.findall(r'href="/([a-z0-9\-.]+\.html)"', idx))
+    # 2026-09-06: 公開URLは拡張子なしに統一したので、内部リンク/ sitemap も拡張子なしで見る。
+    idx_links = set(re.findall(r'href="/([a-z0-9\-./]*)"', idx))
     sm_urls = set(re.findall(r"<loc>[^<]*?littletabi\.com/([^<]*)</loc>", sm))
     for slug in sorted(linker.REDIRECT_MAP):
-        if ("/" + slug + ".html") not in red:
-            fails.append("_redirects に301行が無い: " + slug)
-        if (slug + ".html") in idx_links:
+        # _redirects は「.html 付き / なし」の両方を残す（既にインデックスされた旧URLの救済）
+        if ("/" + slug + ".html") not in red or ("/" + slug + " ") not in red:
+            fails.append("_redirects に301行が無い（.htmlあり/なしの両方が必要）: " + slug)
+        if slug in idx_links:
             fails.append("301統合済みslugがトップページに再露出: " + slug)
-        if (slug + ".html") in sm_urls or ("stories/" + slug + ".html") in sm_urls:
+        if slug in sm_urls or ("stories/" + slug) in sm_urls:
             fails.append("301統合済みslugがsitemapに再露出: " + slug)
 
     # ⑦ 検索スニペットの整合（2026-08の実バグの再発防止）
@@ -167,6 +171,34 @@ def run() -> list:
             fails.append("meta description が %s と重複している: %s" % (seen_desc[key], path.name))
         else:
             seen_desc[key] = path.name
+
+    # ⑪ 拡張子なしURLの一貫性（2026-09-06 の移行の再発防止）
+    #    Cloudflare Pages は /x.html を /x へ308で正規化する。canonical や内部リンクが
+    #    .html のままだと「正規URLがリダイレクトされるURL」になり、内部リンクは1本ごとに
+    #    無駄な1ホップを踏む。生成側を直しても、fixupの追記で1本混ざれば元の木阿弥なので
+    #    ここで見張る。docs/ 配下の実ファイル名は .html のままで正しい（URLだけの話）。
+    bad_links, bad_canon = [], []
+    for path in sorted(SITE_DIR.rglob("*.html")):
+        html = path.read_text(encoding="utf-8", errors="ignore")
+        if re.search(r'href="/[A-Za-z0-9\-_./]+\.html[""#?]', html):
+            bad_links.append(path.name)
+        if re.search(r'<link rel="canonical"[^>]*littletabi\.com/[^"]*\.html"', html):
+            bad_canon.append(path.name)
+        if re.search(r'<meta property="og:url"[^>]*littletabi\.com/[^"]*\.html"', html):
+            bad_canon.append(path.name)
+    if bad_links:
+        fails.append("内部リンクに .html が残っている（308リダイレクトを毎回踏む）: %s%s"
+                     % (", ".join(sorted(set(bad_links))[:5]),
+                        " ほか%dページ" % (len(set(bad_links)) - 5) if len(set(bad_links)) > 5 else ""))
+    if bad_canon:
+        fails.append("canonical/og:url に .html が残っている（正規URLがリダイレクト先を指す）: %s%s"
+                     % (", ".join(sorted(set(bad_canon))[:5]),
+                        " ほか%dページ" % (len(set(bad_canon)) - 5) if len(set(bad_canon)) > 5 else ""))
+
+    # sitemap の loc も拡張子なしであること
+    sm_html = re.findall(r"<loc>[^<]*\.html</loc>", sm)
+    if sm_html:
+        fails.append("sitemapのlocに .html が %d件残っている（例: %s）" % (len(sm_html), sm_html[0]))
 
     return fails
 

@@ -213,12 +213,12 @@ def build_pdf(path) -> bool:
         story.append(pt); story.append(Spacer(1,8))
         story.append(Paragraph("Free guides to explore next",st_h2)); story.append(Spacer(1,2))
         lrows=[[Paragraph("&#8594; "+t,st_link),Paragraph('<font color="#a61e4d">%s</font>'%u,st_link)] for t,u in [
-            ("Make a printable allergy card","littletabi.com/tools/allergy-card.html"),
-            ("Full family packing list","littletabi.com/essential-packing-list-for-japan-with-kids-2026.html"),
-            ("10-day Tokyo-Kyoto-Osaka itinerary","littletabi.com/japan-family-itinerary-tokyo-kyoto-osaka-with-young-children.html"),
-            ("Best family hotels in Tokyo","littletabi.com/best-family-hotels-tokyo-connecting-rooms.html"),
-            ("Family eSIMs compared","littletabi.com/japan-esim-for-families-compared.html"),
-            ("Build a free trip plan","littletabi.com/plan.html")]]
+            ("Make a printable allergy card","littletabi.com/tools/allergy-card"),
+            ("Full family packing list","littletabi.com/essential-packing-list-for-japan-with-kids-2026"),
+            ("10-day Tokyo-Kyoto-Osaka itinerary","littletabi.com/japan-family-itinerary-tokyo-kyoto-osaka-with-young-children"),
+            ("Best family hotels in Tokyo","littletabi.com/best-family-hotels-tokyo-connecting-rooms"),
+            ("Family eSIMs compared","littletabi.com/japan-esim-for-families-compared"),
+            ("Build a free trip plan","littletabi.com/plan")]]
         lt=Table(lrows,colWidths=[70*mm,106*mm])
         lt.setStyle(TableStyle([("LEFTPADDING",(0,0),(-1,-1),2),("RIGHTPADDING",(0,0),(-1,-1),2),
             ("TOPPADDING",(0,0),(-1,-1),1.5),("BOTTOMPADDING",(0,0),(-1,-1),1.5),

@@ -19,6 +19,7 @@ from __future__ import annotations
 import datetime
 import pathlib
 import re
+from . import linker as _linker
 from .util import SITE_DIR, load_settings, log
 
 # ============================================================
@@ -258,7 +259,7 @@ _ALLERGY_INLINE = (
     'soy 大豆 (daizu) · sesame ごま (goma) · fish 魚 (sakana) · '
     'cashew カシューナッツ · kiwi キウイ · peach もも (momo) · '
     'apple りんご (ringo) · gelatin ゼラチン.</p>'
-    '<p style="margin:.4em 0 .2em"><a class="readmore" href="/' + ALLERGY_TOOL_REL + '" target="_blank">'
+    '<p style="margin:.4em 0 .2em"><a class="readmore" href="' + _linker.page_path(ALLERGY_TOOL_REL) + '" target="_blank">'
     '→ Open the free printable allergy card (fill in your child&rsquo;s allergens, then print or save)</a></p>'
     '<p style="font-size:.82rem;color:#6b7280">Japanese phrases are provided for communication only and are not medical '
     'advice. Japan&rsquo;s labelling list changes (walnut became mandatory in recent years) &mdash; confirm the current '
@@ -302,8 +303,8 @@ def _allergy_tool_html() -> str:
         '<title>Printable Japanese Allergy Card for Kids (free) | littletabi</title>'
         '<meta name="description" content="Free printable allergy card in Japanese for children travelling in Japan. '
         'Fill in your child&rsquo;s allergens on screen, add key phrases, then print or save.">'
-        '<link rel="canonical" href="https://littletabi.com/' + ALLERGY_TOOL_REL + '">'
-        '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Printable Japanese allergy card for kids","url":"https://littletabi.com/tools/allergy-card.html","applicationCategory":"TravelApplication","operatingSystem":"Any (web browser)","description":"A free printable card that states a child food allergy in Japanese, asks for cross-contamination to be avoided, and warns about dashi stock. Fill it in on screen and print or save as PDF.","inLanguage":["en","ja"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"publisher":{"@type":"Organization","name":"littletabi","url":"https://littletabi.com/"}}</script>'
+        '<link rel="canonical" href="' + _linker.page_url("https://littletabi.com", ALLERGY_TOOL_REL) + '">'
+        '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Printable Japanese allergy card for kids","url":"https://littletabi.com/tools/allergy-card","applicationCategory":"TravelApplication","operatingSystem":"Any (web browser)","description":"A free printable card that states a child food allergy in Japanese, asks for cross-contamination to be avoided, and warns about dashi stock. Fill it in on screen and print or save as PDF.","inLanguage":["en","ja"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"publisher":{"@type":"Organization","name":"littletabi","url":"https://littletabi.com/"}}</script>'
         '<style>'
         ':root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--soft:#fff0f6;--line:#ececf1}'
         'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;'
@@ -328,7 +329,7 @@ def _allergy_tool_html() -> str:
         '@media print{.noprint{display:none}body{background:#fff}.card{box-shadow:none}'
         '.epipen-ctl input{display:none}}'
         '</style></head><body><div class="wrap">'
-        '<p class="noprint"><a class="brand" href="/index.html">little<b>tabi</b></a></p>'
+        '<p class="noprint"><a class="brand" href="/">little<b>tabi</b></a></p>'
         '<h1>Printable Japanese allergy card for kids</h1>'
         '<p class="noprint">Type your child&rsquo;s details into the blanks below, tick the EpiPen box only if '
         'they carry one, then <button class="btn" onclick="window.print()">Print / Save as PDF</button>. '
@@ -366,9 +367,9 @@ def _allergy_tool_html() -> str:
         'kiwi キウイ · peach もも · apple りんご · gelatin ゼラチン.</p>'
         '<p class="note">Provided for communication only; not medical advice. Japan&rsquo;s mandatory allergen list '
         'changes &mdash; confirm the current list on the Consumer Affairs Agency site and always confirm with staff. '
-        'From <a href="/' + ALLERGY_SLUG + '.html">littletabi.com</a>.</p>'
-        '<p class="noprint"><a href="/' + ALLERGY_SLUG + '.html">&larr; Back to the food-allergy guide</a></p>'
-        '<div class="card"><p style="margin:0"><b><a href="/eating-out-in-japan-with-food-allergies.html">How families actually manage food allergies in Japanese restaurants &rarr;</a></b></p></div><div class="widget" id="lead-form-widget" style="background:#fff0f6;border-color:#ffe0ee"><h4>Free: Japan-with-kids checklist</h4><p style="color:#6b7280;font-size:.9rem;margin:.2em 0 .7em">A pre-departure checklist + a 7-day Tokyo itinerary (PDF). No spam — unsubscribe anytime.</p><form action="https://app.kit.com/forms/9651205/subscriptions" method="post" class="seva-form formkit-form" data-sv-form="9651205" data-uid="f5350a8d30" data-format="inline" data-version="5" style="display:flex;flex-direction:column;gap:8px"><input type="email" name="email_address" required="" placeholder="Your email" style="width:100%;border:1px solid #ececf1;border-radius:10px;padding:9px 11px;font:inherit;margin:0"><button type="submit" data-element="submit" style="background:#b8005a;color:#fff;border:0;border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer">Send me the checklist</button></form></div><script async="" src="https://f.convertkit.com/ckjs/ck.5.js"></script>'
+        'From <a href="/' + ALLERGY_SLUG + '">littletabi.com</a>.</p>'
+        '<p class="noprint"><a href="/' + ALLERGY_SLUG + '">&larr; Back to the food-allergy guide</a></p>'
+        '<div class="card"><p style="margin:0"><b><a href="/eating-out-in-japan-with-food-allergies">How families actually manage food allergies in Japanese restaurants &rarr;</a></b></p></div><div class="widget" id="lead-form-widget" style="background:#fff0f6;border-color:#ffe0ee"><h4>Free: Japan-with-kids checklist</h4><p style="color:#6b7280;font-size:.9rem;margin:.2em 0 .7em">A pre-departure checklist + a 7-day Tokyo itinerary (PDF). No spam — unsubscribe anytime.</p><form action="https://app.kit.com/forms/9651205/subscriptions" method="post" class="seva-form formkit-form" data-sv-form="9651205" data-uid="f5350a8d30" data-format="inline" data-version="5" style="display:flex;flex-direction:column;gap:8px"><input type="email" name="email_address" required="" placeholder="Your email" style="width:100%;border:1px solid #ececf1;border-radius:10px;padding:9px 11px;font:inherit;margin:0"><button type="submit" data-element="submit" style="background:#b8005a;color:#fff;border:0;border-radius:10px;padding:9px 12px;font-weight:700;cursor:pointer">Send me the checklist</button></form></div><script async="" src="https://f.convertkit.com/ckjs/ck.5.js"></script>'
         '</div></body></html>'
     )
 
@@ -437,8 +438,8 @@ def _ensure_sitemap_tool() -> int:
     except Exception:
         base = "https://littletabi.com"
     base = base.rstrip("/")
-    loc = f"{base}/{ALLERGY_TOOL_REL}"
-    if f"/{ALLERGY_TOOL_REL}<" in xml or loc in xml:
+    loc = _linker.page_url(base, ALLERGY_TOOL_REL)   # 2026-09-06: 拡張子なし
+    if f"<loc>{loc}</loc>" in xml:
         return 0
     today = datetime.date.today().isoformat()
     block = (f"<url>\n<loc>{loc}</loc>\n<lastmod>{today}</lastmod>\n"
@@ -468,7 +469,7 @@ def _trust_strip_html(stay: bool) -> str:
             'AI-generated guide, checked with an automated quality process. '
             'Details are linked to official sources where possible &mdash; always confirm before you travel.'
             + extra +
-            ' <a href="/how-we-make-guides.html">How we make these guides &rarr;</a></p>')
+            ' <a href="/how-we-make-guides">How we make these guides &rarr;</a></p>')
 
 _BYLINE_RE = re.compile(r'<p[^>]*class="byline"[^>]*>.*?</p>', re.S)
 _DV_FIG_RE = re.compile(r'<figure[^>]*class="[^"]*dataviz[^"]*"[^>]*>.*?</figure>', re.S)
@@ -711,7 +712,7 @@ def _embed_card_html(base: str) -> str:
         '<tr><td>Emergency — call an ambulance (119).</td><td class="ja" lang="ja">緊急です。119番に電話してください。</td></tr>'
         '</tbody></table>'
         '<p class="src">Free widget &middot; data by <a href="' + base + '" target="_blank" rel="noopener">littletabi</a> '
-        '&middot; <a href="' + base + '/' + ALLERGY_TOOL_REL + '" target="_blank" rel="noopener">full printable card</a></p>'
+        '&middot; <a href="' + _linker.page_url(base, ALLERGY_TOOL_REL) + '" target="_blank" rel="noopener">full printable card</a></p>'
         '</div></body></html>'
     )
 
@@ -730,7 +731,7 @@ def _embeds_page_html(base: str) -> str:
         'children\'s food allergies at restaurants in Japan.",'
         '"creator":{"@type":"Organization","name":"littletabi","url":"' + base + '"},'
         '"license":"https://creativecommons.org/licenses/by/4.0/",'
-        '"url":"' + base + '/' + EMBEDS_PAGE_REL + '",'
+        '"url":"' + _linker.page_url(base, EMBEDS_PAGE_REL) + '",'
         '"isAccessibleForFree":true,'
         '"distribution":[{"@type":"DataDownload","encodingFormat":"text/html",'
         '"contentUrl":"' + base + '/' + EMBED_CARD_REL + '"}]}'
@@ -741,7 +742,7 @@ def _embeds_page_html(base: str) -> str:
         '<title>Free embeddable widgets for family-travel sites | littletabi</title>'
         '<meta name="description" content="Free, embeddable widgets and open data for family-travel sites: '
         'a Japanese allergy phrase card you can drop into any page with one line of HTML.">'
-        '<link rel="canonical" href="' + base + '/' + EMBEDS_PAGE_REL + '">'
+        '<link rel="canonical" href="' + _linker.page_url(base, EMBEDS_PAGE_REL) + '">'
         '<script type="application/ld+json">' + dataset + '</script>'
         '<style>'
         ':root{--ink:#1f2937;--muted:#6b7280;--accent:#b8005a;--line:#ececf1}'
@@ -753,7 +754,7 @@ def _embeds_page_html(base: str) -> str:
         'pre{background:#0f172a;color:#e2e8f0;padding:12px 14px;border-radius:10px;overflow:auto;font-size:.82rem;white-space:pre-wrap}'
         '.note{font-size:.85rem;color:var(--muted)}'
         '</style></head><body><div class="wrap">'
-        '<p><a class="brand" href="/index.html">little<b>tabi</b></a></p>'
+        '<p><a class="brand" href="/">little<b>tabi</b></a></p>'
         '<h1>Free embeddable widgets &amp; open data</h1>'
         '<p>Run a family-travel blog or resource site? You are welcome to embed our widgets for free. '
         'They are lightweight, mobile-friendly, and released under a <a '
@@ -772,13 +773,13 @@ def _embeds_page_html(base: str) -> str:
         '</div>'
         '<p class="note">More widgets (a family-trip cost estimator and a station accessibility lookup) are on the '
         'way. Want one for your site? <a href="/' + THANKS_OR_CONTACT + '">Get in touch</a>.</p>'
-        '<p><a href="/index.html">&larr; Back to all guides</a></p>'
+        '<p><a href="/">&larr; Back to all guides</a></p>'
         '</div></body></html>'
     )
 
 
 # 連絡導線（存在する索引/トップに寄せる。無ければトップ）。
-THANKS_OR_CONTACT = "contact.html"
+THANKS_OR_CONTACT = "contact"      # 2026-09-06: 公開URLは拡張子なし
 
 
 def _build_embeds() -> int:
@@ -800,7 +801,7 @@ def _build_embeds() -> int:
         except Exception as e:
             log.error("quality_fixups: embed生成失敗 %s: %s", rel, e)
     # embedsページ（被引用用・indexable）をsitemapに収録（embedカード自体はnoindexなので入れない）
-    _add_to_sitemap(f"{base}/{EMBEDS_PAGE_REL}")
+    _add_to_sitemap(_linker.page_url(base, EMBEDS_PAGE_REL))   # 2026-09-06: 拡張子なし
     return done
 
 
@@ -847,14 +848,18 @@ def _apply_canonical_overrides() -> int:
             html = path.read_text(encoding="utf-8")
         except Exception:
             continue
-        old = '<link rel="canonical" href="https://littletabi.com/' + dup + '.html">'
-        want = '<link rel="canonical" href="https://littletabi.com/' + primary + '.html">'
+        # 2026-09-06: URLを拡張子なしへ移行したので、旧形式(.html)も拾って寄せ替える
+        old = '<link rel="canonical" href="https://littletabi.com/' + dup + '">'
+        old_html = '<link rel="canonical" href="https://littletabi.com/' + dup + '.html">'
+        want = '<link rel="canonical" href="https://littletabi.com/' + primary + '">'
         if want in html:
             continue
-        if old in html:
-            path.write_text(html.replace(old, want, 1), encoding="utf-8")
-            done += 1
-            log.info("quality_fixups: canonical override %s -> %s", dup, primary)
+        for _src in (old, old_html):
+            if _src in html:
+                path.write_text(html.replace(_src, want, 1), encoding="utf-8")
+                done += 1
+                log.info("quality_fixups: canonical override %s -> %s", dup, primary)
+                break
     return done
 
 
@@ -1117,18 +1122,18 @@ def _404_html() -> str:
         'Here is where most families go next.</p>'
         '<ul>'
         '<li><a href="/">All Japan-with-kids guides</a></li>'
-        '<li><a href="/plan.html">Free trip planner</a> &mdash; a day-by-day family plan in seconds</li>'
-        '<li><a href="/shinkansen-family-fare-calculator.html">Shinkansen family fare calculator</a> '
+        '<li><a href="/plan">Free trip planner</a> &mdash; a day-by-day family plan in seconds</li>'
+        '<li><a href="/shinkansen-family-fare-calculator">Shinkansen family fare calculator</a> '
         '&mdash; estimate the total with kids&rsquo; fare rules</li>'
-        '<li><a href="/tools/allergy-card.html">Printable Japanese allergy card</a></li>'
-        '<li><a href="/get-the-japan-checklist.html">Free pre-departure checklist (PDF)</a></li>'
+        '<li><a href="/tools/allergy-card">Printable Japanese allergy card</a></li>'
+        '<li><a href="/get-the-japan-checklist">Free pre-departure checklist (PDF)</a></li>'
         '</ul>'
-        '<p><a href="/japan-with-kids-transport.html">Transport</a> &middot; '
-        '<a href="/japan-with-kids-accommodation.html">Accommodation</a> &middot; '
-        '<a href="/japan-with-kids-food.html">Food</a> &middot; '
-        '<a href="/japan-with-kids-attractions.html">Attractions</a> &middot; '
-        '<a href="/japan-with-kids-baby.html">Babies &amp; toddlers</a> &middot; '
-        '<a href="/japan-with-kids-practical.html">Practical</a></p>'
+        '<p><a href="/japan-with-kids-transport">Transport</a> &middot; '
+        '<a href="/japan-with-kids-accommodation">Accommodation</a> &middot; '
+        '<a href="/japan-with-kids-food">Food</a> &middot; '
+        '<a href="/japan-with-kids-attractions">Attractions</a> &middot; '
+        '<a href="/japan-with-kids-baby">Babies &amp; toddlers</a> &middot; '
+        '<a href="/japan-with-kids-practical">Practical</a></p>'
         '</main>'
     )
     cfg = load_settings()

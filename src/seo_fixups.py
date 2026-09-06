@@ -45,21 +45,21 @@ _TRANSPORT_PILLAR = (
     '<p>Most major stations have elevators, but they can be tucked away and the walk between lines is '
     'sometimes long. A compact, easily folded stroller is the most flexible choice, and travelling '
     'just outside the busiest rush hours makes a real difference with little ones. See our '
-    '<a href="/stroller-friendly-tokyo-navigating-the-city-with-kids.html">stroller-friendly Tokyo</a> '
-    'and <a href="/kyoto-with-a-stroller-accessible-routes-kid-friendly-spots.html">Kyoto with a stroller</a> '
+    '<a href="/stroller-friendly-tokyo-navigating-the-city-with-kids">stroller-friendly Tokyo</a> '
+    'and <a href="/kyoto-with-a-stroller-accessible-routes-kid-friendly-spots">Kyoto with a stroller</a> '
     'guides for step-free routes.</p>'
     '<h3>Shinkansen and long-distance</h3>'
     '<p>For the bullet train, reserving seats is worth it when travelling as a family, especially in peak '
     'periods. If you have a stroller or large cases, note that the dedicated oversized-baggage spaces now '
     'need to be reserved in advance &mdash; our '
-    '<a href="/shinkansen-oversized-baggage-rules-for-families-in-2026.html">Shinkansen oversized-baggage guide</a> '
+    '<a href="/shinkansen-oversized-baggage-rules-for-families-in-2026">Shinkansen oversized-baggage guide</a> '
     'explains how, and the '
-    '<a href="/japan-rail-pass-with-kids-is-it-worth-it-for-families.html">Japan Rail Pass guide</a> '
+    '<a href="/japan-rail-pass-with-kids-is-it-worth-it-for-families">Japan Rail Pass guide</a> '
     'helps you decide whether a pass is worth it for your itinerary (it usually is not for a Tokyo-only trip).</p>'
     '<h3>Taxis and car seats</h3>'
     '<p>Regular taxis generally do not carry child car seats. For city hops this is usually fine for short '
     'rides, but for longer drives or rural areas a rental car with properly fitted seats is the safer plan &mdash; '
-    'see <a href="/renting-a-car-in-japan-with-car-seats-family-travel-guide.html">renting a car with car seats</a>.</p>'
+    'see <a href="/renting-a-car-in-japan-with-car-seats-family-travel-guide">renting a car with car seats</a>.</p>'
     '<p class="pillar-note" style="font-size:.85rem;color:#6b7280">Fares, ages and rules change and vary by '
     'operator &mdash; always confirm the current details on the official transit site before you travel.</p>'
     '</section>'
@@ -117,7 +117,7 @@ def _consolidate_canonicals() -> int:
             html = path.read_text(encoding="utf-8")
         except Exception:
             continue
-        want = f'<link rel="canonical" href="{base}/{target}.html">'
+        want = f'<link rel="canonical" href="{_linker.page_url(base, target)}">'
         if 'rel="canonical"' in html:
             new = re.sub(r'<link rel="canonical"[^>]*>', want, html, count=1)
         else:
@@ -169,7 +169,7 @@ def _fix_sitemap() -> int:
 
     # ① canonicalで束ねた弱い方は sitemap から外す（自己矛盾シグナルを避ける）
     for old in _CANONICAL_OVERRIDES:
-        pat = r"\s*<url>\s*<loc>[^<]*/" + re.escape(old) + r"\.html</loc>[\s\S]*?</url>"
+        pat = r"\s*<url>\s*<loc>[^<]*/" + re.escape(old) + r"(?:\.html)?</loc>[\s\S]*?</url>"
         new = re.sub(pat, "", xml, count=1)
         if new != xml:
             xml = new
@@ -178,12 +178,13 @@ def _fix_sitemap() -> int:
 
     # ② 手動の静的ページが抜けていれば追加（plan.html 等）
     for page in _SITEMAP_ENSURE:
-        if f"/{page}<" in xml:
+        loc = _linker.page_url(base, page)          # 2026-09-06: 拡張子なしURLで載せる
+        if f"<loc>{loc}</loc>" in xml:
             continue
         block = (
-            "<url>\n<loc>{b}/{p}</loc>\n<lastmod>{d}</lastmod>\n"
+            "<url>\n<loc>{u}</loc>\n<lastmod>{d}</lastmod>\n"
             "<changefreq>monthly</changefreq>\n<priority>0.7</priority>\n</url>\n"
-        ).format(b=base, p=page, d=today)
+        ).format(u=loc, d=today)
         if "</urlset>" in xml:
             xml = xml.replace("</urlset>", block + "</urlset>", 1)
             changed += 1
@@ -202,8 +203,8 @@ _TOOL_LINKS = [
         "<strong>Rainy day:</strong> The museum is largely indoors.</p>",
         "shinkansen-family-fare-calculator",
         '\n<p><strong>Working out the fare?</strong> Kids 6\u201311 are about half price and under-6s often ride free '
-        '\u2014 our <a href="/shinkansen-family-fare-calculator.html">Shinkansen family fare calculator</a> does the maths, '
-        'and <a href="/shinkansen-cost-for-families.html">how much the Shinkansen costs for a family</a> explains the rules.</p>',
+        '\u2014 our <a href="/shinkansen-family-fare-calculator">Shinkansen family fare calculator</a> does the maths, '
+        'and <a href="/shinkansen-cost-for-families">how much the Shinkansen costs for a family</a> explains the rules.</p>',
     ),
 ]
 
@@ -243,40 +244,40 @@ _CONTEXT_LINKS = [
      "best-family-hotels-tokyo-connecting-rooms",
      '<p><strong>Mixing a ryokan with a city stay?</strong> Most families pair one or two ryokan nights '
      'with a Tokyo base &mdash; see our pick of '
-     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Tokyo family hotels with connecting rooms '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms">Tokyo family hotels with connecting rooms '
      'and kitchenettes</a>.</p>'),
     ("family-onsen-japan-private-baths-kid-friendly-guide",
      "best-family-hotels-tokyo-connecting-rooms",
      '<p><strong>Where to stay either side of the onsen trip?</strong> '
-     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Tokyo family hotels with connecting rooms</a> '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms">Tokyo family hotels with connecting rooms</a> '
      'covers the city nights, including rooms with a kitchenette.</p>'),
     ("family-day-trips-from-tokyo-kid-friendly-escapes",
      "best-family-hotels-tokyo-connecting-rooms",
      '<p><strong>Day trips work best from a fixed base.</strong> If you have not booked yet, see '
-     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">family hotels in Tokyo with connecting rooms</a>.</p>'),
+     '<a href="/best-family-hotels-tokyo-connecting-rooms">family hotels in Tokyo with connecting rooms</a>.</p>'),
     ("stroller-friendly-tokyo-navigating-the-city-with-kids",
      "best-family-hotels-tokyo-connecting-rooms",
      '<p><strong>Stroller-friendly starts with the hotel.</strong> Lifts, room size and a place to park the buggy '
      'matter more than the neighbourhood &mdash; see '
-     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Tokyo family hotels with connecting rooms</a>.</p>'),
+     '<a href="/best-family-hotels-tokyo-connecting-rooms">Tokyo family hotels with connecting rooms</a>.</p>'),
     ("tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
      "best-family-hotels-tokyo-connecting-rooms",
      '<p><strong>Staying central helps.</strong> Most of these cafes are an easy hop from the areas covered in '
-     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">our Tokyo family hotel picks</a>.</p>'),
+     '<a href="/best-family-hotels-tokyo-connecting-rooms">our Tokyo family hotel picks</a>.</p>'),
     ("japan-family-itinerary-tokyo-kyoto-osaka-with-young-children",
      "best-family-hotels-tokyo-connecting-rooms",
      '<p><strong>Booking the Tokyo nights?</strong> '
-     '<a href="/best-family-hotels-tokyo-connecting-rooms.html">Family hotels with connecting rooms and kitchenettes</a> '
+     '<a href="/best-family-hotels-tokyo-connecting-rooms">Family hotels with connecting rooms and kitchenettes</a> '
      'covers the options that actually fit four people.</p>'),
     ("navigating-food-allergies-in-japan-with-kids-a-guide",
      "eating-out-in-japan-with-food-allergies",
      '<p><strong>What this looks like in practice:</strong> '
-     '<a href="/eating-out-in-japan-with-food-allergies.html">how families actually manage food allergies in '
+     '<a href="/eating-out-in-japan-with-food-allergies">how families actually manage food allergies in '
      'Japanese restaurants</a> walks through ordering, chains and the dashi problem.</p>'),
     ("kid-friendly-japanese-meals-navigating-picky-eaters",
      "eating-out-in-japan-with-food-allergies",
      '<p><strong>Allergies as well as picky eating?</strong> See '
-     '<a href="/eating-out-in-japan-with-food-allergies.html">eating out in Japan with food allergies</a>.</p>'),
+     '<a href="/eating-out-in-japan-with-food-allergies">eating out in Japan with food allergies</a>.</p>'),
 ]
 
 
@@ -292,7 +293,7 @@ def _inject_context_links() -> int:
         if not path.exists() or not (SITE_DIR / (target + ".html")).exists():
             continue
         page = path.read_text(encoding="utf-8")
-        if f'href="/{target}.html"' in page:      # 既にリンク済み（冪等）
+        if f'href="/{target}"' in page:      # 既にリンク済み（冪等）
             continue
         for anchor in ('<section class="related">', '<div class="disc bottom"', "</article>"):
             if anchor in page:
@@ -306,6 +307,29 @@ def _inject_context_links() -> int:
     return done
 
 
+def _normalize_urls() -> int:
+    """docs/ 配下の自サイトURLを拡張子なしへ正規化する（冪等・2026-09-06）。
+
+    Cloudflare Pages は /x.html を /x へ 308 で正規化する。生成側は linker.page_url を
+    使うようにしたが、過去に生成済みのページや本文中の内部リンクには .html が残る。
+    ここで一括して寄せることで「canonicalがリダイレクトされるURL」「内部リンクが毎回
+    1ホップ余分に踏む」状態を消す。ci_assert が再発をfail-closedで見張る。
+    """
+    fixed = 0
+    for path in sorted(SITE_DIR.rglob("*.html")):
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        new = _linker.normalize_urls(html)
+        if new != html:
+            path.write_text(new, encoding="utf-8")
+            fixed += 1
+    if fixed:
+        log.info("seo_fixups: 拡張子なしURLへ正規化 %d ページ", fixed)
+    return fixed
+
+
 def run() -> dict:
     r = _build_redirects()
     c = _consolidate_canonicals()
@@ -313,8 +337,11 @@ def run() -> dict:
     s = _fix_sitemap()
     t = _inject_tool_links()
     x = _inject_context_links()
-    log.info("seo_fixups完了: _redirects=%d, canonical統合=%d, ハブ加筆=%d, sitemap修正=%d, 文脈リンク=%d", r, c, h, s, x)
-    return {"redirects": r, "canonicals": c, "hubs": h, "sitemap": s, "tool_links": t, "context_links": x}
+    u = _normalize_urls()     # 最後に置く: 上の各処理が .html を書いても必ず寄せ切る
+    log.info("seo_fixups完了: _redirects=%d, canonical統合=%d, ハブ加筆=%d, sitemap修正=%d, 文脈リンク=%d, URL正規化=%d",
+             r, c, h, s, x, u)
+    return {"redirects": r, "canonicals": c, "hubs": h, "sitemap": s,
+            "tool_links": t, "context_links": x, "normalized": u}
 
 
 def main() -> None:
