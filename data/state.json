@@ -2,6 +2,11 @@
   "version": 1,
   "topics_queue": [
     {
+      "topic": "Ghibli Museum & Ghibli Park with Kids: Tickets, Timed Entry & What to Expect",
+      "primary_keyword": "Ghibli Museum with kids",
+      "board_hint": "Tokyo with Kids"
+    },
+    {
       "topic": "Flying to Japan with Kids: Narita & Haneda Airport Arrival Guide for Families",
       "primary_keyword": "Narita Haneda airport with kids",
       "board_hint": "Japan with kids"
@@ -1565,10 +1570,22 @@
           "total": 50
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-09-07T23:15:08.406632+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 50,
+          "total": 50
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-09-01T00:20:00.522835+00:00",
+      "at": "2026-09-07T23:15:08.406632+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
@@ -1580,7 +1597,7 @@
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-09-01T00:20:02.764997+00:00",
+      "at": "2026-09-07T23:15:10.330519+00:00",
       "rewritten": [],
       "striking": [],
       "new_topics": []
@@ -1589,13 +1606,13 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-09-01T00:20:00.522300+00:00"
+    "last_updated": "2026-09-07T23:15:08.406118+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 9
+    "llm_calls": 11
   }
 }
