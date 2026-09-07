@@ -987,6 +987,8 @@ STATIC_PAGES = (
     "tokyo-disney-resort-hotels-for-families.html",
     # 2026-09-06: 東京で「6人以上が1部屋に入る」部屋タイプだけを集めた大家族向けページ。
     "tokyo-apartments-for-families-of-6-or-more.html",
+    # 2026-09-07: GSCで「tokyo hotel with kitchen(ette)」系141表示・専用ページ無しだったため新設。
+    "tokyo-family-hotels-with-kitchenette.html",
 )
 
 
