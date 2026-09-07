@@ -2,11 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Ghibli Museum & Ghibli Park with Kids: Tickets, Timed Entry & What to Expect",
-      "primary_keyword": "Ghibli Museum with kids",
-      "board_hint": "Tokyo with Kids"
-    },
-    {
       "topic": "Flying to Japan with Kids: Narita & Haneda Airport Arrival Guide for Families",
       "primary_keyword": "Narita Haneda airport with kids",
       "board_hint": "Japan with kids"
@@ -348,6 +343,7 @@
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
+        "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg"
       ],
       "img_hashes": [
@@ -362,7 +358,8 @@
         "6efff2be3fff0000",
         "ffffa59999000000",
         "00047fffe7c7666e",
-        "7e3e3f3f27263000"
+        "7e3e3f3f27263000",
+        "ffbcc3ff00003c7c"
       ],
       "last_pin_desc": "Traveling with kids in Japan? Find out where to buy diapers and baby formula, including trusted brands and store options for a smooth trip.",
       "repin_times": [],
@@ -413,6 +410,7 @@
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
+        "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg"
       ],
       "img_hashes": [
@@ -425,7 +423,8 @@
         "c28082c0fbff0000",
         "e1f0f0c0e7821c18",
         "838109be9e8e3c18",
-        "feffbf3ffc000000"
+        "feffbf3ffc000000",
+        "00003078ff3e3000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn which Disney park is best for young kids in 2026. Explore attractions, food, and tips for a magical experience! #TokyoDisney #FamilyTravel #JapanWithKids",
       "repin_times": [],
@@ -1454,6 +1453,30 @@
       "repin_times": [],
       "quality_score": 73,
       "posted_at": "2026-08-15T22:28:38.100914+00:00"
+    },
+    {
+      "topic": "Ghibli Museum & Ghibli Park with Kids: Tickets, Timed Entry & What to Expect",
+      "slug": "ghibli-museum-park-with-kids-2026-tickets-entry-guide",
+      "article_title": "Ghibli Museum & Park with Kids (2026): Tickets & Entry Guide",
+      "primary_keyword": "Ghibli Museum with kids",
+      "image_query": "Japan family park",
+      "board_hint": "Tokyo with Kids",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/ghibli-museum-park-with-kids-2026-tickets-entry-guide",
+      "pins_count": 0,
+      "image_variants": [
+        "img/ghibli-museum-park-with-kids-2026-tickets-entry-guide.jpg"
+      ],
+      "img_hashes": [
+        "ffffffffbf000000"
+      ],
+      "last_pin_desc": "Navigating the magic of Ghibli Museum and Ghibli Park with your family in 2026? Get the inside scoop on essential tickets, timed entry requirements, and stroller policies. This guide helps parents prepare for an enchanting, kid-friendly visit to Japan's beloved Ghibli worlds. #GhibliWithKids #JapanFamilyTravel #GhibliPark",
+      "repin_times": [],
+      "quality_score": 73,
+      "posted_at": "2026-09-07T23:51:38.527084+00:00"
     }
   ],
   "performance": {
@@ -1613,6 +1636,6 @@
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 11
+    "llm_calls": 17
   }
 }
