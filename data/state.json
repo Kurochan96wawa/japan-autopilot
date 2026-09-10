@@ -2,11 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Flying to Japan with Kids: Narita & Haneda Airport Arrival Guide for Families",
-      "primary_keyword": "Narita Haneda airport with kids",
-      "board_hint": "Japan with kids"
-    },
-    {
       "topic": "Best Family Hotels in Osaka (2026): Where to Stay with Kids",
       "primary_keyword": "family hotels Osaka kids",
       "board_hint": "Accommodation Japan"
@@ -344,6 +339,7 @@
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
+        "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg"
       ],
       "img_hashes": [
@@ -359,7 +355,8 @@
         "ffffa59999000000",
         "00047fffe7c7666e",
         "7e3e3f3f27263000",
-        "ffbcc3ff00003c7c"
+        "ffbcc3ff00003c7c",
+        "ffffa59999000000"
       ],
       "last_pin_desc": "Traveling with kids in Japan? Find out where to buy diapers and baby formula, including trusted brands and store options for a smooth trip.",
       "repin_times": [],
@@ -411,6 +408,7 @@
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg",
+        "img/tokyo-disney-vs-disneysea-for-kids.jpg",
         "img/tokyo-disney-vs-disneysea-for-kids.jpg"
       ],
       "img_hashes": [
@@ -424,7 +422,8 @@
         "e1f0f0c0e7821c18",
         "838109be9e8e3c18",
         "feffbf3ffc000000",
-        "00003078ff3e3000"
+        "00003078ff3e3000",
+        "feffbf3f7c000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn which Disney park is best for young kids in 2026. Explore attractions, food, and tips for a magical experience! #TokyoDisney #FamilyTravel #JapanWithKids",
       "repin_times": [],
@@ -1477,6 +1476,30 @@
       "repin_times": [],
       "quality_score": 73,
       "posted_at": "2026-09-07T23:51:38.527084+00:00"
+    },
+    {
+      "topic": "Flying to Japan with Kids: Narita & Haneda Airport Arrival Guide for Families",
+      "slug": "flying-to-japan-with-kids-narita-haneda-arrival-guide-2026",
+      "article_title": "Flying to Japan with Kids: Narita & Haneda Arrival Guide 2026",
+      "primary_keyword": "Narita Haneda airport with kids",
+      "image_query": "Japan airport family",
+      "board_hint": "Japan with kids",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/flying-to-japan-with-kids-narita-haneda-arrival-guide-2026",
+      "pins_count": 0,
+      "image_variants": [
+        "img/flying-to-japan-with-kids-narita-haneda-arrival-guide-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "003cffff1f000000"
+      ],
+      "last_pin_desc": "Planning your first family trip to Japan? This detailed guide helps parents navigate Narita (NRT) and Haneda (HND) airports with kids, covering everything from stroller rentals and nursing rooms to kids' play zones and allergy-friendly food. Make your Japan arrival smooth and stress-free! #JapanFamilyTravel #NaritaHaneda #KidsInJapan",
+      "repin_times": [],
+      "quality_score": 70,
+      "posted_at": "2026-09-10T23:29:54.522377+00:00"
     }
   ],
   "performance": {
@@ -1636,6 +1659,6 @@
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 17
+    "llm_calls": 23
   }
 }
