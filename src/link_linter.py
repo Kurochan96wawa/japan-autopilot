@@ -28,14 +28,18 @@ KLOOK_AID = "aid=125283"
 TRIP_HOST = "www.trip.com"          # 2026-09-05にTrip.comアフィリエイト有効化
 TRIP_ALLIANCE = "Allianceid=10447753"
 
-# 301統合済みで内部リンクを禁止したい旧slug（現状は canonical のみ。301化後に追記）。
-REDIRECTED_SLUGS = {
-    "buying-baby-diapers-wipes-and-formula-in-japan-2026",
-    "diapers-formula-in-japan-brands-sizes-where-to-buy",
-    "tokyo-disney-vs-disneysea-for-kids",
-    "navigating-japan-s-public-transport-with-kids-2026",
-    "tokyo-family-hotels-connecting-rooms-kitchenettes",
-}
+# 301統合済みで内部リンクを禁止したい旧slug。
+# 2026-09-14: ここは linker.REDIRECT_MAP を手で写した部分集合（20件中5件）で、8月の統合以降
+# ずっと古いままだった。CLAUDE.md の「301は単一の正」に反するので、写経をやめて導出する。
+try:
+    from .linker import REDIRECT_MAP as _REDIRECT_MAP
+except Exception:  # 単体実行(python src/link_linter.py)でも動かす
+    import importlib.util as _ilu, os as _os
+    _spec = _ilu.spec_from_file_location(
+        "_ll_linker", _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "linker.py"))
+    _mod = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_mod)
+    _REDIRECT_MAP = _mod.REDIRECT_MAP
+REDIRECTED_SLUGS = set(_REDIRECT_MAP)
 
 _A_HREF = re.compile(r"""<a\b[^>]*?href=["']([^"']*)["'][^>]*>""", re.I)
 _A_FULL = re.compile(r"""<a\b([^>]*?)href=["']([^"']*)["']([^>]*)>""", re.I)
@@ -95,9 +99,12 @@ def lint():
                     warns.append(name + ": affiliate link missing rel=\"sponsored nofollow\": " + href[:70])
 
         # 4) 301統合済み旧ページへの内部リンク（301化後に有効・FAIL）
+        # 2026-09-06に公開URLを拡張子なしへ移行した結果、内部リンクは href="/slug" になった。
+        # ここは .html 付きしか見ていなかったので、移行以降このチェックは一度も発火しない
+        # 死んだガードになっていた。両形式を見る。
         for slug in REDIRECTED_SLUGS:
-            if re.search(r"""href=["']/?""" + re.escape(slug) + r"""\.html["']""", html):
-                fails.append(name + ": internal link to redirected page " + slug + ".html")
+            if re.search(r"""href=["']/?""" + re.escape(slug) + r"""(?:\.html)?["'#?]""", html):
+                fails.append(name + ": internal link to redirected page " + slug)
 
     return fails, warns
 
