@@ -27,6 +27,23 @@ REDIRECT_MAP = {
     "navigating-japan-s-public-transport-with-kids-2026": "japan-public-transport-with-kids-fares-strollers-facilities",
     "tokyo-family-hotels-connecting-rooms-kitchenettes": "best-family-hotels-tokyo-connecting-rooms",
 
+    # 2026-09-14: GSCの「見つかりませんでした(404)」12件のうち、確認できた10URL（=7slug）。
+    # 初検出 2026-07-11。7月の統合・改稿でページを消したときに301を張り忘れたもので、
+    # 2ヶ月ぶん被リンクとクロール予算を捨てていた。現存する後継ページへ寄せる。
+    # 寄せ先は「slugと見出しが最も近い現存ページ」で決めた（下の対応はすべて実ページを確認済み）。
+    "ultimate-packing-list-for-japan-with-kids-2026": "japan-packing-list-for-families-2026-kids-travel-essentials",
+    "japan-packing-list-for-families-in-2026": "japan-packing-list-for-families-2026-kids-travel-essentials",
+    "family-friendly-ryokan-stays-in-japan-2026": "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
+    "staying-in-a-ryokan-with-kids-in-japan-2026": "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
+    # eSIM/通信は現存2本のうち、slugと主題が一致する「staying-connected…」へ。
+    # japan-esim-for-families-compared は機種比較寄りで意図が違う。
+    "staying-connected-in-japan-for-families-2026": "staying-connected-in-japan-with-kids-esims-wifi-2026",
+    "staying-connected-in-japan-with-kids-in-2026": "staying-connected-in-japan-with-kids-esims-wifi-2026",
+    # 体調不良は医療クラスタの統合先（既に5本が集約済み）へ。
+    # 注: スナップショットは navigating-kids-minor-illnesses-in-japan-2026.html が現存するとしていたが、
+    # 実測では .html 付きも 404（docs/ に実体なし）。両形式とも301の対象にする。
+    "navigating-kids-minor-illnesses-in-japan-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+
     # 復旧スプリントC (2026-08-21): 8月の自動生成期(重複ガード不在)に量産された近接重複。
     # 統合先の選定基準は 内容の充実度 → 内部リンク被リンク数 → URLの検索意図適合。
     # 語数差が10%以内は「同等」とみなし次の基準に送る、という運用で機械的に決めた。
