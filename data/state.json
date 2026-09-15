@@ -2,11 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Best Family Hotels in Osaka (2026): Where to Stay with Kids",
-      "primary_keyword": "family hotels Osaka kids",
-      "board_hint": "Accommodation Japan"
-    },
-    {
       "topic": "teamLab Planets & Borderless with Kids: A Family Visitor Guide",
       "primary_keyword": "teamLab with kids",
       "board_hint": "Tokyo with Kids"
@@ -340,6 +335,7 @@
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
+        "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg",
         "img/diapers-formula-in-japan-brands-sizes-where-to-buy.jpg"
       ],
       "img_hashes": [
@@ -356,7 +352,8 @@
         "00047fffe7c7666e",
         "7e3e3f3f27263000",
         "ffbcc3ff00003c7c",
-        "ffffa59999000000"
+        "ffffa59999000000",
+        "407ffffbe3620000"
       ],
       "last_pin_desc": "Traveling with kids in Japan? Find out where to buy diapers and baby formula, including trusted brands and store options for a smooth trip.",
       "repin_times": [],
@@ -1500,6 +1497,31 @@
       "repin_times": [],
       "quality_score": 70,
       "posted_at": "2026-09-10T23:29:54.522377+00:00"
+    },
+    {
+      "topic": "Best Family Hotels in Osaka (2026): Where to Stay with Kids",
+      "slug": "best-family-hotels-in-osaka-2026-where-to-stay-with-kids",
+      "article_title": "Best Family Hotels in Osaka (2026): Where to Stay with Kids",
+      "primary_keyword": "family hotels Osaka kids",
+      "image_query": "Osaka family fun kids",
+      "board_hint": "Accommodation Japan",
+      "affiliates_used": [
+        "experiences",
+        "hotels"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/best-family-hotels-in-osaka-2026-where-to-stay-with-kids",
+      "pins_count": 0,
+      "image_variants": [
+        "img/best-family-hotels-in-osaka-2026-where-to-stay-with-kids.jpg"
+      ],
+      "img_hashes": [
+        "06000c1f7ece3c0c"
+      ],
+      "last_pin_desc": "Planning a family trip to Osaka in 2026? Find the best kid-friendly hotels with amenities like themed rooms, baby cribs, and kitchens. Learn about stroller accessibility, Akachan no Eki (baby stations), and how to navigate food allergies for a smooth Japan adventure with children. #OsakaWithKids #FamilyTravelJapan #KidFriendlyHotels",
+      "repin_times": [],
+      "quality_score": 71,
+      "posted_at": "2026-09-15T00:13:56.204686+00:00"
     }
   ],
   "performance": {
@@ -1671,6 +1693,6 @@
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 25
+    "llm_calls": 33
   }
 }
