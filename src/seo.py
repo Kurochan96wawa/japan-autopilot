@@ -170,13 +170,32 @@ def _rewrite_title_meta(slug: str, queries: list, current_title: str, site_name:
     if not path.exists():
         return None
     qlist = ", ".join(q["query"] for q in queries[:8]) or "(none)"
+    # 2026-09-15: 以前はクエリと旧タイトルしか渡しておらず、モデルはページが実際に
+    # 何を扱っているかを知らないまま書いていた。その結果、日本全国の交通ガイドに
+    # 「Tokyo Subway …」という実態より狭いタイトルが付く事故が起きた（#61で検出）。
+    # ページの見出しを一緒に渡し、「ページ全体を説明すること・範囲を狭めないこと」を明示する。
+    try:
+        _html = path.read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+        _html = ""
+    _heads = re.findall(r"<h[12][^>]*>(.*?)</h[12]>", _html, re.S)
+    _heads = [re.sub(r"<[^>]+>", "", h).strip() for h in _heads]
+    _heads = [h for h in _heads if h and h.lower() != "related guides"][:10]
+    headings = " / ".join(_heads) or "(none)"
     prompt = f"""You are an SEO editor improving a family-travel-in-Japan article's search snippet.
 The page currently underperforms on click-through despite getting impressions.
 Real Google search queries bringing impressions to this page: {qlist}
 Current title tag: {current_title}
+What this page actually covers, from its own headings: {headings}
 
 Write a better, honest title tag and meta description that match these searchers' intent and
 raise click-through — specific and compelling, never clickbait, no ALL CAPS, no fake urgency.
+
+Hard constraints:
+- The title must describe the WHOLE page, not one section of it. Do not narrow the scope.
+- Do not change the geography. If the page covers Japan as a whole, the title must not
+  imply it is only about one city; if it covers one city, do not imply the whole country.
+- Only promise what the headings show the page actually contains.
 
 Return ONLY JSON:
 {{"title": "<= 60 characters, includes the core query intent>",
