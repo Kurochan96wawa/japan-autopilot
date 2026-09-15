@@ -231,8 +231,22 @@ def _write_report(results: list[dict], strat: dict, pdca: dict, ga_on: bool) -> 
         f"- 対象記事: {len(results)}件 "
         f"（Winner {len(buckets['Winner'])} / Fixable {len(buckets['Fixable'])} / "
         f"Loser {len(buckets['Loser'])} / データ不足 {len(buckets['Insufficient'])}）",
-        "",
     ]
+
+    # 2026-09-15: Pinterestへの投稿はCowork側で手動運用しており、state に
+    # pinterest_pin_id が入らない。その結果 _pin_metrics_for は常に0を返し、
+    # classify の min_impressions_to_judge を誰も越えられず全記事が「データ不足」に
+    # 固定される（＝Winner/Loser判定もboost/avoid_keywordsも永久に動かない）。
+    # 黙って0が並ぶと「まだ新しいから」に見えてしまうので、原因を明示する。
+    pin_tracked = sum(1 for r in results if (r.get("post") or {}).get("pinterest_pin_id"))
+    if not pin_tracked and results:
+        lines.append(
+            "- Pinterest指標: **取得不可**（API経由の投稿が無く pinterest_pin_id が未記録）。"
+            "露出・外部クリックが全記事0で固定されるため、Winner/Fixable/Loser の分類は"
+            "事実上GA4のPVのみに依存し、下の『データ不足』は"
+            "「新しすぎる」ではなく「判定材料が無い」の意味になる。"
+        )
+    lines.append("")
 
     def section(title, rows, note):
         lines.append(f"## {title}")
