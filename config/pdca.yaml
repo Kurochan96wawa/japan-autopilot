@@ -30,6 +30,29 @@ fix:
   avoid_loser_keywords: true     # Loserのキーワードを strategy.avoid_keywords に寄せる
   boost_winner_keywords: true    # Winnerのキーワードを strategy.boost_keywords に寄せる
 
+# ============================================================
+# GSC連動SEOエンジン（src/seo.py）のしきい値
+# ============================================================
+# 2026-09-15: ここまで `seo:` セクションが無く、src/seo.py は既定値
+# （lookback_days 28 / min_impressions 20）で動いていた。GSC連携自体は生きていて
+# 毎週「GSC: 43ページ / 40クエリ取得」まで成功しているのに、結果は毎回
+# 「リライト0 / あと一歩0 / 新規ネタ0」だった。
+#
+# 理由は単純で、しきい値がこのサイトの実トラフィックに対して高すぎる。
+# 実測(2026-09-14のGSC): 28日の総表示299、ページ最大43、クエリ最大5。
+# min_impressions 20 だと、クエリは1件も通らずページもほぼ全滅する。
+# 一方3ヶ月で見ると寿司クラスタが357表示・順位5.4〜10.7と明確な資産になっている。
+# → 集計窓を広げ、足切りを実データの桁に合わせる。数字が育ったら戻すこと。
+seo:
+  enabled: true
+  lookback_days: 90          # 28日では母数が足りない。3ヶ月なら寿司/キッチン系が判定可能な量になる
+  min_impressions: 5         # 28日のクエリ最大が5表示。20のままだと永久に何も通らない
+  low_ctr_max: 0.02          # 既定のまま（上位なのにCTRが低い＝タイトル/メタ改善の対象）
+  striking_min_pos: 8.0      # 「あと一歩」の定義は動かさない。広げると改善対象がぼやける
+  striking_max_pos: 20.0
+  max_title_rewrites: 3      # 1週あたりの自動リライト上限。手組みページ(assets/pages)は元々対象外
+  max_new_topics: 3          # コンテンツギャップからtopics_queueへ入れる上限
+
 # 週次レポート
 report:
   write_markdown: true
