@@ -2,11 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "teamLab Planets & Borderless with Kids: A Family Visitor Guide",
-      "primary_keyword": "teamLab with kids",
-      "board_hint": "Tokyo with Kids"
-    },
-    {
       "topic": "KidZania Tokyo with Kids: Is It Worth It? A Parent Guide",
       "primary_keyword": "KidZania Tokyo with kids",
       "board_hint": "Tokyo with Kids"
@@ -208,9 +203,11 @@
       "url": "https://YOUR_GITHUB_USERNAME.github.io/japan-autopilot/stroller-friendly-tokyo-navigating-the-city-with-kids.html",
       "pins_count": 0,
       "image_variants": [
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
+        "fffee48df1f80000",
         "fffee48df1f80000"
       ],
       "last_pin_desc": "Planning a family trip to Tokyo? Discover stroller-friendly attractions, dining options, and tips for navigating the city with kids in 2026!",
@@ -233,12 +230,14 @@
       "image_variants": [
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
         "ffffffc3c3000000",
         "f0f8fc3c78041c00",
-        "fc980000fee22e1e"
+        "fc980000fee22e1e",
+        "ffff870300000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1534,6 +1533,30 @@
       "repin_times": [],
       "quality_score": 71,
       "posted_at": "2026-09-15T00:13:56.204686+00:00"
+    },
+    {
+      "topic": "teamLab Planets & Borderless with Kids: A Family Visitor Guide",
+      "slug": "teamlab-planets-borderless-with-kids-your-2026-family-guide",
+      "article_title": "teamLab Planets & Borderless with Kids: Your 2026 Family Guide",
+      "primary_keyword": "teamLab with kids",
+      "image_query": "Japan family digital art",
+      "board_hint": "Tokyo with Kids",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/teamlab-planets-borderless-with-kids-your-2026-family-guide",
+      "pins_count": 0,
+      "image_variants": [
+        "img/teamlab-planets-borderless-with-kids-your-2026-family-guide.jpg"
+      ],
+      "img_hashes": [
+        "063f7f2f9b800000"
+      ],
+      "last_pin_desc": "Discover how to navigate teamLab Planets and teamLab Borderless with children in 2026. This family visitor guide covers tickets, stroller policies, what to wear (water rooms!), nursing facilities, and practical tips for an unforgettable digital art experience in Tokyo. #teamLabTokyo #JapanWithKids #FamilyTravelJapan",
+      "repin_times": [],
+      "quality_score": 84,
+      "posted_at": "2026-09-17T23:48:58.316483+00:00"
     }
   ],
   "performance": {
@@ -1732,6 +1755,6 @@
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 35
+    "llm_calls": 43
   }
 }
