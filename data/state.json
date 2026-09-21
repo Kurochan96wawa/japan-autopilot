@@ -452,7 +452,7 @@
       "repin_times": [],
       "posted_at": "2026-06-24T10:30:42.476194+00:00",
       "meta_description": "Learn about renting a car in Japan with child seats for your family trip in 2026. Understand legal requirements and rental options.",
-      "seo_title": "Car Seats in Japan: Rules, Rentals & Requirements for Families",
+      "seo_title": "Car Seats in Japan: Laws, Rentals & Requirements",
       "needs_refresh": true
     },
     {
@@ -599,7 +599,7 @@
       "repin_times": [],
       "posted_at": "2026-06-26T06:45:21.963873+00:00",
       "meta_description": "Explore kid-friendly sushi options in Japan for your family trip in 2026. Discover flavors beyond tuna rolls!",
-      "seo_title": "Best Sushi for Kids & Families in Japan (2026 Guide)",
+      "seo_title": "Best Kid & Family Sushi in Japan (2026 Guide)",
       "needs_refresh": true
     },
     {
@@ -1567,18 +1567,6 @@
     "shadowban_paused": false,
     "pdca_history": [
       {
-        "at": "2026-06-28T09:13:28.674401+00:00",
-        "ga4": false,
-        "counts": {
-          "winner": 0,
-          "fixable": 0,
-          "loser": 0,
-          "insufficient": 25,
-          "total": 25
-        },
-        "flagged_fixable": []
-      },
-      {
         "at": "2026-06-28T10:10:55.864857+00:00",
         "ga4": true,
         "counts": {
@@ -1709,22 +1697,34 @@
           "total": 53
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-09-21T23:47:00.480233+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 54,
+          "total": 54
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-09-15T02:36:18.308319+00:00",
+      "at": "2026-09-21T23:47:00.480233+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
         "fixable": 0,
         "loser": 0,
-        "insufficient": 53,
-        "total": 53
+        "insufficient": 54,
+        "total": 54
       },
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-09-15T02:37:47.054350+00:00",
+      "at": "2026-09-21T23:47:53.711834+00:00",
       "rewritten": [
         "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
         "renting-a-car-in-japan-with-car-seats-family-travel-guide",
@@ -1748,13 +1748,13 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-09-15T02:36:18.307730+00:00"
+    "last_updated": "2026-09-21T23:47:00.479645+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 43
+    "llm_calls": 45
   }
 }
