@@ -210,6 +210,41 @@ def run() -> list:
         fails.append("Pinterest共有URLに .html が残っている（canonicalと不一致）: %s"
                      % ", ".join(sorted(set(bad_share))[:5]))
 
+    # ⑫ 内部リンクの行き先が実在すること（2026-09-21）
+    #    GSCの404が2ヶ月で12→20に増えた。調べると増えた4件は「消えたページ」ではなく
+    #    **一度も存在したことがないURL**で、うち1件はリードマグネットPDFの
+    #    「Free guides」表がリンク元だった（購読者全員に配る導線が死んでいた）。
+    #    docs/ の内部リンクと、PDFに印字するURLの両方を、実ファイルか301のどちらかに
+    #    解決できることを条件にする。解決できないリンクは公開前に落とす。
+    known = {p.relative_to(SITE_DIR).with_suffix("").as_posix() for p in SITE_DIR.rglob("*.html")}
+    known |= set(linker.REDIRECT_MAP)
+    known |= {"", "index"}
+
+    def _unresolved(target: str) -> bool:
+        t = target.strip("/").split("#")[0].split("?")[0]
+        if not t or t.startswith(("img/", "downloads/", "api/")):
+            return False
+        return t.removesuffix(".html") not in known
+
+    dangling = {}
+    for path in sorted(SITE_DIR.rglob("*.html")):
+        html = path.read_text(encoding="utf-8", errors="ignore")
+        for href in re.findall(r'href="/([A-Za-z0-9\-_./#?]*)"', html):
+            if _unresolved(href):
+                dangling.setdefault(href, set()).add(path.name)
+    for target, pages in sorted(dangling.items())[:5]:
+        fails.append("内部リンクの行き先が存在しない: /%s（%s）"
+                     % (target, ", ".join(sorted(pages)[:3])))
+
+    # リードマグネットPDFに印字する自サイトURLも同じ条件で検査する
+    try:
+        pdf_src = (pathlib.Path(__file__).resolve().parent / "leadmagnet_pdf.py").read_text(encoding="utf-8")
+        for u in re.findall(r'"littletabi\.com/([^"]*)"', pdf_src):
+            if _unresolved(u):
+                fails.append("リードマグネットPDFのリンク先が存在しない: /%s" % u)
+    except Exception as e:
+        fails.append("leadmagnet_pdf.py のリンク検査に失敗: %s" % e)
+
     # sitemap の loc も拡張子なしであること
     sm_html = re.findall(r"<loc>[^<]*\.html</loc>", sm)
     if sm_html:

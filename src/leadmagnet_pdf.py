@@ -214,7 +214,7 @@ def build_pdf(path) -> bool:
         story.append(Paragraph("Free guides to explore next",st_h2)); story.append(Spacer(1,2))
         lrows=[[Paragraph("&#8594; "+t,st_link),Paragraph('<font color="#a61e4d">%s</font>'%u,st_link)] for t,u in [
             ("Make a printable allergy card","littletabi.com/tools/allergy-card"),
-            ("Full family packing list","littletabi.com/essential-packing-list-for-japan-with-kids-2026"),
+            ("Full family packing list","littletabi.com/japan-packing-list-for-families-2026-kids-travel-essentials"),
             ("10-day Tokyo-Kyoto-Osaka itinerary","littletabi.com/japan-family-itinerary-tokyo-kyoto-osaka-with-young-children"),
             ("Best family hotels in Tokyo","littletabi.com/best-family-hotels-tokyo-connecting-rooms"),
             ("Family eSIMs compared","littletabi.com/japan-esim-for-families-compared"),
