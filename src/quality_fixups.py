@@ -17,6 +17,8 @@
 """
 from __future__ import annotations
 import datetime
+import html as _html
+import json
 import pathlib
 import re
 from . import linker as _linker
@@ -1039,6 +1041,64 @@ def _build_static_pages() -> int:
 
 
 # ============================================================
+# 手組みページへの BreadcrumbList 注入（2026-09-21）
+# ============================================================
+# 生成記事は site.py が Article/FAQPage/BreadcrumbList を出すが、assets/pages/ の
+# 手組みページはテンプレートを通らないためパンくずJSON-LDが無かった。
+# GSCの「パンくずリスト 有効33」は、ちょうど生成記事だけが数えられていた状態。
+# マネーページ5本が全部そこから漏れていたので、ここで冪等に足す。
+# 生成記事のパンくずは2段目もトップを指しているが、手組みページはクラスタのハブ
+# （/japan-with-kids-accommodation 等）が実在するので、そちらを指す正しい形にする。
+_BREADCRUMB_RE = re.compile(
+    r'<script type="application/ld\+json">\s*\{[^<]*?"@type":\s*"BreadcrumbList".*?</script>', re.S)
+
+
+def _inject_breadcrumbs() -> int:
+    from . import site as _site
+    base = _base_url().rstrip("/")
+    clusters = _linker.load_clusters()
+    n = 0
+    for name in STATIC_PAGES:
+        slug = name[:-5]
+        path = SITE_DIR / name
+        if not path.exists():
+            continue
+        cname, _c = _linker.cluster_of(slug, clusters)
+        if not cname:
+            continue
+        hub_title, _intro = _site.CLUSTER_META.get(cname, (cname.title(), ""))
+        hub_slug = _site._hub_slug(cname)
+        if not (SITE_DIR / f"{hub_slug}.html").exists():
+            continue
+        try:
+            html = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        m = re.search(r"<title>(.*?)(?:\s*\|[^|<]*)?</title>", html, re.S)
+        title = (m.group(1).strip() if m else slug.replace("-", " "))
+        crumb = {
+            "@context": "https://schema.org", "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home", "item": base + "/"},
+                {"@type": "ListItem", "position": 2, "name": hub_title,
+                 "item": _linker.page_url(base, hub_slug)},
+                {"@type": "ListItem", "position": 3, "name": _html.unescape(title),
+                 "item": _linker.page_url(base, slug)},
+            ],
+        }
+        block = ('<script type="application/ld+json">'
+                 + json.dumps(crumb, ensure_ascii=False) + "</script>")
+        new = (_BREADCRUMB_RE.sub(lambda _m: block, html, count=1)
+               if _BREADCRUMB_RE.search(html) else html.replace("</head>", block + "\n</head>", 1))
+        if new != html:
+            path.write_text(new, encoding="utf-8")
+            n += 1
+    if n:
+        log.info("quality_fixups: 手組みページにBreadcrumbList注入 %d件", n)
+    return n
+
+
+# ============================================================
 # Pinterest 用「Pin this guide」図の注入（2026-09-05）
 # ============================================================
 # Pinterest の「URLから保存」はページ内の縦長(2:3〜1:1)画像しか拾わない。記事画像は全て横長なので、
@@ -1160,6 +1220,7 @@ def _build_404() -> int:
 def run() -> dict:
     sp = _build_static_pages()
     m = _inject_money_picks()
+    bc = _inject_breadcrumbs()   # 手組みページのパンくずJSON-LD
     pins = _inject_pin_figures()
     hx = _scrub_hallucinations()
     c = _apply_canonical_overrides()
@@ -1173,11 +1234,11 @@ def run() -> dict:
     e = _build_embeds()
     q = _limit_asof()
     nf = _build_404()   # 他のfixupに触られないよう最後に生成する
-    log.info("quality_fixups完了: 静的ページ=%d, 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d, 404=%d",
-             sp, m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e, nf)
+    log.info("quality_fixups完了: 静的ページ=%d, 固有名詞=%d, allergyツール=%d, allergy注入=%d, バレット除去=%d, sitemap=%d, dataviz前面=%d, 透明性=%d, 新幹線手順=%d, 年齢帯=%d, 埋め込み=%d, 404=%d, パンくず=%d",
+             sp, m, t, a, b, s, f["dataviz_hoisted"], f["trust_strip"], k, g, e, nf, bc)
     return {"static_pages": sp, "money_picks": m, "scrub": hx, "canonical_dedup": c, "allergy_tool": t, "allergy_inline": a, "bullets": b, "sitemap": s,
             "dataviz_hoisted": f["dataviz_hoisted"], "trust_strip": f["trust_strip"],
-            "shinkansen_steps": k, "age_bands": g, "embeds": e, "asof": q, "notfound": nf}
+            "shinkansen_steps": k, "age_bands": g, "embeds": e, "asof": q, "notfound": nf, "breadcrumbs": bc}
 
 
 
