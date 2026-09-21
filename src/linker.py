@@ -2,6 +2,7 @@
 """トピッククラスタに基づき、記事本文末へ『関連ガイド』を自動挿入。
 孤立ページ（記事間リンクなし）を解消し、回遊と主題権威を作る。標準ライブラリ＋PyYAMLのみ。"""
 from __future__ import annotations
+import hashlib
 import json
 import os
 import re
@@ -306,7 +307,18 @@ def related(slug: str, clusters: dict, n: int = 3) -> list:
                 seen.add(s2); dedup.append(s2)
         return dedup[:n + 1]
     sibs = [s for s in (c.get("members", []) or []) if s != slug]
-    out = sibs[:n]
+    # 2026-09-21: 以前は常に sibs[:n]（＝YAMLの先頭3本）を返していた。クラスタが3本を
+    # 超えると4本目以降は誰からもリンクされず、新しく足したページほど孤立する。
+    # accommodation が7本になった時点で実害が出た: 内部被リンクが
+    # kyoto-osaka 7 / disney 7 / 6-or-more 7 に対し、最新の kitchenette は1本だけで、
+    # GSCでも2週連続で表示0だった。
+    # slugから決まる開始位置で輪番にして、同じクラスタ内の全員に均等に配る。
+    # 出力はslugごとに一意なので、再実行しても結果は変わらない（冪等）。
+    if sibs:
+        start = int(hashlib.md5(slug.encode("utf-8")).hexdigest(), 16) % len(sibs)
+        out = [sibs[(start + i) % len(sibs)] for i in range(min(n, len(sibs)))]
+    else:
+        out = []
     if c.get("pillar") and c["pillar"] != slug:
         out.append(c["pillar"])  # ピラーへ必ず1本＝権威集約
     # 重複除去・順序維持
