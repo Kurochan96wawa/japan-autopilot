@@ -1,6 +1,17 @@
 # Cloudflare Pages 301 redirects — 自動生成 (src/seo_fixups.py, 元データ: src/linker.REDIRECT_MAP)
 # 手で編集しないこと。各行: /旧パス  /統合先  301（.html と拡張子なしの両形式）
 
+# --- www → apex（2026-09-21） -------------------------------------------
+# !! この2行は現時点では発火しない。www.littletabi.com は Cloudflare Pages に
+#    紐づいておらず、DNSが kurochan96wawa.github.io（GitHub Pages・無効）を
+#    向いているため。GSCは7月から www を404として記録している。
+#    直し方: Cloudflare DNS の www レコードを apex 向き(proxied)に変更するか、
+#    www.littletabi.com を Pages プロジェクトのカスタムドメインに追加する。
+#    その作業をした瞬間にこの2行が効くよう、先に置いておく（順序を逆にすると
+#    wwwが200を返す重複コンテンツ期間ができてしまう）。
+https://www.littletabi.com/*  https://littletabi.com/:splat  301!
+http://www.littletabi.com/*   https://littletabi.com/:splat  301!
+
 /accessing-medical-care-in-japan-for-families-2026-what-paren       /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /accessing-medical-care-in-japan-for-families-2026-what-paren.html  /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /buying-baby-diapers-wipes-and-formula-in-japan-2026       /diapers-formula-baby-gear-in-japan-what-to-pack-buy  301
@@ -11,12 +22,16 @@
 /child-sick-in-japan-essential-medical-guide-for-families-202.html  /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /diapers-formula-in-japan-brands-sizes-where-to-buy       /diapers-formula-baby-gear-in-japan-what-to-pack-buy  301
 /diapers-formula-in-japan-brands-sizes-where-to-buy.html  /diapers-formula-baby-gear-in-japan-what-to-pack-buy  301
+/essential-packing-list-for-japan-with-kids-2026       /japan-packing-list-for-families-2026-kids-travel-essentials  301
+/essential-packing-list-for-japan-with-kids-2026.html  /japan-packing-list-for-families-2026-kids-travel-essentials  301
 /family-friendly-ryokan-stays-in-japan-2026       /ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026  301
 /family-friendly-ryokan-stays-in-japan-2026.html  /ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026  301
 /family-health-emergencies-in-japan-a-2026-parent-s-guide       /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /family-health-emergencies-in-japan-a-2026-parent-s-guide.html  /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /family-healthcare-in-japan-what-to-do-for-kids-2026-guide       /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /family-healthcare-in-japan-what-to-do-for-kids-2026-guide.html  /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
+/healthcare-for-kids-in-japan-a-parent-s-guide-2026       /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
+/healthcare-for-kids-in-japan-a-parent-s-guide-2026.html  /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /japan-packing-list-for-families-in-2026       /japan-packing-list-for-families-2026-kids-travel-essentials  301
 /japan-packing-list-for-families-in-2026.html  /japan-packing-list-for-families-2026-kids-travel-essentials  301
 /japan-with-kids-2026-the-ultimate-seasonal-packing-list       /japan-packing-list-for-families-2026-kids-travel-essentials  301
@@ -25,6 +40,8 @@
 /navigating-japan-s-public-transport-with-kids-2026.html  /japan-public-transport-with-kids-fares-strollers-facilities  301
 /navigating-kids-minor-illnesses-in-japan-2026       /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /navigating-kids-minor-illnesses-in-japan-2026.html  /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
+/osaka-with-young-kids-museums-playgrounds-2026       /osaka-with-a-toddler-kid-friendly-sights-practical-tips-2026  301
+/osaka-with-young-kids-museums-playgrounds-2026.html  /osaka-with-a-toddler-kid-friendly-sights-practical-tips-2026  301
 /ryokan-with-kids-family-stays-in-japan-2026-guide       /ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026  301
 /ryokan-with-kids-family-stays-in-japan-2026-guide.html  /ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026  301
 /staying-connected-in-japan-for-families-2026       /staying-connected-in-japan-with-kids-esims-wifi-2026  301
@@ -41,3 +58,5 @@
 /tokyo-family-hotels-connecting-rooms-kitchenettes.html  /best-family-hotels-tokyo-connecting-rooms  301
 /ultimate-packing-list-for-japan-with-kids-2026       /japan-packing-list-for-families-2026-kids-travel-essentials  301
 /ultimate-packing-list-for-japan-with-kids-2026.html  /japan-packing-list-for-families-2026-kids-travel-essentials  301
+/visiting-temples-and-shrines-in-japan-with-kids-2026       /visiting-japan-temples-with-kids-respectfully-2026-guide  301
+/visiting-temples-and-shrines-in-japan-with-kids-2026.html  /visiting-japan-temples-with-kids-respectfully-2026-guide  301

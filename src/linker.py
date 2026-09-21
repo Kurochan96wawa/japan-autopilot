@@ -44,6 +44,18 @@ REDIRECT_MAP = {
     # 実測では .html 付きも 404（docs/ に実体なし）。両形式とも301の対象にする。
     "navigating-kids-minor-illnesses-in-japan-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
 
+    # 2026-09-21: GSCの404が12→20に増えた分。実測すると、この4slugは
+    # **git履歴上いちども docs/ に存在したことがない**（コミット0件）。
+    # つまり「ページが消えた」のではなく、実在しないURLへのリンクをGoogleが辿っている。
+    # essential-packing-list… はリードマグネットPDFの「Free guides」表がリンク元だった
+    # （src/leadmagnet_pdf.py を同時に修正）。残り3件はリポジトリ内に出どころが無く、
+    # 7月のヒストリ差し替え以前の外部リンク/旧サイトマップ由来と見られる。
+    # いずれも主題が一致する現存ページへ寄せる（4件とも実ファイルを確認済み）。
+    "essential-packing-list-for-japan-with-kids-2026": "japan-packing-list-for-families-2026-kids-travel-essentials",
+    "osaka-with-young-kids-museums-playgrounds-2026": "osaka-with-a-toddler-kid-friendly-sights-practical-tips-2026",
+    "visiting-temples-and-shrines-in-japan-with-kids-2026": "visiting-japan-temples-with-kids-respectfully-2026-guide",
+    "healthcare-for-kids-in-japan-a-parent-s-guide-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+
     # 復旧スプリントC (2026-08-21): 8月の自動生成期(重複ガード不在)に量産された近接重複。
     # 統合先の選定基準は 内容の充実度 → 内部リンク被リンク数 → URLの検索意図適合。
     # 語数差が10%以内は「同等」とみなし次の基準に送る、という運用で機械的に決めた。
