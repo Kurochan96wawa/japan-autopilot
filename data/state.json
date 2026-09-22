@@ -2,11 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "KidZania Tokyo with Kids: Is It Worth It? A Parent Guide",
-      "primary_keyword": "KidZania Tokyo with kids",
-      "board_hint": "Tokyo with Kids"
-    },
-    {
       "topic": "Ueno Zoo with Kids: Pandas, Practical Tips & Nearby Family Spots",
       "primary_keyword": "Ueno Zoo with kids pandas",
       "board_hint": "Tokyo with Kids"
@@ -204,9 +199,11 @@
       "pins_count": 0,
       "image_variants": [
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
+        "fffee48df1f80000",
         "fffee48df1f80000",
         "fffee48df1f80000"
       ],
@@ -231,13 +228,15 @@
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
         "ffffffc3c3000000",
         "f0f8fc3c78041c00",
         "fc980000fee22e1e",
-        "ffff870300000000"
+        "ffff870300000000",
+        "ffffffcfc2000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1557,6 +1556,31 @@
       "repin_times": [],
       "quality_score": 84,
       "posted_at": "2026-09-17T23:48:58.316483+00:00"
+    },
+    {
+      "topic": "KidZania Tokyo with Kids: Is It Worth It? A Parent Guide",
+      "slug": "kidzania-tokyo-with-kids-2026-is-it-worth-it-a-parent-guide",
+      "article_title": "KidZania Tokyo with Kids (2026): Is It Worth It? A Parent Guide",
+      "primary_keyword": "KidZania Tokyo with kids",
+      "image_query": "kids Tokyo city",
+      "board_hint": "Tokyo with Kids",
+      "affiliates_used": [
+        "experiences",
+        "gear"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/kidzania-tokyo-with-kids-2026-is-it-worth-it-a-parent-guide",
+      "pins_count": 0,
+      "image_variants": [
+        "img/kidzania-tokyo-with-kids-2026-is-it-worth-it-a-parent-guide-v1.jpg"
+      ],
+      "img_hashes": [
+        "fffec71fff802070"
+      ],
+      "last_pin_desc": "Planning a family trip to Tokyo with kids? This detailed guide covers everything parents need to know about KidZania Tokyo, including ticket prices (2026), operating hours, reservation tips, stroller access, and allergy information, ensuring a smooth visit for your children aged 3-15. #KidZaniaTokyo #JapanWithKids #FamilyTravelJapan",
+      "repin_times": [],
+      "quality_score": 76,
+      "posted_at": "2026-09-22T00:21:16.356740+00:00"
     }
   ],
   "performance": {
@@ -1755,6 +1779,6 @@
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 45
+    "llm_calls": 51
   }
 }
