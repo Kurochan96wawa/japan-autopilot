@@ -46,6 +46,7 @@ _SEO_DEFAULTS = {
     "striking_min_pos": 8.0,      # 掲載順位がこの範囲なら「あと一歩」
     "striking_max_pos": 20.0,
     "max_title_rewrites": 3,      # 1週間にタイトル/メタを書き換える上限（変動の管理）
+    "title_cooldown_days": 28,    # 同じページを再度書き換えるまでの最低日数（効果測定のため）
     "max_new_topics": 3,          # 1週間に投入する新規ネタの上限
 }
 
@@ -130,23 +131,55 @@ def fetch_search_data(days: int):
     except Exception as e:
         log.error("GSC取得失敗(SEO改善スキップ): %s", e)
         return {}, []
+    # 2026-09-23: GSCは 9/6 の拡張子なし移行より前のデータを保持しているため、同じページを
+    # "/x.html" と "/x" の2行で返す。以前はそのまま別ページとして扱っていたので、
+    # (a) 同じページが1回の実行で2回タイトル書き換えされ（9/21の実行で実際に発生）、
+    # (b) 表示回数が2行に割れて足切りや順位判定が歪んでいた。
+    # URLを正規化して1ページに合算する。CTRは合算後に再計算し、順位は表示回数で加重平均する。
     pages = {}
     for row in pg.get("rows", []):
-        url = (row.get("keys") or [""])[0]
-        pages[url] = {
-            "clicks": row.get("clicks", 0), "impressions": row.get("impressions", 0),
-            "ctr": row.get("ctr", 0.0), "position": row.get("position", 0.0),
-        }
-    queries = []
+        url = _canon_url((row.get("keys") or [""])[0])
+        _acc(pages.setdefault(url, _zero()), row)
+    for m in pages.values():
+        _finish(m)
+    qagg = {}
     for row in qp.get("rows", []):
         keys = row.get("keys") or ["", ""]
-        queries.append({
-            "query": keys[0], "page": keys[1] if len(keys) > 1 else "",
-            "clicks": row.get("clicks", 0), "impressions": row.get("impressions", 0),
-            "ctr": row.get("ctr", 0.0), "position": row.get("position", 0.0),
-        })
+        key = (keys[0], _canon_url(keys[1] if len(keys) > 1 else ""))
+        _acc(qagg.setdefault(key, _zero()), row)
+    queries = []
+    for (q, pg_url), m in qagg.items():
+        _finish(m)
+        queries.append(dict(m, query=q, page=pg_url))
     log.info("GSC: %dページ / %dクエリ取得", len(pages), len(queries))
     return pages, queries
+
+
+def _canon_url(url: str) -> str:
+    """GSCのURLを公開URLの正（拡張子なし）に寄せる。/index.html と /index はサイトルートへ。"""
+    u = (url or "").strip()
+    if u.endswith(".html"):
+        u = u[:-5]
+    if u.endswith("/index"):
+        u = u[: -len("index")]
+    return u
+
+
+def _zero() -> dict:
+    return {"clicks": 0, "impressions": 0, "_pos_w": 0.0}
+
+
+def _acc(m: dict, row: dict) -> None:
+    imp = row.get("impressions", 0) or 0
+    m["clicks"] += row.get("clicks", 0) or 0
+    m["impressions"] += imp
+    m["_pos_w"] += float(row.get("position", 0.0) or 0.0) * imp
+
+
+def _finish(m: dict) -> None:
+    imp = m["impressions"]
+    m["ctr"] = (m["clicks"] / imp) if imp else 0.0
+    m["position"] = (m.pop("_pos_w") / imp) if imp else 0.0
 
 
 def _slug_from_url(url: str) -> str:
@@ -286,14 +319,40 @@ def run_seo_improve(state: dict) -> str:
         if m["ctr"] < float(seo["low_ctr_max"]) and m["position"] <= float(seo["striking_max_pos"]) + 10:
             cand.append((url, m))
     cand.sort(key=lambda x: x[1]["impressions"], reverse=True)
-    for url, m in cand[: int(seo["max_title_rewrites"])]:
+    # 2026-09-23: クールダウン。以前は毎週「CTRが低い上位3ページ」を無条件に書き換えていたが、
+    # 集計窓は90日なので、書き換えた直後の週はまだ旧タイトルのCTRが数字の大半を占める。
+    # 結果、9/15に直した寿司・チャイルドシートの2ページを9/22に再び書き換えていた
+    # （寿司は "best sushi for kids / for families" との完全一致を失い、むしろ悪化した）。
+    # 新タイトルの効果が数字に出る前に次の変更をかけると、効果測定が永久にできない。
+    # 直近の書き換えから cooldown 日以内のページは候補から外し、空いた枠は次点に回す。
+    cooldown = int(seo.get("title_cooldown_days", 28))
+    today = date.today()
+    done_slugs = set()
+    limit = int(seo["max_title_rewrites"])
+    for url, m in cand:
+        if len(rewritten) >= limit:
+            break
         slug = _slug_from_url(url)
+        if slug in done_slugs:
+            continue                      # 同一ページを1回の実行で2度書き換えない
+        done_slugs.add(slug)
         post = by_slug.get(slug)
-        cur_title = post.get("article_title", slug) if post else slug
+        last = (post or {}).get("seo_title_at", "")
+        if last:
+            try:
+                if (today - date.fromisoformat(last[:10])).days < cooldown:
+                    log.info("SEO: クールダウン中のためスキップ %s（前回 %s）", slug, last[:10])
+                    continue
+            except ValueError:
+                pass
+        # 現在ページに出ているのは seo_title のほう。旧 article_title を渡すと
+        # モデルが「今のタイトル」を取り違える。
+        cur_title = ((post or {}).get("seo_title") or (post or {}).get("article_title") or slug)
         res = _rewrite_title_meta(slug, q_by_page.get(url, []), cur_title, site_name)
         if res:
             if post is not None:
                 post["seo_title"] = res["title"]
+                post["seo_title_at"] = now_iso()
                 post["needs_refresh"] = True
             rewritten.append((slug, res["title"], m))
 
