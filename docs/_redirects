@@ -1,16 +1,8 @@
 # Cloudflare Pages 301 redirects — 自動生成 (src/seo_fixups.py, 元データ: src/linker.REDIRECT_MAP)
 # 手で編集しないこと。各行: /旧パス  /統合先  301（.html と拡張子なしの両形式）
 
-# --- www → apex（2026-09-21） -------------------------------------------
-# !! この2行は現時点では発火しない。www.littletabi.com は Cloudflare Pages に
-#    紐づいておらず、DNSが kurochan96wawa.github.io（GitHub Pages・無効）を
-#    向いているため。GSCは7月から www を404として記録している。
-#    直し方: Cloudflare DNS の www レコードを apex 向き(proxied)に変更するか、
-#    www.littletabi.com を Pages プロジェクトのカスタムドメインに追加する。
-#    その作業をした瞬間にこの2行が効くよう、先に置いておく（順序を逆にすると
-#    wwwが200を返す重複コンテンツ期間ができてしまう）。
-https://www.littletabi.com/*  https://littletabi.com/:splat  301!
-http://www.littletabi.com/*   https://littletabi.com/:splat  301!
+# www → apex の301はここではなく Cloudflare のゾーン側 Redirect Rule で行う
+# （2026-09-23設定。www は Pages に紐づかないため、この _redirects には届かない）。
 
 /accessing-medical-care-in-japan-for-families-2026-what-paren       /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
 /accessing-medical-care-in-japan-for-families-2026-what-paren.html  /japan-healthcare-for-kids-clinics-pharmacies-emergencies-202  301
