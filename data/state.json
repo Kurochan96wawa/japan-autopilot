@@ -4,7 +4,8 @@
     {
       "topic": "Ueno Zoo with Kids: Pandas, Practical Tips & Nearby Family Spots",
       "primary_keyword": "Ueno Zoo with kids pandas",
-      "board_hint": "Tokyo with Kids"
+      "board_hint": "Tokyo with Kids",
+      "failed_attempts": 1
     },
     {
       "topic": "Cherry Blossom Season in Japan with Kids: Family-Friendly Hanami Spots & Tips",
@@ -229,6 +230,7 @@
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
@@ -236,7 +238,8 @@
         "f0f8fc3c78041c00",
         "fc980000fee22e1e",
         "ffff870300000000",
-        "ffffffcfc2000000"
+        "ffffffcfc2000000",
+        "ffff7f0100000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1782,6 +1785,6 @@
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 51
+    "llm_calls": 57
   }
 }
