@@ -57,6 +57,11 @@ REDIRECT_MAP = {
     "visiting-temples-and-shrines-in-japan-with-kids-2026": "visiting-japan-temples-with-kids-respectfully-2026-guide",
     "healthcare-for-kids-in-japan-a-parent-s-guide-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
 
+    # GSC 404 (2026-09-28): 残り2件。リポジトリにも git 履歴にもリンク元が無く、外部/旧サイトマップ由来と見られる。
+    # 転送先2ページは docs/ と state.json で実在を確認済み（どちらも REDIRECT_MAP のキーではない＝多段にならない）。
+    "essential-packing-list-for-family-travel-to-japan-2026": "japan-packing-list-for-families-2026-kids-travel-essentials",
+    "what-to-do-if-your-child-gets-sick-in-japan-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+
     # 復旧スプリントC (2026-08-21): 8月の自動生成期(重複ガード不在)に量産された近接重複。
     # 統合先の選定基準は 内容の充実度 → 内部リンク被リンク数 → URLの検索意図適合。
     # 語数差が10%以内は「同等」とみなし次の基準に送る、という運用で機械的に決めた。
