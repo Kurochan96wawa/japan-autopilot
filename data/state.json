@@ -364,7 +364,9 @@
       "repin_times": [],
       "posted_at": "2026-06-23T12:30:44.612243+00:00",
       "meta_description": "Discover where to buy diapers and baby formula in Japan, including popular brands, sizes, and store recommendations for families traveling in 2026.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Where to Buy Diapers & Formula in Japan: Shops & Tips",
+      "seo_title_at": "2026-09-29T00:47:47.004675+00:00"
     },
     {
       "topic": "Kid-Friendly Onsens in Japan: Private Baths and Family Options",
@@ -431,7 +433,9 @@
       "repin_times": [],
       "posted_at": "2026-06-23T14:03:25.367280+00:00",
       "meta_description": "Discover whether Tokyo Disneyland or DisneySea is better for young kids in 2026. Get practical tips for your family trip to Japan.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Tokyo Disneyland vs. DisneySea: Best for Families 2026",
+      "seo_title_at": "2026-09-29T00:48:22.992750+00:00"
     },
     {
       "topic": "Renting a Car in Japan with Car Seats: Is It Necessary for Your Family?",
@@ -750,7 +754,9 @@
       "repin_times": [],
       "posted_at": "2026-06-26T12:00:32.331736+00:00",
       "meta_description": "Discover kid-friendly ramen options in Japan, from broth types to toppings and where to eat with your family.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Family-Friendly Ramen Japan: Top Restaurants & Tips",
+      "seo_title_at": "2026-09-29T00:48:05.412468+00:00"
     },
     {
       "topic": "Getting Around Japan with a Baby Carrier: Pros, Cons, and Best Practices",
@@ -1019,7 +1025,8 @@
       "repin_times": [],
       "is_money_page": true,
       "quality_score": 75,
-      "posted_at": "2026-06-29T05:22:45.266295+00:00"
+      "posted_at": "2026-06-29T05:22:45.266295+00:00",
+      "needs_refresh": true
     },
     {
       "topic": "Tokyo Disneyland vs DisneySea with Young Kids: Which Park? (2026)",
@@ -1597,18 +1604,6 @@
     "shadowban_paused": false,
     "pdca_history": [
       {
-        "at": "2026-06-28T10:10:55.864857+00:00",
-        "ga4": true,
-        "counts": {
-          "winner": 0,
-          "fixable": 0,
-          "loser": 0,
-          "insufficient": 25,
-          "total": 25
-        },
-        "flagged_fixable": []
-      },
-      {
         "at": "2026-06-28T12:04:29.556388+00:00",
         "ga4": true,
         "counts": {
@@ -1739,38 +1734,50 @@
           "total": 54
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-09-29T00:47:27.814055+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 55,
+          "total": 55
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-09-21T23:47:00.480233+00:00",
+      "at": "2026-09-29T00:47:27.814055+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
         "fixable": 0,
         "loser": 0,
-        "insufficient": 54,
-        "total": 54
+        "insufficient": 55,
+        "total": 55
       },
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-09-21T23:47:53.711834+00:00",
+      "at": "2026-09-29T00:48:22.993560+00:00",
       "rewritten": [
-        "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
-        "renting-a-car-in-japan-with-car-seats-family-travel-guide",
-        "renting-a-car-in-japan-with-car-seats-family-travel-guide"
+        "diapers-formula-in-japan-brands-sizes-where-to-buy",
+        "child-friendly-ramen-in-japan-broth-types-spots",
+        "tokyo-disney-vs-disneysea-for-kids"
       ],
       "striking": [
         "renting-a-car-in-japan-with-car-seats-family-travel-guide",
         "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
         "diapers-formula-in-japan-brands-sizes-where-to-buy",
-        "tokyo-disney-vs-disneysea-for-kids",
         "child-friendly-ramen-in-japan-broth-types-spots",
+        "tokyo-disney-vs-disneysea-for-kids",
         "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
-        "japan-konbini-snacks-for-picky-eaters-kid-approved",
+        "healthcare-for-kids-in-japan-a-parent-s-guide-2026",
         "budget-family-meals-in-japan-where-to-eat-with-kids",
-        "universal-studios-japan-with-kids-maximizing-family-fun",
-        "hands-free-travel-in-japan-with-kids-2026"
+        "japan-konbini-snacks-for-picky-eaters-kid-approved",
+        "beat-the-heat-japan-summer-with-kids-safety-guide"
       ],
       "new_topics": []
     }
@@ -1778,13 +1785,13 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-09-21T23:47:00.479645+00:00"
+    "last_updated": "2026-09-29T00:47:27.813589+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-09",
-    "llm_calls": 57
+    "llm_calls": 59
   }
 }
