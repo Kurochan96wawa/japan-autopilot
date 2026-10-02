@@ -196,13 +196,15 @@
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
         "fffee48df1f80000",
         "fffee48df1f80000",
         "fffee48df1f80000",
-        "fffee485f1f80000"
+        "fffee485f1f80000",
+        "fffee48df1f80000"
       ],
       "last_pin_desc": "Planning a family trip to Tokyo? Discover stroller-friendly attractions, dining options, and tips for navigating the city with kids in 2026!",
       "repin_times": [],
@@ -228,6 +230,7 @@
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
@@ -237,7 +240,8 @@
         "ffff870300000000",
         "ffffffcfc2000000",
         "ffff7f0100000000",
-        "ffffff7f46000000"
+        "ffffff7f46000000",
+        "ffff870300000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1592,6 +1596,30 @@
       "repin_times": [],
       "quality_score": 76,
       "posted_at": "2026-09-22T00:21:16.356740+00:00"
+    },
+    {
+      "topic": "Ueno Zoo with Kids: Pandas, Practical Tips & Nearby Family Spots",
+      "slug": "ueno-zoo-with-kids-pandas-tips-nearby-family-fun-2026",
+      "article_title": "Ueno Zoo with Kids: Pandas, Tips & Nearby Family Fun (2026)",
+      "primary_keyword": "Ueno Zoo with kids pandas",
+      "image_query": "Ueno Zoo family pandas",
+      "board_hint": "Tokyo with Kids",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/ueno-zoo-with-kids-pandas-tips-nearby-family-fun-2026",
+      "pins_count": 0,
+      "image_variants": [
+        "img/ueno-zoo-with-kids-pandas-tips-nearby-family-fun-2026.jpg"
+      ],
+      "img_hashes": [
+        "7e7f7f7f6f250000"
+      ],
+      "last_pin_desc": "Planning a family trip to Ueno Zoo in Tokyo? Get practical tips for navigating with kids, seeing the giant pandas, and discovering nearby attractions in Ueno Park for a stress-free 2026 visit. Essential advice for parents traveling to Japan.",
+      "repin_times": [],
+      "quality_score": 80,
+      "posted_at": "2026-10-02T01:09:30.186462+00:00"
     }
   ],
   "performance": {
@@ -1789,7 +1817,7 @@
     "started": "2026-06-23"
   },
   "usage": {
-    "month": "2026-09",
-    "llm_calls": 65
+    "month": "2026-10",
+    "llm_calls": 6
   }
 }
