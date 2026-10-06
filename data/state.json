@@ -558,7 +558,9 @@
       "repin_times": [],
       "posted_at": "2026-06-26T06:14:49.978504+00:00",
       "meta_description": "Discover the best convenience store snacks for kids in Japan, perfect for picky eaters during your family travels in 2026.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Japan Konbini Snacks for Kids: Sweet, Unique Treats & Tips",
+      "seo_title_at": "2026-10-06T01:40:56.280587+00:00"
     },
     {
       "topic": "Navigating Japan's Public Transport with Kids: Tickets, Etiquette, and Tips",
@@ -636,7 +638,9 @@
       "repin_times": [],
       "posted_at": "2026-06-26T07:08:03.906153+00:00",
       "meta_description": "Discover practical tips and advice for staying cool in Japan during summer with kids in 2026. Explore kid-friendly spots, activities, and more!",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Japan Summer with Kids: Stay Cool & Travel Smart Guide",
+      "seo_title_at": "2026-10-06T01:40:38.540890+00:00"
     },
     {
       "topic": "Japan Family Itinerary: 10 Days in Tokyo, Kyoto, and Osaka with Young Children",
@@ -831,7 +835,9 @@
       "repin_times": [],
       "posted_at": "2026-06-28T08:36:55.315672+00:00",
       "meta_description": "Discover Tokyo's best family-friendly themed cafes beyond maid cafes. Find animal encounters, digital art, and character cafes for an unforgettable Japan trip with kids.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Tokyo's Best Character & Themed Cafes for Families",
+      "seo_title_at": "2026-10-06T01:40:20.620416+00:00"
     },
     {
       "topic": "Gacha Gacha Machines in Japan: A Parent's Guide to Fun and Fair Play",
@@ -1630,18 +1636,6 @@
     "shadowban_paused": false,
     "pdca_history": [
       {
-        "at": "2026-06-28T12:04:29.556388+00:00",
-        "ga4": true,
-        "counts": {
-          "winner": 0,
-          "fixable": 0,
-          "loser": 0,
-          "insufficient": 28,
-          "total": 28
-        },
-        "flagged_fixable": []
-      },
-      {
         "at": "2026-06-29T04:47:16.866093+00:00",
         "ga4": false,
         "counts": {
@@ -1772,38 +1766,50 @@
           "total": 55
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-10-06T01:38:20.410967+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 56,
+          "total": 56
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-09-29T00:47:27.814055+00:00",
+      "at": "2026-10-06T01:38:20.410967+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
         "fixable": 0,
         "loser": 0,
-        "insufficient": 55,
-        "total": 55
+        "insufficient": 56,
+        "total": 56
       },
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-09-29T00:48:22.993560+00:00",
+      "at": "2026-10-06T01:40:56.281350+00:00",
       "rewritten": [
-        "diapers-formula-in-japan-brands-sizes-where-to-buy",
-        "child-friendly-ramen-in-japan-broth-types-spots",
-        "tokyo-disney-vs-disneysea-for-kids"
+        "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
+        "beat-the-heat-japan-summer-with-kids-safety-guide",
+        "japan-konbini-snacks-for-picky-eaters-kid-approved"
       ],
       "striking": [
-        "renting-a-car-in-japan-with-car-seats-family-travel-guide",
         "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
+        "renting-a-car-in-japan-with-car-seats-family-travel-guide",
         "diapers-formula-in-japan-brands-sizes-where-to-buy",
-        "child-friendly-ramen-in-japan-broth-types-spots",
-        "tokyo-disney-vs-disneysea-for-kids",
-        "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
         "healthcare-for-kids-in-japan-a-parent-s-guide-2026",
-        "budget-family-meals-in-japan-where-to-eat-with-kids",
+        "child-friendly-ramen-in-japan-broth-types-spots",
+        "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
+        "staying-connected-in-japan-with-kids-in-2026",
+        "beat-the-heat-japan-summer-with-kids-safety-guide",
         "japan-konbini-snacks-for-picky-eaters-kid-approved",
-        "beat-the-heat-japan-summer-with-kids-safety-guide"
+        "budget-family-meals-in-japan-where-to-eat-with-kids"
       ],
       "new_topics": []
     }
@@ -1811,13 +1817,13 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-09-29T00:47:27.813589+00:00"
+    "last_updated": "2026-10-06T01:38:20.410390+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-10",
-    "llm_calls": 6
+    "llm_calls": 8
   }
 }
