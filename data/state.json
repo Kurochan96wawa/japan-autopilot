@@ -2,11 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Cherry Blossom Season in Japan with Kids: Family-Friendly Hanami Spots & Tips",
-      "primary_keyword": "cherry blossom Japan with kids hanami",
-      "board_hint": "Seasonal Japan"
-    },
-    {
       "topic": "Winter in Japan with Kids: Snow Play, Staying Warm & Family Activities",
       "primary_keyword": "winter Japan with kids snow",
       "board_hint": "Seasonal Japan"
@@ -197,6 +192,7 @@
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
@@ -204,7 +200,8 @@
         "fffee48df1f80000",
         "fffee48df1f80000",
         "fffee485f1f80000",
-        "fffee48df1f80000"
+        "fffee48df1f80000",
+        "0000ffffd5993c18"
       ],
       "last_pin_desc": "Planning a family trip to Tokyo? Discover stroller-friendly attractions, dining options, and tips for navigating the city with kids in 2026!",
       "repin_times": [],
@@ -231,6 +228,7 @@
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
@@ -241,7 +239,8 @@
         "ffffffcfc2000000",
         "ffff7f0100000000",
         "ffffff7f46000000",
-        "ffff870300000000"
+        "ffff870300000000",
+        "fc7c7cf818000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1626,6 +1625,30 @@
       "repin_times": [],
       "quality_score": 80,
       "posted_at": "2026-10-02T01:09:30.186462+00:00"
+    },
+    {
+      "topic": "Cherry Blossom Season in Japan with Kids: Family-Friendly Hanami Spots & Tips",
+      "slug": "cherry-blossom-season-japan-with-kids-family-hanami-2026",
+      "article_title": "Cherry Blossom Season Japan with Kids: Family Hanami (2026)",
+      "primary_keyword": "cherry blossom Japan with kids hanami",
+      "image_query": "family cherry blossoms Japan",
+      "board_hint": "Seasonal Japan",
+      "affiliates_used": [
+        "experiences"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/cherry-blossom-season-japan-with-kids-family-hanami-2026",
+      "pins_count": 0,
+      "image_variants": [
+        "img/cherry-blossom-season-japan-with-kids-family-hanami-2026-v1.jpg"
+      ],
+      "img_hashes": [
+        "0f3fcf7f0e070c0c"
+      ],
+      "last_pin_desc": "Planning a Japan trip with kids for cherry blossom season? Discover top family-friendly hanami spots in Tokyo, Osaka, and Kyoto. Get practical tips on nursing rooms, stroller access, and playgrounds to make your 2026 trip stress-free and magical. #JapanWithKids #CherryBlossomJapan #FamilyTravelJapan",
+      "repin_times": [],
+      "quality_score": 100,
+      "posted_at": "2026-10-06T02:01:56.930399+00:00"
     }
   ],
   "performance": {
@@ -1824,6 +1847,6 @@
   },
   "usage": {
     "month": "2026-10",
-    "llm_calls": 8
+    "llm_calls": 16
   }
 }
