@@ -4,7 +4,8 @@
     {
       "topic": "Winter in Japan with Kids: Snow Play, Staying Warm & Family Activities",
       "primary_keyword": "winter Japan with kids snow",
-      "board_hint": "Seasonal Japan"
+      "board_hint": "Seasonal Japan",
+      "failed_attempts": 1
     },
     {
       "topic": "Tokyo's Best Indoor Play Spaces and Interactive Museums for Families with Young Children",
@@ -173,6 +174,12 @@
       "search_intent": "Families on longer trips to Japan (e.g., two weeks) need to manage laundry for their children and are seeking efficient, practical solutions. They want to understand where to find facilities, how to use them, and what to expect regarding costs, detergents, and drying times to keep their family's clothing fresh and minimize packing.",
       "primary_keyword": "japan with kids 2 weeks",
       "board_hint": "Japan Logistics with Kids; Practical Travel Japan Family"
+    },
+    {
+      "topic": "Doing Laundry in Japan with Kids: A Practical Guide for Traveling Families",
+      "search_intent": "Parents traveling with children in Japan for an extended period seek practical advice on how to manage laundry. They are looking for information on locating and using coin laundries (laundromats), understanding Japanese washing machine settings, detergent options, drying facilities, and hotel laundry services to keep their family's clothes clean during their trip.",
+      "primary_keyword": "laundry japan with kids",
+      "board_hint": "Japan Family Logistics"
     }
   ],
   "posted": [
@@ -229,6 +236,7 @@
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
@@ -240,7 +248,8 @@
         "ffff7f0100000000",
         "ffffff7f46000000",
         "ffff870300000000",
-        "fc7c7cf818000000"
+        "fc7c7cf818000000",
+        "f0ffffb0f0000020"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1847,6 +1856,6 @@
   },
   "usage": {
     "month": "2026-10",
-    "llm_calls": 16
+    "llm_calls": 22
   }
 }
