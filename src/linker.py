@@ -62,6 +62,12 @@ REDIRECT_MAP = {
     "essential-packing-list-for-family-travel-to-japan-2026": "japan-packing-list-for-families-2026-kids-travel-essentials",
     "what-to-do-if-your-child-gets-sick-in-japan-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
 
+    # GSC 404 (2026-10-12): 追加4件。転送先は docs/ に実在し、REDIRECT_MAP のキーではない（転送1回）。
+    "japan-family-packing-list-essentials-for-traveling-with-kids": "japan-packing-list-for-families-2026-kids-travel-essentials",
+    "making-temples-shrines-fun-for-kids-in-japan-2026": "visiting-japan-temples-with-kids-respectfully-2026-guide",
+    "authentic-japanese-cultural-experiences-for-kids-2026": "engaging-kids-in-japanese-culture-temple-craft-etiquette-tip",
+    "best-children-s-museums-and-learning-spots-in-japan-2026": "japan-with-kids-attractions",
+
     # 復旧スプリントC (2026-08-21): 8月の自動生成期(重複ガード不在)に量産された近接重複。
     # 統合先の選定基準は 内容の充実度 → 内部リンク被リンク数 → URLの検索意図適合。
     # 語数差が10%以内は「同等」とみなし次の基準に送る、という運用で機械的に決めた。
