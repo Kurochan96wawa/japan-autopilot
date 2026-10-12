@@ -173,7 +173,8 @@ def _add_to_sitemap(locs) -> None:
     import datetime
     today = datetime.date.today().isoformat()
     add = ""
-    for loc in locs:
+    # 2026-10-12: ファイル列挙順はOSで違う（Mac/CI）。順序だけの差分を毎runで出さないよう並べる
+    for loc in sorted(locs):
         if loc in xml:
             continue
         add += (f"<url>\n<loc>{loc}</loc>\n<lastmod>{today}</lastmod>\n"
