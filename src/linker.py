@@ -68,6 +68,31 @@ REDIRECT_MAP = {
     "authentic-japanese-cultural-experiences-for-kids-2026": "engaging-kids-in-japanese-culture-temple-craft-etiquette-tip",
     "best-children-s-museums-and-learning-spots-in-japan-2026": "japan-with-kids-attractions",
 
+    # GSC 404 洗い出し (2026-10-12): 現行履歴 + 8/21以前のバックアップbundle の
+    # 「削除された docs/*.html」と「過去の sitemap <loc>」を突き合わせ、本番で404を返すものを全件拾った。
+    # 転送先はすべて docs/ に実在し、REDIRECT_MAP のキーではない（転送1回）。
+    # navigating-japanese-etiquette-with-kids-in-2026（記事とstory）は同主題ページが無く判断保留（要確認）。
+    "family-health-emergencies-in-japan-a-2026-guide": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "navigating-medical-care-in-japan-for-families-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "keeping-kids-happy-on-long-japan-journeys-2026": "keeping-kids-happy-on-long-japan-journeys-flights-trains-202",
+    # Web Story（/stories/…）。元記事が301統合された時に webstory._prune_redirected_stories が
+    # ファイルを消したが、URLは転送されず404のまま残っていた。元記事の統合先（記事ページ）へ寄せる。
+    "stories/best-children-s-museums-and-learning-spots-in-japan-2026": "japan-with-kids-attractions",
+    "stories/buying-baby-diapers-wipes-and-formula-in-japan-2026": "diapers-formula-baby-gear-in-japan-what-to-pack-buy",
+    "stories/diapers-formula-in-japan-brands-sizes-where-to-buy": "diapers-formula-baby-gear-in-japan-what-to-pack-buy",
+    "stories/child-gets-sick-in-japan-2026-a-practical-parent-s-guide": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "stories/child-sick-in-japan-essential-medical-guide-for-families-202": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "stories/family-health-emergencies-in-japan-a-2026-guide": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "stories/family-health-emergencies-in-japan-a-2026-parent-s-guide": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "stories/family-healthcare-in-japan-what-to-do-for-kids-2026-guide": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "stories/healthcare-for-kids-in-japan-a-parent-s-guide-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
+    "stories/japan-family-packing-list-essentials-for-traveling-with-kids": "japan-packing-list-for-families-2026-kids-travel-essentials",
+    "stories/navigating-japan-s-public-transport-with-kids-2026": "japan-public-transport-with-kids-fares-strollers-facilities",
+    "stories/ryokan-with-kids-family-stays-in-japan-2026-guide": "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
+    "stories/staying-in-a-ryokan-with-kids-family-friendly-japan-tips": "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
+    "stories/staying-in-a-ryokan-with-kids-in-japan-2026": "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
+    "stories/tokyo-disney-vs-disneysea-for-kids": "tokyo-disneyland-vs-disneysea-young-kids",
+
     # 復旧スプリントC (2026-08-21): 8月の自動生成期(重複ガード不在)に量産された近接重複。
     # 統合先の選定基準は 内容の充実度 → 内部リンク被リンク数 → URLの検索意図適合。
     # 語数差が10%以内は「同等」とみなし次の基準に送る、という運用で機械的に決めた。
