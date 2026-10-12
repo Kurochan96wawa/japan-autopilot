@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from urllib.parse import urlparse
 from .util import load_settings, SITE_DIR, log
 from . import images
-from . import linker, eeat, indexnow
+from . import linker, eeat, indexnow, sitemap_lastmod
 
 BRAND = "littletabi"
 TAGLINE = "Honest, practical guides for families travelling to Japan with kids."
@@ -278,7 +278,9 @@ def _write_seo_files(cfg) -> None:
         else:
             pr = "0.8"
         rows.append(
-            f"  <url><loc>{loc}</loc><lastmod>{today}</lastmod>"
+            # 2026-10-12: lastmod は本文が変わった日（sitemap_lastmod）。ここでは保存値を読むだけで、
+            # 最終確定は各workflow最終段の sitemap_lastmod.stabilize() が行う。
+            f"  <url><loc>{loc}</loc><lastmod>{sitemap_lastmod.lookup(loc, today)}</lastmod>"
             f"<changefreq>weekly</changefreq><priority>{pr}</priority></url>"
         )
     sitemap = (
