@@ -71,7 +71,7 @@ REDIRECT_MAP = {
     # GSC 404 洗い出し (2026-10-12): 現行履歴 + 8/21以前のバックアップbundle の
     # 「削除された docs/*.html」と「過去の sitemap <loc>」を突き合わせ、本番で404を返すものを全件拾った。
     # 転送先はすべて docs/ に実在し、REDIRECT_MAP のキーではない（転送1回）。
-    # navigating-japanese-etiquette-with-kids-in-2026（記事とstory）は同主題ページが無く判断保留（要確認）。
+    # navigating-japanese-etiquette-with-kids-in-2026（記事とstory）は同主題ページが無いのでハブへ（下）。
     "family-health-emergencies-in-japan-a-2026-guide": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
     "navigating-medical-care-in-japan-for-families-2026": "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202",
     "keeping-kids-happy-on-long-japan-journeys-2026": "keeping-kids-happy-on-long-japan-journeys-flights-trains-202",
@@ -92,6 +92,10 @@ REDIRECT_MAP = {
     "stories/staying-in-a-ryokan-with-kids-family-friendly-japan-tips": "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
     "stories/staying-in-a-ryokan-with-kids-in-japan-2026": "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026",
     "stories/tokyo-disney-vs-disneysea-for-kids": "tokyo-disneyland-vs-disneysea-young-kids",
+    # 2026-10-12 Kei判断: 旧ページは交通・施設・食事/公共マナー。同主題の現存ページが無いので
+    # ハブ /japan-with-kids-practical へ退避（engaging-kids-in-japanese-culture… は主題が寺・工芸で別）。
+    "navigating-japanese-etiquette-with-kids-in-2026": "japan-with-kids-practical",
+    "stories/navigating-japanese-etiquette-with-kids-in-2026": "japan-with-kids-practical",
 
     # 復旧スプリントC (2026-08-21): 8月の自動生成期(重複ガード不在)に量産された近接重複。
     # 統合先の選定基準は 内容の充実度 → 内部リンク被リンク数 → URLの検索意図適合。

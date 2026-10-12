@@ -252,6 +252,12 @@ def main() -> None:
         run()
     except Exception as e:
         log.error("webstory実行失敗: %s", e)
+    # このモジュールが各workflowで docs/ を触る最終段なので、ここで sitemap の lastmod を確定する
+    try:
+        from . import sitemap_lastmod
+        sitemap_lastmod.stabilize()
+    except Exception as e:
+        log.error("sitemap_lastmod失敗: %s", e)
 
 
 if __name__ == "__main__":

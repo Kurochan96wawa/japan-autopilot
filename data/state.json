@@ -1857,5 +1857,583 @@
   "usage": {
     "month": "2026-10",
     "llm_calls": 22
+  },
+  "sitemap_lastmod": {
+    "about": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "997b81100397af98"
+      ]
+    },
+    "baby-carriers-in-japan-your-essential-guide-for-family-trave": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "5a212dba227a5ae3"
+      ]
+    },
+    "beat-jet-lag-with-kids-in-japan-proven-travel-strategies": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "9f82a4c97a31971e"
+      ]
+    },
+    "beat-the-heat-japan-summer-with-kids-safety-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "6497fc35d11979f7"
+      ]
+    },
+    "best-family-hotels-in-osaka-2026-where-to-stay-with-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "6d5bbd8f37ec9acd"
+      ]
+    },
+    "best-family-hotels-tokyo-connecting-rooms": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "a2e0a9c2137a53a8"
+      ]
+    },
+    "budget-family-meals-in-japan-where-to-eat-with-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "84a05b0fd85da927"
+      ]
+    },
+    "cherry-blossom-season-japan-with-kids-family-hanami-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "0e6ade99e80ecfbd"
+      ]
+    },
+    "child-friendly-ramen-in-japan-broth-types-spots": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "e528b5494619c5f3"
+      ]
+    },
+    "contact": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "9cb4c992e8b1a004"
+      ]
+    },
+    "diapers-formula-baby-gear-in-japan-what-to-pack-buy": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "eefa37c210cce9da"
+      ]
+    },
+    "disclosure": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "06462155de9b81c1"
+      ]
+    },
+    "eating-out-in-japan-with-food-allergies": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "eb4077767cd123f3"
+      ]
+    },
+    "engaging-kids-in-japanese-culture-temple-craft-etiquette-tip": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "887badf45e5b3320"
+      ]
+    },
+    "family-day-trips-from-tokyo-kid-friendly-escapes": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "056c51dac6ee6169"
+      ]
+    },
+    "family-onsen-japan-private-baths-kid-friendly-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "e38393d83a3b2f87"
+      ]
+    },
+    "flying-to-japan-with-kids-narita-haneda-arrival-guide-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "5647c33bf5b1d4dc"
+      ]
+    },
+    "gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "89d39308aa149d3e"
+      ]
+    },
+    "get-the-japan-checklist": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "fd8b81a143edfec0"
+      ]
+    },
+    "ghibli-museum-park-with-kids-2026-tickets-entry-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "6e7b8da1b44ce2e1"
+      ]
+    },
+    "hands-free-travel-in-japan-with-kids-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "cb02d5594cb5bcc2"
+      ]
+    },
+    "how-we-make-guides": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "22e8708eb63d01c3"
+      ]
+    },
+    "index": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "c93c102732f14dcc"
+      ]
+    },
+    "japan-esim-for-families-compared": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "73dc2c2df1b505eb"
+      ]
+    },
+    "japan-family-itinerary-tokyo-kyoto-osaka-with-young-children": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "48f4ea562bcb04ed"
+      ]
+    },
+    "japan-healthcare-for-kids-clinics-pharmacies-emergencies-202": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "fcdce894403986d0"
+      ]
+    },
+    "japan-konbini-snacks-for-picky-eaters-kid-approved": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "9bf2edfa1d9ae3f1"
+      ]
+    },
+    "japan-money-guide-for-families-cash-cards-budgeting": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "d11cc30a8fea22b8"
+      ]
+    },
+    "japan-packing-list-for-families-2026-kids-travel-essentials": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "ab1f4a830ad7c8e8"
+      ]
+    },
+    "japan-public-transport-with-kids-fares-strollers-facilities": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "d0a7b07966bf81a9"
+      ]
+    },
+    "japan-public-transport-with-kids-ic-cards-strollers-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "74facda0ac7651de"
+      ]
+    },
+    "japan-rail-pass-with-kids-is-it-worth-it-for-families": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "91665e7f34a04ace"
+      ]
+    },
+    "japan-with-kids-accommodation": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "9e7cf2e30e13c011"
+      ]
+    },
+    "japan-with-kids-attractions": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "f05d94fe32ed835f"
+      ]
+    },
+    "japan-with-kids-baby": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "27c2d427d69b0e57"
+      ]
+    },
+    "japan-with-kids-food": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "1fd65224e85e1725"
+      ]
+    },
+    "japan-with-kids-practical": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "604bb1147aceefd9"
+      ]
+    },
+    "japan-with-kids-transport": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "8a2794b7846a18ed"
+      ]
+    },
+    "japanese-phrases-for-families-essential-travel-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "bc8e411fc05e993e"
+      ]
+    },
+    "keeping-kids-happy-on-long-japan-journeys-flights-trains-202": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "ad44596becf7e14c"
+      ]
+    },
+    "kid-friendly-japanese-meals-navigating-picky-eaters": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "e26e2b96fc61a508"
+      ]
+    },
+    "kid-friendly-sushi-in-japan-a-guide-for-young-palates": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "34c29c42c606241d"
+      ]
+    },
+    "kidzania-tokyo-with-kids-2026-is-it-worth-it-a-parent-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "372da70e26a64201"
+      ]
+    },
+    "kyoto-osaka-family-hotels-with-kitchens": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "fa912e98976b82a9"
+      ]
+    },
+    "kyoto-with-a-stroller-accessible-routes-kid-friendly-spots": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "6394761858f50614"
+      ]
+    },
+    "nara-deer-park-with-kids-safety-fun-tips-for-families": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "d7384c9085c8f979"
+      ]
+    },
+    "navigating-food-allergies-in-japan-with-kids-a-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "9d758e00bb719593"
+      ]
+    },
+    "osaka-with-a-toddler-kid-friendly-sights-practical-tips-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "3394624ddb57c82b"
+      ]
+    },
+    "plan": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "4022f27579a68070"
+      ]
+    },
+    "privacy": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "85b7ba0079e799ba"
+      ]
+    },
+    "renting-a-car-in-japan-with-car-seats-family-travel-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "95f6a6cd4851a641"
+      ]
+    },
+    "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "2b6ae97e32af5a4c"
+      ]
+    },
+    "shinkansen-cost-for-families": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "fc428fc18a524286"
+      ]
+    },
+    "shinkansen-family-fare-calculator": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "1d9f588717be15a3"
+      ]
+    },
+    "shinkansen-oversized-baggage-rules-for-families-in-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "528845846404189e"
+      ]
+    },
+    "staying-connected-in-japan-with-kids-esims-wifi-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "7ad7de470b9db4c8"
+      ]
+    },
+    "stories/baby-carriers-in-japan-your-essential-guide-for-family-trave": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "4e15ca7a535828fb"
+      ]
+    },
+    "stories/beat-jet-lag-with-kids-in-japan-proven-travel-strategies": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "1f3676bf486fabd7"
+      ]
+    },
+    "stories/beat-the-heat-japan-summer-with-kids-safety-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "bc913f2ee3347baa"
+      ]
+    },
+    "stories/best-family-hotels-in-osaka-2026-where-to-stay-with-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "7fc3a88611b6a390"
+      ]
+    },
+    "stories/best-family-hotels-tokyo-connecting-rooms": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "c58cf3713656424e"
+      ]
+    },
+    "stories/budget-family-meals-in-japan-where-to-eat-with-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "76396af4b6c52e6f"
+      ]
+    },
+    "stories/diapers-formula-baby-gear-in-japan-what-to-pack-buy": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "248a88f311172a3e"
+      ]
+    },
+    "stories/family-onsen-japan-private-baths-kid-friendly-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "58ccf7eea8c8a3bc"
+      ]
+    },
+    "stories/gacha-gacha-in-japan-a-parent-s-guide-to-fun-fair-play": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "e08335176bd6597a"
+      ]
+    },
+    "stories/ghibli-museum-park-with-kids-2026-tickets-entry-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "dbad58d8e02d3173"
+      ]
+    },
+    "stories/japan-esim-for-families-compared": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "2a210a262a94e7be"
+      ]
+    },
+    "stories/japan-family-itinerary-tokyo-kyoto-osaka-with-young-children": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "a69aee85844b91a3"
+      ]
+    },
+    "stories/japan-money-guide-for-families-cash-cards-budgeting": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "116a8c96c4f038b6"
+      ]
+    },
+    "stories/japan-public-transport-with-kids-fares-strollers-facilities": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "234c536b3f082627"
+      ]
+    },
+    "stories/japan-public-transport-with-kids-ic-cards-strollers-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "72da75d7ffa7611e"
+      ]
+    },
+    "stories/japan-rail-pass-with-kids-is-it-worth-it-for-families": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "22147aaf324eaf08"
+      ]
+    },
+    "stories/japanese-phrases-for-families-essential-travel-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "4c594b84b45b7ca9"
+      ]
+    },
+    "stories/kid-friendly-sushi-in-japan-a-guide-for-young-palates": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "6462685758f193a0"
+      ]
+    },
+    "stories/kidzania-tokyo-with-kids-2026-is-it-worth-it-a-parent-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "3adc86bd3655c3db"
+      ]
+    },
+    "stories/nara-deer-park-with-kids-safety-fun-tips-for-families": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "a307c40af8f3b6f3"
+      ]
+    },
+    "stories/renting-a-car-in-japan-with-car-seats-family-travel-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "5e5830d655ffc371"
+      ]
+    },
+    "stories/ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "e31891e32b456c9f"
+      ]
+    },
+    "stories/stroller-friendly-tokyo-navigating-the-city-with-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "b7589b8337529fef"
+      ]
+    },
+    "stories/teamlab-planets-borderless-with-kids-your-2026-family-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "0769284f573578a9"
+      ]
+    },
+    "stories/tokyo-disneyland-vs-disneysea-young-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "84a6268d035adb32"
+      ]
+    },
+    "stories/tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "0160865e5777bbd6"
+      ]
+    },
+    "stories/ueno-zoo-with-kids-pandas-tips-nearby-family-fun-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "c3767295aca3a33a"
+      ]
+    },
+    "stories/visiting-japan-temples-with-kids-respectfully-2026-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "cde74a3d402f49af"
+      ]
+    },
+    "stroller-friendly-tokyo-navigating-the-city-with-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "aee232d7863bfc02"
+      ]
+    },
+    "teamlab-planets-borderless-with-kids-your-2026-family-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "0b3f017e33910204"
+      ]
+    },
+    "tokyo-apartments-for-families-of-6-or-more": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "4f5d900eecdf32e7"
+      ]
+    },
+    "tokyo-disney-resort-hotels-for-families": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "394b6ef6023cffa9"
+      ]
+    },
+    "tokyo-disneyland-vs-disneysea-young-kids": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "961cfebfef930eed"
+      ]
+    },
+    "tokyo-family-hotels-with-kitchenette": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "6fbfea1ffe42dc48"
+      ]
+    },
+    "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "d7f4e45a1274a6ac"
+      ]
+    },
+    "tools/allergy-card": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "5b4b2463dbb05762"
+      ]
+    },
+    "tools/embeds": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "923214b5beceadcf"
+      ]
+    },
+    "ueno-zoo-with-kids-pandas-tips-nearby-family-fun-2026": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "26902371a7be52d2"
+      ]
+    },
+    "universal-studios-japan-with-kids-maximizing-family-fun": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "5fff8036290c2287"
+      ]
+    },
+    "visiting-japan-temples-with-kids-respectfully-2026-guide": {
+      "lastmod": "2026-10-12",
+      "hashes": [
+        "c1b60b96d1cb958b"
+      ]
+    }
   }
 }
