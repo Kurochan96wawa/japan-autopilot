@@ -795,7 +795,9 @@
       "repin_times": [],
       "posted_at": "2026-06-27T08:13:01.234078+00:00",
       "meta_description": "Explore Japan easily with a baby carrier! Discover the pros, cons, and best practices for family travel in 2026.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Newborn Baby Carrier Use in Japan: Travel Guide",
+      "seo_title_at": "2026-10-13T02:23:49.777302+00:00"
     },
     {
       "topic": "Visiting Nara Deer Park with Kids: Tips for a Safe and Enjoyable Experience",
@@ -1668,18 +1670,6 @@
     "shadowban_paused": false,
     "pdca_history": [
       {
-        "at": "2026-06-29T04:47:16.866093+00:00",
-        "ga4": false,
-        "counts": {
-          "winner": 0,
-          "fixable": 0,
-          "loser": 0,
-          "insufficient": 30,
-          "total": 30
-        },
-        "flagged_fixable": []
-      },
-      {
         "at": "2026-06-29T04:58:01.267621+00:00",
         "ga4": true,
         "counts": {
@@ -1810,38 +1800,42 @@
           "total": 56
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-10-13T02:23:15.327532+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 57,
+          "total": 57
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-10-06T01:38:20.410967+00:00",
+      "at": "2026-10-13T02:23:15.327532+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
         "fixable": 0,
         "loser": 0,
-        "insufficient": 56,
-        "total": 56
+        "insufficient": 57,
+        "total": 57
       },
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-10-06T01:40:56.281350+00:00",
+      "at": "2026-10-13T02:24:05.466948+00:00",
       "rewritten": [
-        "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
-        "beat-the-heat-japan-summer-with-kids-safety-guide",
-        "japan-konbini-snacks-for-picky-eaters-kid-approved"
+        "contact",
+        "baby-carriers-in-japan-your-essential-guide-for-family-trave",
+        "privacy"
       ],
       "striking": [
-        "kid-friendly-sushi-in-japan-a-guide-for-young-palates",
-        "renting-a-car-in-japan-with-car-seats-family-travel-guide",
-        "diapers-formula-in-japan-brands-sizes-where-to-buy",
-        "healthcare-for-kids-in-japan-a-parent-s-guide-2026",
-        "child-friendly-ramen-in-japan-broth-types-spots",
-        "tokyo-s-best-themed-cafes-for-families-beyond-maid-cafes",
-        "staying-connected-in-japan-with-kids-in-2026",
-        "beat-the-heat-japan-summer-with-kids-safety-guide",
-        "japan-konbini-snacks-for-picky-eaters-kid-approved",
-        "budget-family-meals-in-japan-where-to-eat-with-kids"
+        "littletabi.com",
+        "japan-with-kids-practical"
       ],
       "new_topics": []
     }
@@ -1849,14 +1843,14 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-10-06T01:38:20.410390+00:00"
+    "last_updated": "2026-10-13T02:23:15.327036+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-10",
-    "llm_calls": 22
+    "llm_calls": 24
   },
   "sitemap_lastmod": {
     "about": {
@@ -1866,8 +1860,9 @@
       ]
     },
     "baby-carriers-in-japan-your-essential-guide-for-family-trave": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-13",
       "hashes": [
+        "e6dcb36c643fb3ab",
         "5a212dba227a5ae3"
       ]
     },
@@ -1914,8 +1909,9 @@
       ]
     },
     "contact": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-13",
       "hashes": [
+        "f1854eeb428b223f",
         "9cb4c992e8b1a004"
       ]
     },
@@ -2154,8 +2150,9 @@
       ]
     },
     "privacy": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-13",
       "hashes": [
+        "d88961b22c60f266",
         "85b7ba0079e799ba"
       ]
     },
