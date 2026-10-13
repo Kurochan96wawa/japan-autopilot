@@ -2,12 +2,6 @@
   "version": 1,
   "topics_queue": [
     {
-      "topic": "Winter in Japan with Kids: Snow Play, Staying Warm & Family Activities",
-      "primary_keyword": "winter Japan with kids snow",
-      "board_hint": "Seasonal Japan",
-      "failed_attempts": 1
-    },
-    {
       "topic": "Tokyo's Best Indoor Play Spaces and Interactive Museums for Families with Young Children",
       "search_intent": "Parents traveling to Tokyo with toddlers or young children are looking for specific, engaging indoor activities suitable for different ages, especially for days with inclement weather or when a break from outdoor sightseeing is desired.",
       "primary_keyword": "tokyo with a toddler",
@@ -200,6 +194,7 @@
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
@@ -208,7 +203,8 @@
         "fffee48df1f80000",
         "fffee485f1f80000",
         "fffee48df1f80000",
-        "0000ffffd5993c18"
+        "0000ffffd5993c18",
+        "fffee48df1f80000"
       ],
       "last_pin_desc": "Planning a family trip to Tokyo? Discover stroller-friendly attractions, dining options, and tips for navigating the city with kids in 2026!",
       "repin_times": [],
@@ -237,6 +233,7 @@
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
@@ -249,7 +246,8 @@
         "ffffff7f46000000",
         "ffff870300000000",
         "fc7c7cf818000000",
-        "f0ffffb0f0000020"
+        "f0ffffb0f0000020",
+        "ffff870300000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1850,7 +1848,7 @@
   },
   "usage": {
     "month": "2026-10",
-    "llm_calls": 24
+    "llm_calls": 31
   },
   "sitemap_lastmod": {
     "about": {
@@ -1911,8 +1909,8 @@
     "contact": {
       "lastmod": "2026-10-13",
       "hashes": [
-        "f1854eeb428b223f",
-        "9cb4c992e8b1a004"
+        "9cb4c992e8b1a004",
+        "f1854eeb428b223f"
       ]
     },
     "diapers-formula-baby-gear-in-japan-what-to-pack-buy": {
@@ -2152,8 +2150,8 @@
     "privacy": {
       "lastmod": "2026-10-13",
       "hashes": [
-        "d88961b22c60f266",
-        "85b7ba0079e799ba"
+        "85b7ba0079e799ba",
+        "d88961b22c60f266"
       ]
     },
     "renting-a-car-in-japan-with-car-seats-family-travel-guide": {
@@ -2193,8 +2191,9 @@
       ]
     },
     "stories/baby-carriers-in-japan-your-essential-guide-for-family-trave": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-13",
       "hashes": [
+        "f4666cd8639cc7ca",
         "4e15ca7a535828fb"
       ]
     },
