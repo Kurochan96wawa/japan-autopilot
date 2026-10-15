@@ -337,7 +337,15 @@ def run_seo_improve(state: dict) -> str:
             continue                      # 同一ページを1回の実行で2度書き換えない
         done_slugs.add(slug)
         post = by_slug.get(slug)
-        last = (post or {}).get("seo_title_at", "")
+        # 2026-10-15: 対象は state.json の posted にある記事だけ。それ以外（contact / privacy /
+        # about / disclosure / how-we-make-guides / カテゴリハブ / トップ / plan 等）は
+        # site.py・quality_fixups が毎runで作り直すページなので、ここで書き換えても次の daily で
+        # 元に戻る。しかも posted に記録が無いので上のクールダウンも効かず、10/13 には
+        # weekly-improve が contact/privacy を書き換え→30分後の daily が戻す、を毎週繰り返していた。
+        if post is None:
+            log.info("SEO: 記事ではない（state.json の posted に無い）ためスキップ %s", slug)
+            continue
+        last = post.get("seo_title_at", "")
         if last:
             try:
                 if (today - date.fromisoformat(last[:10])).days < cooldown:
@@ -347,13 +355,12 @@ def run_seo_improve(state: dict) -> str:
                 pass
         # 現在ページに出ているのは seo_title のほう。旧 article_title を渡すと
         # モデルが「今のタイトル」を取り違える。
-        cur_title = ((post or {}).get("seo_title") or (post or {}).get("article_title") or slug)
+        cur_title = post.get("seo_title") or post.get("article_title") or slug
         res = _rewrite_title_meta(slug, q_by_page.get(url, []), cur_title, site_name)
         if res:
-            if post is not None:
-                post["seo_title"] = res["title"]
-                post["seo_title_at"] = now_iso()
-                post["needs_refresh"] = True
+            post["seo_title"] = res["title"]
+            post["seo_title_at"] = now_iso()
+            post["needs_refresh"] = True
             rewritten.append((slug, res["title"], m))
 
     # 2) あと一歩ページ（8〜20位）
