@@ -286,7 +286,9 @@
       "repin_times": [],
       "posted_at": "2026-06-23T10:32:45.958519+00:00",
       "meta_description": "Explore practical tips for navigating food allergies in Japan with kids. A guide for families traveling in 2026.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Japan with Kids: Food Allergies, Strollers & Travel Tips",
+      "seo_title_at": "2026-10-20T00:04:49.078591+00:00"
     },
     {
       "topic": "Best Family-Friendly Hotels in Tokyo with Connecting Rooms or Kitchenettes",
@@ -331,7 +333,9 @@
       "repin_times": [],
       "posted_at": "2026-06-23T10:56:17.261278+00:00",
       "meta_description": "Discover proven strategies to beat jet lag with kids while traveling in Japan, ensuring a smooth family adventure in 2026.",
-      "needs_refresh": true
+      "needs_refresh": true,
+      "seo_title": "Japan with Kids: Beat Jet Lag & Explore Top Family Spots",
+      "seo_title_at": "2026-10-20T00:05:09.245296+00:00"
     },
     {
       "topic": "Where to Buy Diapers and Baby Formula in Japan (Brands and Sizes Explained)",
@@ -1678,18 +1682,6 @@
     "shadowban_paused": false,
     "pdca_history": [
       {
-        "at": "2026-06-29T04:58:01.267621+00:00",
-        "ga4": true,
-        "counts": {
-          "winner": 0,
-          "fixable": 0,
-          "loser": 0,
-          "insufficient": 30,
-          "total": 30
-        },
-        "flagged_fixable": []
-      },
-      {
         "at": "2026-08-03T22:04:02.478371+00:00",
         "ga4": true,
         "counts": {
@@ -1820,10 +1812,22 @@
           "total": 57
         },
         "flagged_fixable": []
+      },
+      {
+        "at": "2026-10-20T00:04:33.366598+00:00",
+        "ga4": true,
+        "counts": {
+          "winner": 0,
+          "fixable": 0,
+          "loser": 0,
+          "insufficient": 57,
+          "total": 57
+        },
+        "flagged_fixable": []
       }
     ],
     "pdca": {
-      "at": "2026-10-13T02:23:15.327532+00:00",
+      "at": "2026-10-20T00:04:33.366598+00:00",
       "ga4": true,
       "counts": {
         "winner": 0,
@@ -1835,11 +1839,10 @@
       "flagged_fixable": []
     },
     "seo": {
-      "at": "2026-10-13T02:24:05.466948+00:00",
+      "at": "2026-10-20T00:05:09.245835+00:00",
       "rewritten": [
-        "contact",
-        "baby-carriers-in-japan-your-essential-guide-for-family-trave",
-        "privacy"
+        "navigating-food-allergies-in-japan-with-kids-a-guide",
+        "beat-jet-lag-with-kids-in-japan-proven-travel-strategies"
       ],
       "striking": [
         "littletabi.com",
@@ -1851,14 +1854,14 @@
   "strategy": {
     "boost_keywords": [],
     "avoid_keywords": [],
-    "last_updated": "2026-10-13T02:23:15.327036+00:00"
+    "last_updated": "2026-10-20T00:04:33.366155+00:00"
   },
   "safety_state": {
     "started": "2026-06-23"
   },
   "usage": {
     "month": "2026-10",
-    "llm_calls": 36
+    "llm_calls": 38
   },
   "sitemap_lastmod": {
     "about": {
@@ -1875,8 +1878,9 @@
       ]
     },
     "beat-jet-lag-with-kids-in-japan-proven-travel-strategies": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-20",
       "hashes": [
+        "5307fc26e878de36",
         "9f82a4c97a31971e"
       ]
     },
@@ -2140,8 +2144,9 @@
       ]
     },
     "navigating-food-allergies-in-japan-with-kids-a-guide": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-20",
       "hashes": [
+        "49216901bbecdd56",
         "9d758e00bb719593"
       ]
     },
