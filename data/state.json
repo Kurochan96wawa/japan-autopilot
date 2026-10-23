@@ -197,6 +197,7 @@
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
+        "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg",
         "img/stroller-friendly-tokyo-navigating-the-city-with-kids.jpg"
       ],
       "img_hashes": [
@@ -208,6 +209,7 @@
         "0000ffffd5993c18",
         "fffee48df1f80000",
         "fffee485f1f80000",
+        "fffee48df1f80000",
         "fffee48df1f80000"
       ],
       "last_pin_desc": "Planning a family trip to Tokyo? Discover stroller-friendly attractions, dining options, and tips for navigating the city with kids in 2026!",
@@ -240,6 +242,7 @@
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
+        "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg",
         "img/japan-rail-pass-with-kids-is-it-worth-it-for-families.jpg"
       ],
       "img_hashes": [
@@ -255,7 +258,8 @@
         "f0ffffb0f0000020",
         "ffff870300000000",
         "ffff870300000000",
-        "ffff870700000000"
+        "ffff870700000000",
+        "ffff870300000000"
       ],
       "last_pin_desc": "Planning a family trip to Japan? Learn about the Japan Rail Pass, child fares, and kid-friendly amenities to make your journey smooth and enjoyable.",
       "repin_times": [],
@@ -1670,6 +1674,31 @@
       "repin_times": [],
       "quality_score": 100,
       "posted_at": "2026-10-06T02:01:56.930399+00:00"
+    },
+    {
+      "topic": "Winter in Japan with Kids: Snow Play, Staying Warm & Family Activities",
+      "slug": "winter-in-japan-with-kids-snow-fun-cozy-stays-2026",
+      "article_title": "Winter in Japan with Kids: Snow Fun & Cozy Stays (2026)",
+      "primary_keyword": "winter Japan with kids snow",
+      "image_query": "Japan winter snow family",
+      "board_hint": "Seasonal Japan",
+      "affiliates_used": [
+        "experiences",
+        "hotels"
+      ],
+      "has_affiliate": true,
+      "url": "https://littletabi.com/winter-in-japan-with-kids-snow-fun-cozy-stays-2026",
+      "pins_count": 0,
+      "image_variants": [
+        "img/winter-in-japan-with-kids-snow-fun-cozy-stays-2026.jpg"
+      ],
+      "img_hashes": [
+        "f820808f8f0f0400"
+      ],
+      "last_pin_desc": "Traveling to Japan with kids this winter? Discover the best family-friendly snow parks, practical tips for keeping warm, and essential amenities like nursing rooms. Make your family's Japan winter adventure memorable with our expert guide. #JapanWithKids #WinterTravel #FamilyFun",
+      "repin_times": [],
+      "quality_score": 72,
+      "posted_at": "2026-10-23T00:16:39.833505+00:00"
     }
   ],
   "performance": {
@@ -1859,7 +1888,7 @@
   },
   "usage": {
     "month": "2026-10",
-    "llm_calls": 45
+    "llm_calls": 51
   },
   "sitemap_lastmod": {
     "about": {
@@ -1889,8 +1918,9 @@
       ]
     },
     "best-family-hotels-in-osaka-2026-where-to-stay-with-kids": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-23",
       "hashes": [
+        "b54d4dc23c1f3d39",
         "6d5bbd8f37ec9acd"
       ]
     },
@@ -1956,8 +1986,9 @@
       ]
     },
     "family-onsen-japan-private-baths-kid-friendly-guide": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-23",
       "hashes": [
+        "a03d5eaa37976d64",
         "e38393d83a3b2f87"
       ]
     },
@@ -1998,8 +2029,9 @@
       ]
     },
     "index": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-23",
       "hashes": [
+        "3114e7b92115d81a",
         "c93c102732f14dcc"
       ]
     },
@@ -2058,8 +2090,9 @@
       ]
     },
     "japan-with-kids-accommodation": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-23",
       "hashes": [
+        "b08875c431a0a083",
         "9e7cf2e30e13c011"
       ]
     },
@@ -2174,8 +2207,9 @@
       ]
     },
     "ryokan-stays-with-kids-in-japan-family-inns-etiquette-2026": {
-      "lastmod": "2026-10-12",
+      "lastmod": "2026-10-23",
       "hashes": [
+        "e87d5e48091480d1",
         "2b6ae97e32af5a4c"
       ]
     },
@@ -2443,6 +2477,12 @@
       "lastmod": "2026-10-12",
       "hashes": [
         "c1b60b96d1cb958b"
+      ]
+    },
+    "winter-in-japan-with-kids-snow-fun-cozy-stays-2026": {
+      "lastmod": "2026-10-23",
+      "hashes": [
+        "7933d0a3b70504df"
       ]
     }
   }
